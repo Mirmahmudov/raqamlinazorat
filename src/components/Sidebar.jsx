@@ -2,8 +2,7 @@ import { NavLink, useNavigate, useLocation } from 'react-router-dom'
 import {
   MdPeople, MdFolder, MdPayments, MdBarChart,
   MdSettings, MdLogout, MdAssignment, MdWork,
-  MdExpandMore, MdExpandLess,
-  MdDarkMode, MdLightMode, MdMenu,
+  MdExpandMore, MdExpandLess, MdMenu,
 } from 'react-icons/md'
 import { useState } from 'react'
 import { useAuth } from '../context/AuthContext'
@@ -113,7 +112,7 @@ const menuByRole = {
 
 export default function Sidebar({ collapsed }) {
   const { user, logout } = useAuth()
-  const { isDark, toggleTheme } = useTheme()
+  const { isDark } = useTheme()
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -131,23 +130,6 @@ export default function Sidebar({ collapsed }) {
   const handleLogout = () => { logout(); navigate('/login') }
   const handleLogoClick = () => navigate(`/${user?.role}/dashboard`)
 
-  // ── Rang sxemasi (rasmga mos) ──
-  // Light: oq sidebar, #f1f3f9 fon, indigo-600 active
-  // Dark:  #1a1d27 sidebar, #13151f fon, indigo-400 active
-  const sideBg   = isDark ? 'bg-[#1a1d27]' : 'bg-white'
-  const divider  = isDark ? 'border-white/5' : 'border-gray-100'
-  // Light: active=#1A1D2E, inactive=#5B6078
-  // Dark:  active=gray-100, inactive=gray-500
-  const textMain        = isDark ? 'text-gray-100'  : 'text-[#1A1D2E]'
-  const textMuted       = isDark ? 'text-gray-500'  : 'text-[#5B6078]'
-  const hoverItem       = isDark
-    ? 'hover:bg-white/5 hover:text-gray-100'
-    : 'hover:bg-indigo-50/60 hover:text-[#1A1D2E]'
-  const activeGroupText = isDark ? 'text-indigo-400' : 'text-[#1A1D2E]'
-  const activeChildCls  = isDark
-    ? 'bg-indigo-500/10 text-indigo-300 font-medium'
-    : 'bg-indigo-50 text-[#1A1D2E] font-medium'
-
   const avatarBg =
     user?.role === 'admin'   ? 'bg-indigo-500' :
     user?.role === 'menager' ? 'bg-blue-500'   : 'bg-emerald-500'
@@ -156,7 +138,7 @@ export default function Sidebar({ collapsed }) {
     <div className="flex flex-col h-full overflow-hidden">
 
       {/* Logo */}
-      <div className={`flex items-center h-14 border-b ${divider} shrink-0 px-3 gap-2.5`}>
+      <div className="flex items-center h-14 border-b shrink-0 px-3 gap-2.5 border-gray-100 dark:border-white/5">
         <button
           onClick={handleLogoClick}
           title="Bosh sahifa"
@@ -167,7 +149,7 @@ export default function Sidebar({ collapsed }) {
         {!collapsed && (
           <button
             onClick={handleLogoClick}
-            className={`font-semibold text-sm truncate flex-1 text-left cursor-pointer transition-colors ${textMain} hover:text-indigo-600`}
+            className="font-semibold text-sm truncate flex-1 text-left cursor-pointer transition-colors text-[#1A1D2E] hover:text-indigo-600 dark:text-gray-100 dark:hover:text-indigo-400"
           >
             Raqamli Nazorat
           </button>
@@ -184,9 +166,11 @@ export default function Sidebar({ collapsed }) {
               <button
                 onClick={() => toggleGroup(i)}
                 title={collapsed ? group.label : undefined}
-                className={`w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-sm font-medium transition-colors cursor-pointer ${
-                  active ? activeGroupText : `${textMuted} ${hoverItem}`
-                }`}
+                className={`w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-sm font-medium transition-colors cursor-pointer
+                  ${active
+                    ? 'text-[#1A1D2E] dark:text-indigo-400'
+                    : 'text-[#5B6078] hover:bg-indigo-50/60 hover:text-[#1A1D2E] dark:text-gray-500 dark:hover:bg-white/5 dark:hover:text-gray-100'
+                  }`}
               >
                 <group.icon size={18} className="shrink-0" />
                 {!collapsed && (
@@ -208,8 +192,10 @@ export default function Sidebar({ collapsed }) {
                       to={child.path}
                       onClick={() => setMobileOpen(false)}
                       className={({ isActive }) =>
-                        `block px-3 py-1.5 rounded-lg text-sm transition-colors cursor-pointer ${
-                          isActive ? activeChildCls : `${textMuted} ${hoverItem}`
+                        `block px-3 py-1.5 rounded-lg text-sm transition-colors cursor-pointer
+                        ${isActive
+                          ? 'bg-indigo-50 text-[#1A1D2E] font-medium dark:bg-indigo-500/10 dark:text-indigo-300'
+                          : 'text-[#5B6078] hover:bg-indigo-50/60 hover:text-[#1A1D2E] dark:text-gray-500 dark:hover:bg-white/5 dark:hover:text-gray-100'
                         }`
                       }
                     >
@@ -224,28 +210,17 @@ export default function Sidebar({ collapsed }) {
       </nav>
 
       {/* Bottom */}
-      <div className={`border-t ${divider} px-2 py-2 space-y-0.5 shrink-0`}>
-
-        {/* Theme */}
-        <button
-          onClick={toggleTheme}
-          title={collapsed ? (isDark ? "Yorug' rejim" : "Qorong'u rejim") : undefined}
-          className={`w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-sm transition-colors cursor-pointer ${textMuted} ${hoverItem}`}
-        >
-          {isDark
-            ? <MdLightMode size={18} className="shrink-0" />
-            : <MdDarkMode size={18} className="shrink-0" />
-          }
-          {!collapsed && <span>{isDark ? "Yorug' rejim" : "Qorong'u rejim"}</span>}
-        </button>
+      <div className="border-t px-2 py-2 space-y-0.5 shrink-0 border-gray-100 dark:border-white/5">
 
         {/* Settings */}
         <NavLink
           to={`/${user?.role}/settings`}
           title={collapsed ? 'Sozlamalar' : undefined}
           className={({ isActive }) =>
-            `w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-sm transition-colors cursor-pointer ${
-              isActive ? activeGroupText : `${textMuted} ${hoverItem}`
+            `w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-sm transition-colors cursor-pointer
+            ${isActive
+              ? 'text-[#1A1D2E] dark:text-indigo-400'
+              : 'text-[#5B6078] hover:bg-indigo-50/60 hover:text-[#1A1D2E] dark:text-gray-500 dark:hover:bg-white/5 dark:hover:text-gray-100'
             }`
           }
         >
@@ -257,11 +232,9 @@ export default function Sidebar({ collapsed }) {
         <button
           onClick={handleLogout}
           title={collapsed ? 'Chiqish' : undefined}
-          className={`w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-sm transition-colors cursor-pointer ${
-            isDark
-              ? 'text-red-400 hover:bg-red-500/10 hover:text-red-300'
-              : 'text-red-400 hover:bg-red-50 hover:text-red-500'
-          }`}
+          className="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-sm transition-colors cursor-pointer
+            text-red-400 hover:bg-red-50 hover:text-red-500
+            dark:text-red-400 dark:hover:bg-red-500/10 dark:hover:text-red-300"
         >
           <MdLogout size={18} className="shrink-0" />
           {!collapsed && <span>Chiqish</span>}
@@ -270,15 +243,16 @@ export default function Sidebar({ collapsed }) {
         {/* User */}
         <div
           onClick={handleLogoClick}
-          className={`flex items-center gap-2.5 px-2 py-2 rounded-lg transition-colors cursor-pointer mt-1 ${hoverItem}`}
+          className="flex items-center gap-2.5 px-2 py-2 rounded-lg transition-colors cursor-pointer mt-1
+            hover:bg-indigo-50/60 dark:hover:bg-white/5"
         >
           <div className={`w-7 h-7 rounded-full shrink-0 flex items-center justify-center text-white text-xs font-bold ${avatarBg}`}>
             {user?.name?.[0]}
           </div>
           {!collapsed && (
             <div className="min-w-0">
-              <p className={`text-sm font-medium truncate leading-tight ${textMain}`}>{user?.name}</p>
-              <p className={`text-xs truncate ${isDark ? 'text-indigo-400' : 'text-indigo-500'}`}>{user?.role}</p>
+              <p className="text-sm font-medium truncate leading-tight text-[#1A1D2E] dark:text-gray-100">{user?.name}</p>
+              <p className="text-xs truncate text-indigo-500 dark:text-indigo-400">{user?.role}</p>
             </div>
           )}
         </div>
@@ -291,9 +265,9 @@ export default function Sidebar({ collapsed }) {
       {/* Mobile toggle */}
       <button
         onClick={() => setMobileOpen(true)}
-        className={`md:hidden fixed top-3 left-3 z-50 p-2 rounded-lg shadow-md cursor-pointer transition-colors ${
-          isDark ? 'bg-[#1a1d27] text-gray-300 hover:bg-white/10' : 'bg-white text-gray-600 hover:bg-gray-50'
-        }`}
+        className="md:hidden fixed top-3 left-3 z-50 p-2 rounded-lg shadow-md cursor-pointer transition-colors
+          bg-white text-gray-600 hover:bg-gray-50
+          dark:bg-[#1a1d27] dark:text-gray-300 dark:hover:bg-white/10"
       >
         <MdMenu size={20} />
       </button>
@@ -302,16 +276,16 @@ export default function Sidebar({ collapsed }) {
       {mobileOpen && (
         <div className="md:hidden fixed inset-0 z-40 flex">
           <div className="fixed inset-0 bg-black/50" onClick={() => setMobileOpen(false)} />
-          <div className={`relative z-50 w-[220px] h-full shadow-2xl border-r ${sideBg} ${divider}`}>
+          <div className="relative z-50 w-[220px] h-full shadow-2xl border-r bg-white border-gray-100 dark:bg-[#1a1d27] dark:border-white/5">
             <Inner />
           </div>
         </div>
       )}
 
       {/* Desktop */}
-      <aside className={`hidden md:block h-screen sticky top-0 shrink-0 border-r overflow-hidden transition-[width] duration-300 ${sideBg} ${divider} ${
-        collapsed ? 'w-[60px]' : 'w-[220px]'
-      }`}>
+      <aside className={`hidden md:block h-screen sticky top-0 shrink-0 border-r overflow-hidden transition-[width] duration-300
+        bg-white border-gray-100 dark:bg-[#1a1d27] dark:border-white/5
+        ${collapsed ? 'w-[60px]' : 'w-[220px]'}`}>
         <Inner />
       </aside>
     </>

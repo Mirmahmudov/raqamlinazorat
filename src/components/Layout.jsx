@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 import Sidebar from './Sidebar'
-import { useTheme } from '../context/ThemeContext'
 import { MdMenu } from 'react-icons/md'
 
 const labelMap = {
@@ -15,7 +14,6 @@ const labelMap = {
 
 function Breadcrumb() {
   const location = useLocation()
-  const { isDark } = useTheme()
   const parts = location.pathname.split('/').filter(Boolean)
 
   return (
@@ -26,12 +24,11 @@ function Breadcrumb() {
         return (
           <span key={i} className="flex items-center gap-1">
             {i > 0 && (
-              <span className={isDark ? 'text-gray-600' : 'text-gray-300'}>›</span>
+              <span className="text-gray-300 dark:text-gray-600">›</span>
             )}
-            <span className={
-              isLast
-                ? isDark ? 'text-gray-200 font-medium' : 'text-gray-700 font-medium'
-                : isDark ? 'text-gray-500' : 'text-gray-400'
+            <span className={isLast
+              ? 'text-gray-700 font-medium dark:text-gray-200'
+              : 'text-gray-400 dark:text-gray-500'
             }>
               {label}
             </span>
@@ -43,29 +40,23 @@ function Breadcrumb() {
 }
 
 export default function Layout() {
-  const { isDark } = useTheme()
   const [collapsed, setCollapsed] = useState(false)
 
-  // Light: oq topbar, #f1f3f9 content fon
-  // Dark:  #1a1d27 topbar, #13151f content fon
-  const topbarBg  = isDark ? 'bg-[#1a1d27] border-white/5' : 'bg-white border-gray-100'
-  const contentBg = isDark ? 'bg-[#13151f]' : 'bg-[#f1f3f9]'
-
   return (
-    <div className={`flex min-h-screen ${contentBg}`}>
+    <div className="flex min-h-screen bg-[#f1f3f9] dark:bg-[#13151f]">
       <Sidebar collapsed={collapsed} />
 
       <div className="flex-1 flex flex-col min-w-0">
         {/* Topbar */}
-        <header className={`sticky top-0 z-30 flex items-center h-14 px-4 gap-3 border-b ${topbarBg}`}>
+        <header className="sticky top-0 z-30 flex items-center h-14 px-4 gap-3 border-b
+          bg-white border-gray-100
+          dark:bg-[#1a1d27] dark:border-white/5">
           <button
             onClick={() => setCollapsed(p => !p)}
             title={collapsed ? 'Sidebarni ochish' : 'Sidebarni yopish'}
-            className={`hidden md:flex items-center justify-center w-8 h-8 rounded-lg transition-colors cursor-pointer shrink-0 ${
-              isDark
-                ? 'text-gray-400 hover:bg-white/5 hover:text-gray-100'
-                : 'text-gray-400 hover:bg-gray-100 hover:text-gray-700'
-            }`}
+            className="hidden md:flex items-center justify-center w-8 h-8 rounded-lg transition-colors cursor-pointer shrink-0
+              text-gray-400 hover:bg-gray-100 hover:text-gray-700
+              dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-100"
           >
             <MdMenu size={20} />
           </button>
