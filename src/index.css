@@ -22,17 +22,31 @@
   animation: spin 1s linear infinite;
 }
 
-/* Custom scrollbar */
-.modal-scroll::-webkit-scrollbar {
-  width: 4px;
+/* Custom scrollbar — global */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #D0D5E2 transparent;
 }
-.modal-scroll::-webkit-scrollbar-track {
+.dark * {
+  scrollbar-color: #3A3B3B transparent;
+}
+*::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+*::-webkit-scrollbar-track {
   background: transparent;
 }
-.modal-scroll::-webkit-scrollbar-thumb {
+*::-webkit-scrollbar-thumb {
   background: #D0D5E2;
   border-radius: 99px;
 }
-.dark .modal-scroll::-webkit-scrollbar-thumb {
+.dark *::-webkit-scrollbar-thumb {
   background: #3A3B3B;
 }
+
+/* modal-scroll alias (kept for compatibility) */
+.modal-scroll::-webkit-scrollbar { width: 4px; }
+.modal-scroll::-webkit-scrollbar-track { background: transparent; }
+.modal-scroll::-webkit-scrollbar-thumb { background: #D0D5E2; border-radius: 99px; }
+.dark .modal-scroll::-webkit-scrollbar-thumb { background: #3A3B3B; }

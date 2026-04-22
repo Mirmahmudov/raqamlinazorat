@@ -5,7 +5,8 @@ import { usePageAction } from '../context/PageActionContext'
 const labelMap = {
   admin: 'Autentifikatsiya', menager: 'Menager', xodim: 'Xodim',
   dashboard: 'Dashboard', users: 'Foydalanuvchilar', roles: 'Rollar',
-  projects: 'Loyihalar', payments: "To'lovlar", finance: 'Moliya',
+  projects: 'Loyihalar', payments: "Xarajat so'rovlari", finance: 'Ish haqi',
+  history: 'Tarix',
   reports: 'Hisobotlar', messages: 'Xabarlar', settings: 'Sozlamalar',
   team: 'Jamoam', tasks: 'Vazifalar', calendar: 'Kalendar',
   salary: 'Maosh', archive: 'Arxiv', staff: 'Xodimlar', done: 'Bajarilgan',

@@ -35,27 +35,41 @@ function fmt(n) {
 /* ── Custom Dropdown ── */
 function Dropdown({ label, options, value, onChange }) {
   const [open, setOpen] = useState(false)
+  const [dropUp, setDropUp] = useState(false)
   const ref = useRef(null)
+
   useEffect(() => {
     const h = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false) }
     document.addEventListener('mousedown', h)
     return () => document.removeEventListener('mousedown', h)
   }, [])
+
+  const handleOpen = () => {
+    if (!open && ref.current) {
+      const rect = ref.current.getBoundingClientRect()
+      const spaceBelow = window.innerHeight - rect.bottom
+      setDropUp(spaceBelow < 200)
+    }
+    setOpen(o => !o)
+  }
+
   return (
     <div className="relative" ref={ref}>
-      <button type="button" onClick={() => setOpen(o => !o)}
-        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm border transition-colors cursor-pointer
+      <button type="button" onClick={handleOpen}
+        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm border transition-colors cursor-pointer w-full
           bg-white border-[#E2E6F2] text-[#1A1D2E]
           dark:bg-[#191A1A] dark:border-[#292A2A] dark:text-[#FFFFFF]">
-        <span>{value || label}</span>
-        <MdExpandMore size={15} className="text-[#8F95A8] dark:text-[#C2C8E0]" />
+        <span className="flex-1 text-left truncate">{value || label}</span>
+        <MdExpandMore size={15} className={`text-[#8F95A8] dark:text-[#C2C8E0] shrink-0 transition-transform ${open ? 'rotate-180' : ''}`} />
       </button>
       {open && (
-        <div className="absolute top-full left-0 mt-1 z-50 min-w-[140px] rounded-xl shadow-lg border overflow-hidden
-          bg-white border-[#E2E6F2] dark:bg-[#222323] dark:border-[#292A2A]">
-          {options.map(opt => (
+        <div className={`absolute left-0 z-50 w-full min-w-[140px] rounded-xl shadow-lg border overflow-hidden
+          bg-white border-[#E2E6F2] dark:bg-[#222323] dark:border-[#292A2A]
+          ${dropUp ? 'bottom-full mb-1' : 'top-full mt-1'}`}>
+          {options.map((opt, i) => (
             <button key={opt} type="button" onClick={() => { onChange(opt); setOpen(false) }}
-              className={`w-full text-left px-4 py-2.5 text-sm transition-colors cursor-pointer
+              className={`w-full text-left px-3 py-2 text-xs transition-colors cursor-pointer
+                ${i < options.length - 1 ? 'border-b border-[#E2E6F2] dark:border-[#292A2A]' : ''}
                 hover:bg-[#F1F3F9] dark:hover:bg-[#292A2A]
                 ${value === opt ? 'text-[#3F57B3] font-medium dark:text-[#7F95E6]' : 'text-[#1A1D2E] dark:text-[#C2C8E0]'}`}>
               {opt}
@@ -178,13 +192,17 @@ function AddUserModal({ onClose, onAdd }) {
               <div className="flex items-center gap-3 flex-wrap">
                 <div className="flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-green-500 shrink-0" />
-                  <span className="text-sm font-semibold text-[#1A1D2E] dark:text-[#FFFFFF]">Lavozimi</span>
-                  <Dropdown label="Tanlash" options={LAVOZIMLAR} value={form.lavozim} onChange={v => set('lavozim', v)} />
+                  <span className="text-sm font-semibold text-[#1A1D2E] dark:text-[#FFFFFF] shrink-0">Lavozimi</span>
+                  <div className="w-[120px]">
+                    <Dropdown label="Tanlash" options={LAVOZIMLAR} value={form.lavozim} onChange={v => set('lavozim', v)} />
+                  </div>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-red-500 shrink-0" />
-                  <span className="text-sm font-semibold text-[#1A1D2E] dark:text-[#FFFFFF]">Rolli</span>
-                  <Dropdown label="Tanlash" options={ROLLAR_LIST} value={form.rol} onChange={v => set('rol', v)} />
+                  <span className="text-sm font-semibold text-[#1A1D2E] dark:text-[#FFFFFF] shrink-0">Rolli</span>
+                  <div className="w-[120px]">
+                    <Dropdown label="Tanlash" options={ROLLAR_LIST} value={form.rol} onChange={v => set('rol', v)} />
+                  </div>
                 </div>
               </div>
             </div>
@@ -299,11 +317,19 @@ function UserDetail({ user, onBack, onDelete }) {
           </div>
           <div>
             <label className={labelCls}>Oylik maosh (UZS)</label>
-            <input className={inputCls + ' text-right'} type="number" value={form.salary} onChange={e => set('salary', e.target.value)} />
+            <input className={inputCls + ' text-right'} value={fmt(form.salary)}
+              onFocus={e => { e.target.value = form.salary; e.target.type = 'number' }}
+              onBlur={e => { set('salary', parseFloat(e.target.value) || 0); e.target.type = 'text'; e.target.value = fmt(form.salary) }}
+              onChange={e => set('salary', parseFloat(e.target.value) || 0)}
+            />
           </div>
           <div>
             <label className={labelCls}>Balansi (UZS)</label>
-            <input className={inputCls + ' text-right'} type="number" value={form.balance} onChange={e => set('balance', e.target.value)} />
+            <input className={inputCls + ' text-right'} value={fmt(form.balance)}
+              onFocus={e => { e.target.value = form.balance; e.target.type = 'number' }}
+              onBlur={e => { set('balance', parseFloat(e.target.value) || 0); e.target.type = 'text'; e.target.value = fmt(form.balance) }}
+              onChange={e => set('balance', parseFloat(e.target.value) || 0)}
+            />
           </div>
         </div>
 
@@ -347,16 +373,20 @@ function UserDetail({ user, onBack, onDelete }) {
         </div>
 
         {/* Lavozim + Rol */}
-        <div className="flex items-center gap-6 flex-wrap">
+        <div className="grid grid-cols-2 gap-3">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-green-500 shrink-0" />
-            <span className="text-sm font-medium text-[#1A1D2E] dark:text-[#FFFFFF]">Lavozimi</span>
-            <Dropdown label="Tanlash" options={LAVOZIMLAR} value={form.lavozim} onChange={v => set('lavozim', v)} />
+            <span className="text-sm font-medium text-[#1A1D2E] dark:text-[#FFFFFF] shrink-0">Lavozimi</span>
+            <div className="flex-1">
+              <Dropdown label="Tanlash" options={LAVOZIMLAR} value={form.lavozim} onChange={v => set('lavozim', v)} />
+            </div>
           </div>
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-red-500 shrink-0" />
-            <span className="text-sm font-medium text-[#1A1D2E] dark:text-[#FFFFFF]">Rolli</span>
-            <Dropdown label="Tanlash" options={ROLLAR_LIST} value={form.rol} onChange={v => set('rol', v)} />
+            <span className="text-sm font-medium text-[#1A1D2E] dark:text-[#FFFFFF] shrink-0">Rolli</span>
+            <div className="flex-1">
+              <Dropdown label="Tanlash" options={ROLLAR_LIST} value={form.rol} onChange={v => set('rol', v)} />
+            </div>
           </div>
         </div>
       </div>

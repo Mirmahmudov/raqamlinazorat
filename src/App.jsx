@@ -7,6 +7,9 @@ import Layout from './components/Layout'
 import Login from './pages/Login'
 import AdminDashboard from './pages/admin/Dashboard'
 import AdminUsers from './pages/admin/Users'
+import AdminPayments from './pages/admin/Payments'
+import AdminSalary from './pages/admin/Salary'
+import AdminFinanceHistory from './pages/admin/FinanceHistory'
 import MenagerDashboard from './pages/menager/Dashboard'
 import XodimDashboard from './pages/xodim/Dashboard'
 import PlaceholderPage from './pages/PlaceholderPage'
@@ -30,8 +33,9 @@ function App() {
               <Route path="roles" element={PH('Rollar')} />
               <Route path="projects" element={PH('Loyihalar')} />
               <Route path="projects/archive" element={PH('Arxiv')} />
-              <Route path="payments" element={PH("To'lovlar")} />
-              <Route path="finance" element={PH('Moliya')} />
+              <Route path="payments" element={<AdminPayments />} />
+              <Route path="finance" element={<AdminSalary />} />
+              <Route path="finance/history" element={<AdminFinanceHistory />} />
               <Route path="reports" element={PH('Hisobotlar')} />
               <Route path="reports/staff" element={PH('Xodimlar hisoboti')} />
               <Route path="messages" element={PH('Xabarlar')} />

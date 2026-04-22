@@ -25,8 +25,9 @@ const menuByRole = {
     {
       label: 'Moliya', icon: IconBriefcaseDollar,
       children: [
-        { label: "To'lovlar", path: '/admin/payments' },
-        { label: 'Hisoblar', path: '/admin/finance' },
+        { label: "Xarajat so'rovlari", path: '/admin/payments' },
+        { label: 'Ish haqi', path: '/admin/finance' },
+        { label: 'Tarix', path: '/admin/finance/history' },
       ],
     },
     {
