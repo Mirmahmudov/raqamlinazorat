@@ -1,7 +1,5 @@
-import { useState } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 import Sidebar from './Sidebar'
-import { MdMenu } from 'react-icons/md'
 
 const labelMap = {
   admin: 'Admin', menager: 'Menager', xodim: 'Xodim',
@@ -12,10 +10,17 @@ const labelMap = {
   salary: 'Maosh', archive: 'Arxiv', staff: 'Xodimlar', done: 'Bajarilgan',
 }
 
+// Har bir route uchun topbar tugmasi konfiguratsiyasi
+const routeActions = {
+  '/admin/users': {
+    label: "Qo'shish",
+    onClick: () => alert("Yangi foydalanuvchi qo'shish"),
+  },
+}
+
 function Breadcrumb() {
   const location = useLocation()
   const parts = location.pathname.split('/').filter(Boolean)
-
   return (
     <div className="flex items-center gap-1 text-sm">
       {parts.map((part, i) => {
@@ -23,9 +28,7 @@ function Breadcrumb() {
         const label = labelMap[part] || part
         return (
           <span key={i} className="flex items-center gap-1">
-            {i > 0 && (
-              <span className="text-gray-300 dark:text-gray-600">›</span>
-            )}
+            {i > 0 && <span className="text-gray-300 dark:text-gray-600">›</span>}
             <span className={isLast
               ? 'text-gray-700 font-medium dark:text-gray-200'
               : 'text-gray-400 dark:text-gray-500'
@@ -39,31 +42,33 @@ function Breadcrumb() {
   )
 }
 
-export default function Layout() {
-  const [collapsed, setCollapsed] = useState(false)
+function TopbarAction() {
+  const location = useLocation()
+  const action = routeActions[location.pathname]
+  if (!action) return null
+  return (
+    <button
+      onClick={action.onClick}
+      className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors cursor-pointer
+        bg-[#3F57B3] text-white hover:bg-[#3449a0]"
+    >
+      <img src="/imgs/add-team.svg" alt="" className="w-4 h-4 brightness-0 invert" />
+      {action.label}
+    </button>
+  )
+}
 
+export default function Layout() {
   return (
     <div className="flex min-h-screen bg-[#f1f3f9] dark:bg-[#13151f]">
-      <Sidebar collapsed={collapsed} />
-
+      <Sidebar />
       <div className="flex-1 flex flex-col min-w-0">
-        {/* Topbar */}
-        <header className="sticky top-0 z-30 flex items-center h-14 px-4 gap-3 border-b
+        <header className="sticky top-0 z-30 flex items-center justify-between h-14 px-4 gap-3 border-b
           bg-white border-gray-100
           dark:bg-[#1a1d27] dark:border-white/5">
-          <button
-            onClick={() => setCollapsed(p => !p)}
-            title={collapsed ? 'Sidebarni ochish' : 'Sidebarni yopish'}
-            className="hidden md:flex items-center justify-center w-8 h-8 rounded-lg transition-colors cursor-pointer shrink-0
-              text-gray-400 hover:bg-gray-100 hover:text-gray-700
-              dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-100"
-          >
-            <MdMenu size={20} />
-          </button>
           <Breadcrumb />
+          <TopbarAction />
         </header>
-
-        {/* Content */}
         <main className="flex-1 p-6">
           <Outlet />
         </main>

@@ -5,6 +5,7 @@ import ProtectedRoute from './components/ProtectedRoute'
 import Layout from './components/Layout'
 import Login from './pages/Login'
 import AdminDashboard from './pages/admin/Dashboard'
+import AdminUsers from './pages/admin/Users'
 import MenagerDashboard from './pages/menager/Dashboard'
 import XodimDashboard from './pages/xodim/Dashboard'
 import PlaceholderPage from './pages/PlaceholderPage'
@@ -23,7 +24,7 @@ function App() {
             {/* Admin */}
             <Route path="/admin" element={<ProtectedRoute allowedRole="admin"><Layout /></ProtectedRoute>}>
               <Route path="dashboard" element={<AdminDashboard />} />
-              <Route path="users" element={PH('Foydalanuvchilar')} />
+              <Route path="users" element={<AdminUsers />} />
               <Route path="roles" element={PH('Rollar')} />
               <Route path="projects" element={PH('Loyihalar')} />
               <Route path="projects/archive" element={PH('Arxiv')} />
