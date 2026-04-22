@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider } from './context/AuthContext'
 import { ThemeProvider } from './context/ThemeContext'
+import { PageActionProvider } from './context/PageActionContext'
 import ProtectedRoute from './components/ProtectedRoute'
 import Layout from './components/Layout'
 import Login from './pages/Login'
@@ -17,6 +18,7 @@ function App() {
     <BrowserRouter>
       <ThemeProvider>
         <AuthProvider>
+          <PageActionProvider>
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/" element={<Navigate to="/login" replace />} />
@@ -66,6 +68,7 @@ function App() {
 
             <Route path="*" element={<Navigate to="/login" replace />} />
           </Routes>
+          </PageActionProvider>
         </AuthProvider>
       </ThemeProvider>
     </BrowserRouter>

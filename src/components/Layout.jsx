@@ -1,21 +1,14 @@
 import { Outlet, useLocation } from 'react-router-dom'
 import Sidebar from './Sidebar'
+import { usePageAction } from '../context/PageActionContext'
 
 const labelMap = {
-  admin: 'Admin', menager: 'Menager', xodim: 'Xodim',
+  admin: 'Autentifikatsiya', menager: 'Menager', xodim: 'Xodim',
   dashboard: 'Dashboard', users: 'Foydalanuvchilar', roles: 'Rollar',
   projects: 'Loyihalar', payments: "To'lovlar", finance: 'Moliya',
   reports: 'Hisobotlar', messages: 'Xabarlar', settings: 'Sozlamalar',
   team: 'Jamoam', tasks: 'Vazifalar', calendar: 'Kalendar',
   salary: 'Maosh', archive: 'Arxiv', staff: 'Xodimlar', done: 'Bajarilgan',
-}
-
-// Har bir route uchun topbar tugmasi konfiguratsiyasi
-const routeActions = {
-  '/admin/users': {
-    label: "Qo'shish",
-    onClick: () => alert("Yangi foydalanuvchi qo'shish"),
-  },
 }
 
 function Breadcrumb() {
@@ -28,10 +21,13 @@ function Breadcrumb() {
         const label = labelMap[part] || part
         return (
           <span key={i} className="flex items-center gap-1">
-            {i > 0 && <span className="text-gray-300 dark:text-gray-600">›</span>}
-            <span className={isLast
-              ? 'text-gray-700 font-medium dark:text-gray-200'
-              : 'text-gray-400 dark:text-gray-500'
+            {i > 0 && (
+              <span className="text-[#D0D5E2] dark:text-[#3A3B3B] mx-0.5">›</span>
+            )}
+            <span className={
+              isLast
+                ? 'text-[#1A1D2E] font-medium dark:text-[#FFFFFF]'
+                : 'text-[#8F95A8] dark:text-[#C2C8E0]'
             }>
               {label}
             </span>
@@ -42,34 +38,31 @@ function Breadcrumb() {
   )
 }
 
-function TopbarAction() {
-  const location = useLocation()
-  const action = routeActions[location.pathname]
-  if (!action) return null
-  return (
-    <button
-      onClick={action.onClick}
-      className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors cursor-pointer
-        bg-[#3F57B3] text-white hover:bg-[#3449a0]"
-    >
-      <img src="/imgs/add-team.svg" alt="" className="w-4 h-4 brightness-0 invert" />
-      {action.label}
-    </button>
-  )
-}
-
 export default function Layout() {
+  const { action } = usePageAction()
+
   return (
-    <div className="flex min-h-screen bg-[#F0F2FA] dark:bg-[#13151f]">
+    <div className="flex min-h-screen bg-[#F8F9FC] dark:bg-[#191A1A]">
       <Sidebar />
       <div className="flex-1 flex flex-col min-w-0">
         <header className="sticky top-0 z-30 flex items-center justify-between h-14 px-6 gap-3 border-b
-          bg-white border-[#E8EAF2]
-          dark:bg-[#1a1d27] dark:border-white/5">
+          bg-[#F8F9FC] border-[#E2E6F2]
+          dark:bg-[#191A1A] dark:border-[#292A2A]">
           <Breadcrumb />
-          <TopbarAction />
+          <div className="flex items-center gap-2">
+            {action && (
+              <button
+                onClick={action.onClick}
+                className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-colors cursor-pointer
+                  bg-[#3F57B3] text-white hover:bg-[#526ED3]"
+              >
+                {action.icon && <span>{action.icon}</span>}
+                {action.label}
+              </button>
+            )}
+          </div>
         </header>
-        <main className="flex-1 p-6">
+        <main className="flex-1 p-6 bg-[#F8F9FC] dark:bg-[#191A1A]">
           <Outlet />
         </main>
       </div>

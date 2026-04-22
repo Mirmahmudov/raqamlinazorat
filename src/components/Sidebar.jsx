@@ -13,7 +13,6 @@ const menuByRole = {
       label: 'Autentifikatsiya', icon: IconUserGroup,
       children: [
         { label: 'Foydalanuvchilar', path: '/admin/users' },
-        { label: 'Rollar', path: '/admin/roles' },
       ],
     },
     {
@@ -92,9 +91,9 @@ const menuByRole = {
 }
 
 const avatarColor = {
-  admin: 'bg-indigo-500',
-  menager: 'bg-blue-500',
-  xodim: 'bg-emerald-500',
+  admin: 'bg-[#526ED3]',
+  menager: 'bg-[#526ED3]',
+  xodim: 'bg-[#526ED3]',
 }
 
 export default function Sidebar() {
@@ -106,25 +105,30 @@ export default function Sidebar() {
   const [openGroups, setOpenGroups] = useState({ 0: true })
 
   const menu = menuByRole[user?.role] || []
-  const avatarBg = avatarColor[user?.role] || 'bg-indigo-500'
+  const avatarBg = avatarColor[user?.role] || 'bg-[#526ED3]'
 
   const toggleGroup = (i) => setOpenGroups(prev => ({ ...prev, [i]: !prev[i] }))
   const isGroupActive = (group) => group.children?.some(c => location.pathname === c.path)
   const handleDashboard = () => navigate(`/${user?.role}/dashboard`)
 
+  // Light: text-sub #5B6078, hover bg-elevation-2-alt #E9ECF5
+  // Dark:  text-sub #8E95B5, hover bg-elevation-1-alt #222323
   const itemBase = [
     'w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-sm font-medium transition-colors cursor-pointer',
-    'text-[#6B7280] hover:bg-[#F0F2FA] hover:text-[#1A1D2E]',
-    'dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-white',
+    'text-[#5A5F76] hover:bg-[#E9ECF5] hover:text-[#1A1D2E]',
+    'dark:text-[#C2C8E0] dark:hover:bg-[#292A2A] dark:hover:text-[#FFFFFF]',
   ].join(' ')
 
-  const itemActive = 'bg-[#F0F2FA] !text-[#1A1D2E] dark:bg-white/5 dark:!text-white'
+  // active: #E9ECF5, text-strong #1A1D2E
+  const itemActive = 'bg-[#E9ECF5] !text-[#1A1D2E] dark:bg-[#292A2A] dark:!text-[#FFFFFF]'
 
   return (
     <aside
       className={[
         'hidden md:flex flex-col h-screen sticky top-0 shrink-0 border-r overflow-hidden transition-[width] duration-300',
-        'bg-white border-[#E8EAF2] dark:bg-[#1a1d27] dark:border-white/5',
+        // Light: bg #F1F3F9, border #E9ECF5
+        // Dark:  bg #222323, border #292A2A
+        'bg-[#F1F3F9] border-[#E9ECF5] dark:bg-[#222323] dark:border-[#292A2A]',
         collapsed ? 'w-[52px] cursor-pointer' : 'w-[220px]',
       ].join(' ')}
       onClick={() => collapsed && setCollapsed(false)}
@@ -132,7 +136,7 @@ export default function Sidebar() {
 
       {/* ── Logo ── */}
       <div
-        className="flex items-center justify-center h-14 border-b border-[#E8EAF2] dark:border-white/5 shrink-0 px-3"
+        className="flex items-center justify-center h-14 border-b border-[#E9ECF5] dark:border-[#292A2A] shrink-0 px-3"
         onClick={e => !collapsed && e.stopPropagation()}
       >
         {collapsed ? (
@@ -145,15 +149,15 @@ export default function Sidebar() {
               <div className="w-8 h-8 rounded-lg bg-[#526ED3] flex items-center justify-center shrink-0">
                 <img src="/imgs/Logo.png" alt="logo" className="w-5 h-5 object-contain" />
               </div>
-              <span className="font-semibold text-sm truncate text-[#1A1D2E] dark:text-gray-100">
+              <span className="font-semibold text-sm truncate text-[#1A1D2E] dark:text-[#FFFFFF]">
                 Raqamli Nazorat
               </span>
             </button>
             <button
               onClick={() => setCollapsed(true)}
               className="ml-1 flex items-center justify-center w-7 h-7 rounded-md transition-colors cursor-pointer shrink-0
-                text-[#5B6078] hover:bg-[#EEF1F7] hover:text-[#1A1D2E]
-                dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-white"
+                text-[#5A5F76] hover:bg-[#E9ECF5] hover:text-[#1A1D2E]
+                dark:text-[#C2C8E0] dark:hover:bg-[#292A2A] dark:hover:text-[#FFFFFF]"
             >
               <IconSidebarLeft size={18} />
             </button>
@@ -198,8 +202,8 @@ export default function Sidebar() {
                       className={({ isActive }) =>
                         `block px-3 py-1.5 rounded-lg text-sm transition-colors cursor-pointer ${
                           isActive
-                            ? 'bg-[#F0F2FA] text-[#1A1D2E] font-medium dark:bg-white/5 dark:text-white'
-                            : 'text-[#6B7280] hover:bg-[#F0F2FA] hover:text-[#1A1D2E] dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-white'
+                            ? 'bg-[#E9ECF5] text-[#1A1D2E] font-medium dark:bg-[#292A2A] dark:text-[#FFFFFF]'
+                            : 'text-[#5A5F76] hover:bg-[#E9ECF5] hover:text-[#1A1D2E] dark:text-[#C2C8E0] dark:hover:bg-[#292A2A] dark:hover:text-[#FFFFFF]'
                         }`
                       }
                     >
@@ -215,7 +219,7 @@ export default function Sidebar() {
 
       {/* ── Bottom ── */}
       <div
-        className="border-t px-2 py-2 space-y-0.5 shrink-0 border-[#E8EAF2] dark:border-white/5"
+        className="border-t px-2 py-2 space-y-0.5 shrink-0 border-[#E9ECF5] dark:border-[#292A2A]"
         onClick={e => !collapsed && e.stopPropagation()}
       >
         <NavLink
@@ -232,15 +236,15 @@ export default function Sidebar() {
           onClick={handleDashboard}
           title={collapsed ? `${user?.name} (${user?.role})` : undefined}
           className="flex items-center gap-2.5 px-2 py-2 rounded-lg transition-colors cursor-pointer mt-1
-            hover:bg-[#F0F2FA] dark:hover:bg-white/5"
+            hover:bg-[#E9ECF5] dark:hover:bg-[#292A2A]"
         >
           <div className={`w-7 h-7 rounded-full shrink-0 flex items-center justify-center text-white text-xs font-bold ${avatarBg}`}>
             {user?.name?.[0]}
           </div>
           {!collapsed && (
             <div className="min-w-0">
-              <p className="text-sm font-medium truncate leading-tight text-[#1A1D2E] dark:text-gray-100">{user?.name}</p>
-              <p className="text-xs truncate text-indigo-500 dark:text-indigo-400">{user?.role}</p>
+              <p className="text-sm font-medium truncate leading-tight text-[#1A1D2E] dark:text-[#FFFFFF]">{user?.name}</p>
+              <p className="text-xs truncate text-[#526ED3] dark:text-[#7F95E6]">{user?.role}</p>
             </div>
           )}
         </div>
@@ -248,3 +252,7 @@ export default function Sidebar() {
     </aside>
   )
 }
+
+
+
+

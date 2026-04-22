@@ -35,7 +35,7 @@ export default function Login() {
   const filled = loginVal && parolVal
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-6 transition-colors duration-300 bg-[#f1f3f9] dark:bg-[#111111]">
+    <div className="min-h-screen flex items-center justify-center p-6 transition-colors duration-300 bg-[#F1F3F9] dark:bg-[#111111]">
 
       <div className="w-full max-w-[1000px] flex gap-8 items-center justify-center">
 
@@ -61,8 +61,8 @@ export default function Login() {
 
         {/* Right panel — form */}
         <div className="w-full max-w-[420px] rounded-2xl p-10 transition-colors duration-300
-          bg-white border border-black/6 shadow-[0_4px_32px_rgba(0,0,0,0.09)]
-          dark:bg-[#2e2e2e] dark:border-[rgba(255,255,255,0.08)] dark:shadow-none">
+          bg-white border border-[#EEF1F7] shadow-[0_4px_32px_rgba(0,0,0,0.06)]
+          dark:bg-[#191A1A] dark:border-[#292A2A] dark:shadow-none">
 
           {/* Logo */}
           <div className="flex items-center gap-3 mb-8">
@@ -87,10 +87,10 @@ export default function Login() {
               value={loginVal}
               onChange={e => { setLoginVal(e.target.value); setError('') }}
               className="w-full px-4 py-3.5 rounded-xl text-sm outline-none transition-colors
-                bg-[#f1f3f9] border border-gray-200 text-gray-900 placeholder-gray-400
-                focus:border-indigo-400
-                dark:bg-[#1a1a1a] dark:border-[rgba(255,255,255,0.12)] dark:text-white dark:placeholder-[#888]
-                dark:focus:border-indigo-400"
+                bg-[#F8F9FC] border border-[#EEF1F7] text-[#1A1D2E] placeholder-[#B6BCCB]
+                focus:border-[#474848]
+                dark:bg-[#222323] dark:border-[#292A2A] dark:text-white dark:placeholder-[#5C627D]
+                dark:focus:border-[#474848]"
             />
 
             {/* Parol input */}
@@ -101,18 +101,18 @@ export default function Login() {
                 value={parolVal}
                 onChange={e => { setParolVal(e.target.value); setError('') }}
                 className="w-full px-4 py-3.5 pr-12 rounded-xl text-sm outline-none transition-colors
-                  bg-[#f1f3f9] border border-gray-200 text-gray-900 placeholder-gray-400
-                  focus:border-indigo-400
-                  dark:bg-[#1a1a1a] dark:border-[rgba(255,255,255,0.12)] dark:text-white dark:placeholder-[#888]
-                  dark:focus:border-indigo-400"
+                  bg-[#F8F9FC] border border-[#EEF1F7] text-[#1A1D2E] placeholder-[#B6BCCB]
+                  focus:border-[#474848]
+                  dark:bg-[#222323] dark:border-[#292A2A] dark:text-white dark:placeholder-[#5C627D]
+                  dark:focus:border-[#474848]"
               />
               {parolVal.length > 0 && (
                 <button
                   type="button"
                   onClick={() => setShowPass(p => !p)}
                   className="absolute right-3.5 top-1/2 -translate-y-1/2 bg-transparent border-none cursor-pointer p-0 flex items-center
-                    text-gray-400 hover:text-gray-600
-                    dark:text-[#aaa] dark:hover:text-white"
+                    text-[#9AA1B5] hover:text-[#5B6078]
+                    dark:text-[#757575] dark:hover:text-[#8E95B5]"
                 >
                   {showPass ? <LuEyeClosed size={20} /> : <LuEye size={20} />}
                 </button>
@@ -130,8 +130,8 @@ export default function Login() {
               disabled={loading || !filled}
               className={`w-full py-3.5 rounded-xl font-semibold text-sm border-none transition-colors duration-200 mt-1
                 ${filled
-                  ? 'bg-[#3F57B3] text-white hover:bg-[#3449a0] cursor-pointer'
-                  : 'bg-gray-200 text-gray-400 cursor-not-allowed  dark:text-[#777] dark:bg-white'
+                  ? 'bg-[#3F57B3] text-white hover:bg-[#526ED3] cursor-pointer'
+                  : 'bg-[#E9ECF5] text-[#B6BCCB] cursor-not-allowed dark:bg-white dark:text-[#757575]'
                 }`}
             >
               {loading ? (

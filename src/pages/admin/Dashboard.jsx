@@ -9,8 +9,8 @@ export default function AdminDashboard() {
         Xush kelibsiz, {user?.name} 👋
       </h1>
       <div className="rounded-xl border flex items-center justify-center min-h-[60vh] text-sm
-        bg-white border-gray-100 text-gray-400
-        dark:bg-[#0f1117] dark:border-white/6 dark:text-gray-500">
+        bg-white border-[#E2E6F2] text-[#8F95A8]
+        dark:bg-[#222323] dark:border-[#292A2A] dark:text-[#C2C8E0]">
         Dashboard tez orada tayyor bo'ladi
       </div>
     </div>
