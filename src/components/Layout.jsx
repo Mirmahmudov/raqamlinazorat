@@ -15,7 +15,7 @@ function Breadcrumb() {
   const location = useLocation()
   const parts = location.pathname.split('/').filter(Boolean)
   return (
-    <div className="flex items-center gap-1 text-sm">
+    <>
       {parts.map((part, i) => {
         const isLast = i === parts.length - 1
         const label = labelMap[part] || part
@@ -34,12 +34,12 @@ function Breadcrumb() {
           </span>
         )
       })}
-    </div>
+    </>
   )
 }
 
 export default function Layout() {
-  const { action } = usePageAction()
+  const { action, breadcrumbExtra } = usePageAction()
 
   return (
     <div className="flex min-h-screen bg-[#F8F9FC] dark:bg-[#191A1A]">
@@ -48,7 +48,15 @@ export default function Layout() {
         <header className="sticky top-0 z-30 flex items-center justify-between h-14 px-6 gap-3 border-b
           bg-[#F8F9FC] border-[#E2E6F2]
           dark:bg-[#191A1A] dark:border-[#292A2A]">
-          <Breadcrumb />
+          <div className="flex items-center gap-1 text-sm">
+            <Breadcrumb />
+            {breadcrumbExtra && (
+              <>
+                <span className="text-[#D0D5E2] dark:text-[#3A3B3B] mx-0.5">›</span>
+                <span className="text-[#1A1D2E] font-medium dark:text-[#FFFFFF]">{breadcrumbExtra}</span>
+              </>
+            )}
+          </div>
           <div className="flex items-center gap-2">
             {action && (
               <button

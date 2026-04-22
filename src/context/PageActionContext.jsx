@@ -4,13 +4,15 @@ const PageActionContext = createContext(null)
 
 export function PageActionProvider({ children }) {
   const [action, setAction] = useState(null)
-  // action = { label, icon, onClick } | null
+  const [breadcrumbExtra, setBreadcrumbExtra] = useState(null)
 
   const registerAction = useCallback((a) => setAction(a), [])
   const clearAction = useCallback(() => setAction(null), [])
+  const registerBreadcrumb = useCallback((label) => setBreadcrumbExtra(label), [])
+  const clearBreadcrumb = useCallback(() => setBreadcrumbExtra(null), [])
 
   return (
-    <PageActionContext.Provider value={{ action, registerAction, clearAction }}>
+    <PageActionContext.Provider value={{ action, registerAction, clearAction, breadcrumbExtra, registerBreadcrumb, clearBreadcrumb }}>
       {children}
     </PageActionContext.Provider>
   )
