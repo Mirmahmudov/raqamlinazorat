@@ -117,9 +117,9 @@ export default function UsersPage() {
         {selecting ? (
           <button
             onClick={cancelSelecting}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors cursor-pointer
-              bg-[#EEF1F7] text-[#1A1D2E] hover:bg-[#e2e6f0]
-              dark:bg-white/8 dark:text-gray-200 dark:hover:bg-white/12"
+            className="flex items-center gap-2 px-4 py-1.5 rounded-lg text-sm font-medium transition-colors cursor-pointer
+              bg-white border border-[#E8EAF2] text-[#1A1D2E] hover:bg-[#F0F2FA]
+              dark:bg-white/5 dark:border-white/10 dark:text-gray-200 dark:hover:bg-white/10"
           >
             <MdClose size={16} />
             Bekor qilish
@@ -127,11 +127,11 @@ export default function UsersPage() {
         ) : (
           <button
             onClick={startSelecting}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors cursor-pointer
-              bg-[#EEF1F7] text-[#1A1D2E] hover:bg-[#e2e6f0]
-              dark:bg-white/8 dark:text-gray-200 dark:hover:bg-white/12"
+            className="flex items-center gap-2 px-4 py-1.5 rounded-lg text-sm font-medium transition-colors cursor-pointer
+              bg-white border border-[#E8EAF2] text-[#1A1D2E] hover:bg-[#F0F2FA]
+              dark:bg-white/5 dark:border-white/10 dark:text-gray-200 dark:hover:bg-white/10"
           >
-            <svg width="15" height="15" viewBox="0 0 15 15" fill="none" className="opacity-60">
+            <svg width="15" height="15" viewBox="0 0 15 15" fill="none" className="opacity-50">
               <path d="M2 4h11M2 7.5h11M2 11h11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
             </svg>
             Tanlash
@@ -142,8 +142,8 @@ export default function UsersPage() {
       {/* Filters — faqat tanlash rejimi yoq bo'lganda ko'rinadi */}
       {!selecting && (
         <div className="flex flex-wrap gap-2">
-          <div className="relative flex-1 min-w-[180px]">
-            <svg className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <div className="relative w-[220px]">
+            <svg className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
             </svg>
             <input
@@ -151,8 +151,8 @@ export default function UsersPage() {
               placeholder="Ism Sharifi bo'yicha izlash"
               value={search}
               onChange={e => setSearch(e.target.value)}
-              className="w-full pl-9 pr-4 py-2 rounded-lg text-sm outline-none transition-colors
-                bg-white border border-gray-200 text-[#1A1D2E] placeholder-gray-400
+              className="w-full pl-8 pr-3 py-2 rounded-lg text-sm outline-none transition-colors
+                bg-white border border-[#E8EAF2] text-[#1A1D2E] placeholder-gray-400
                 focus:border-indigo-400
                 dark:bg-[#1a1d27] dark:border-white/10 dark:text-gray-100 dark:placeholder-gray-500"
             />
@@ -160,8 +160,8 @@ export default function UsersPage() {
           <select
             value={position}
             onChange={e => setPosition(e.target.value)}
-            className="w-[180px] px-3 py-2 rounded-lg text-sm outline-none cursor-pointer transition-colors
-              bg-white border border-gray-200 text-[#1A1D2E]
+            className="w-[160px] px-3 py-2 rounded-lg text-sm outline-none cursor-pointer transition-colors
+              bg-white border border-[#E8EAF2] text-[#1A1D2E]
               dark:bg-[#1a1d27] dark:border-white/10 dark:text-gray-100"
           >
             {POSITIONS.map(p => <option key={p}>{p}</option>)}
@@ -169,8 +169,8 @@ export default function UsersPage() {
           <select
             value={role}
             onChange={e => setRole(e.target.value)}
-            className="w-[150px] px-3 py-2 rounded-lg text-sm outline-none cursor-pointer transition-colors
-              bg-white border border-gray-200 text-[#1A1D2E]
+            className="w-[130px] px-3 py-2 rounded-lg text-sm outline-none cursor-pointer transition-colors
+              bg-white border border-[#E8EAF2] text-[#1A1D2E]
               dark:bg-[#1a1d27] dark:border-white/10 dark:text-gray-100"
           >
             {ROLES.map(r => <option key={r}>{r}</option>)}
@@ -178,8 +178,8 @@ export default function UsersPage() {
           <select
             value={sort}
             onChange={e => setSort(e.target.value)}
-            className="w-[150px] px-3 py-2 rounded-lg text-sm outline-none cursor-pointer transition-colors
-              bg-white border border-gray-200 text-[#1A1D2E]
+            className="w-[130px] px-3 py-2 rounded-lg text-sm outline-none cursor-pointer transition-colors
+              bg-white border border-[#E8EAF2] text-[#1A1D2E]
               dark:bg-[#1a1d27] dark:border-white/10 dark:text-gray-100"
           >
             {SORTS.map(s => <option key={s}>{s}</option>)}
@@ -188,10 +188,10 @@ export default function UsersPage() {
       )}
 
       {/* Table */}
-      <div className="rounded-xl overflow-hidden border border-gray-100 dark:border-white/5 bg-white dark:bg-[#1a1d27]">
+      <div className="rounded-xl overflow-hidden border border-[#E8EAF2] dark:border-white/5 bg-white dark:bg-[#1a1d27]">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-gray-100 dark:border-white/5">
+            <tr className="border-b border-[#E8EAF2] dark:border-white/5 bg-white dark:bg-transparent">
               {selecting && (
                 <th className="w-10 px-4 py-3 text-left">
                   <input
@@ -213,7 +213,7 @@ export default function UsersPage() {
                 </span>
               </th>
               <th className="px-4 py-3 text-left font-medium text-[#5B6078] dark:text-gray-400">Rol</th>
-              <th className="px-4 py-3 text-right font-medium text-[#5B6078] dark:text-gray-400">Oylik maosh (UZS)</th>
+              <th className="px-4 py-3 text-right font-medium text-[#5B6078] dark:text-gray-400">Oylik maosh</th>
               <th className="px-4 py-3 text-right font-medium text-[#5B6078] dark:text-gray-400">Balans</th>
               <th className="px-4 py-3 text-center font-medium text-[#5B6078] dark:text-gray-400">Active</th>
             </tr>
@@ -223,9 +223,9 @@ export default function UsersPage() {
               <tr
                 key={u.id}
                 onClick={() => selecting && toggleOne(u.id)}
-                className={`border-b border-gray-50 dark:border-white/3 transition-colors
+                className={`border-b border-[#F0F2FA] dark:border-white/3 transition-colors
                   ${selecting ? 'cursor-pointer' : ''}
-                  ${selected.has(u.id) ? 'bg-indigo-50/50 dark:bg-indigo-500/5' : 'hover:bg-[#f8f9fc] dark:hover:bg-white/2'}`}
+                  ${selected.has(u.id) ? 'bg-indigo-50/60 dark:bg-indigo-500/5' : 'hover:bg-[#F8F9FC] dark:hover:bg-white/2'}`}
               >
                 {selecting && (
                   <td className="px-4 py-3" onClick={e => e.stopPropagation()}>

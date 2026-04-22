@@ -114,17 +114,17 @@ export default function Sidebar() {
 
   const itemBase = [
     'w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-sm font-medium transition-colors cursor-pointer',
-    'text-[#5B6078] hover:bg-[#EEF1F7] hover:text-[#1A1D2E]',
+    'text-[#6B7280] hover:bg-[#F0F2FA] hover:text-[#1A1D2E]',
     'dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-white',
   ].join(' ')
 
-  const itemActive = 'bg-[#EEF1F7] !text-[#1A1D2E] dark:bg-white/5 dark:!text-white'
+  const itemActive = 'bg-[#F0F2FA] !text-[#1A1D2E] dark:bg-white/5 dark:!text-white'
 
   return (
     <aside
       className={[
         'hidden md:flex flex-col h-screen sticky top-0 shrink-0 border-r overflow-hidden transition-[width] duration-300',
-        'bg-white border-gray-100 dark:bg-[#1a1d27] dark:border-white/5',
+        'bg-white border-[#E8EAF2] dark:bg-[#1a1d27] dark:border-white/5',
         collapsed ? 'w-[52px] cursor-pointer' : 'w-[220px]',
       ].join(' ')}
       onClick={() => collapsed && setCollapsed(false)}
@@ -132,7 +132,7 @@ export default function Sidebar() {
 
       {/* ── Logo ── */}
       <div
-        className="flex items-center justify-center h-14 border-b border-gray-100 dark:border-white/5 shrink-0 px-3"
+        className="flex items-center justify-center h-14 border-b border-[#E8EAF2] dark:border-white/5 shrink-0 px-3"
         onClick={e => !collapsed && e.stopPropagation()}
       >
         {collapsed ? (
@@ -198,8 +198,8 @@ export default function Sidebar() {
                       className={({ isActive }) =>
                         `block px-3 py-1.5 rounded-lg text-sm transition-colors cursor-pointer ${
                           isActive
-                            ? 'bg-[#EEF1F7] text-[#1A1D2E] font-medium dark:bg-white/5 dark:text-white'
-                            : 'text-[#5B6078] hover:bg-[#EEF1F7] hover:text-[#1A1D2E] dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-white'
+                            ? 'bg-[#F0F2FA] text-[#1A1D2E] font-medium dark:bg-white/5 dark:text-white'
+                            : 'text-[#6B7280] hover:bg-[#F0F2FA] hover:text-[#1A1D2E] dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-white'
                         }`
                       }
                     >
@@ -215,7 +215,7 @@ export default function Sidebar() {
 
       {/* ── Bottom ── */}
       <div
-        className="border-t px-2 py-2 space-y-0.5 shrink-0 border-gray-100 dark:border-white/5"
+        className="border-t px-2 py-2 space-y-0.5 shrink-0 border-[#E8EAF2] dark:border-white/5"
         onClick={e => !collapsed && e.stopPropagation()}
       >
         <NavLink
@@ -232,7 +232,7 @@ export default function Sidebar() {
           onClick={handleDashboard}
           title={collapsed ? `${user?.name} (${user?.role})` : undefined}
           className="flex items-center gap-2.5 px-2 py-2 rounded-lg transition-colors cursor-pointer mt-1
-            hover:bg-[#EEF1F7] dark:hover:bg-white/5"
+            hover:bg-[#F0F2FA] dark:hover:bg-white/5"
         >
           <div className={`w-7 h-7 rounded-full shrink-0 flex items-center justify-center text-white text-xs font-bold ${avatarBg}`}>
             {user?.name?.[0]}

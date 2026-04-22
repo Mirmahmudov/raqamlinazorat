@@ -60,11 +60,11 @@ function TopbarAction() {
 
 export default function Layout() {
   return (
-    <div className="flex min-h-screen bg-[#f1f3f9] dark:bg-[#13151f]">
+    <div className="flex min-h-screen bg-[#F0F2FA] dark:bg-[#13151f]">
       <Sidebar />
       <div className="flex-1 flex flex-col min-w-0">
-        <header className="sticky top-0 z-30 flex items-center justify-between h-14 px-4 gap-3 border-b
-          bg-white border-gray-100
+        <header className="sticky top-0 z-30 flex items-center justify-between h-14 px-6 gap-3 border-b
+          bg-white border-[#E8EAF2]
           dark:bg-[#1a1d27] dark:border-white/5">
           <Breadcrumb />
           <TopbarAction />
