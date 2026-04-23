@@ -2,6 +2,9 @@ import { useState, useEffect, useRef } from 'react'
 import { MdArrowForward, MdDelete, MdExpandMore, MdCheck } from 'react-icons/md'
 import { FaCamera, FaArrowLeft } from 'react-icons/fa'
 import { FaXmark, FaTrash, FaFileLines } from 'react-icons/fa6'
+import { FiGithub } from 'react-icons/fi'
+import { CiLinkedin } from 'react-icons/ci'
+import { PiTelegramLogo } from 'react-icons/pi'
 import { usePageAction } from '../../context/PageActionContext'
 
 const VILOYATLAR = ['Toshkent', 'Samarqand', 'Buxoro', 'Andijon', "Farg'ona", 'Namangan', 'Qashqadaryo', 'Surxondaryo', 'Xorazm', 'Navoiy', 'Jizzax', 'Sirdaryo', "Qoraqalpog'iston"]
@@ -102,7 +105,7 @@ function FilterSelect({ options, value, onChange, label }) {
 const Dropdown = FilterSelect
 
 /* ── Add User Modal ── */
-const EMPTY_FORM = { name: '', password: '', salary: '', viloyat: '', tuman: '', passportSeria: '', passportRaqam: '', lavozim: '', rol: '', avatar: null }
+const EMPTY_FORM = { name: '', password: '', salary: '', viloyat: '', tuman: '', passportSeria: '', passportRaqam: '', lavozim: '', rol: '', avatar: null, github: '', linkedin: '', telegram: '' }
 
 function AddUserModal({ onClose, onAdd }) {
   const [form, setForm] = useState(EMPTY_FORM)
@@ -137,11 +140,14 @@ function AddUserModal({ onClose, onAdd }) {
       <div className="relative w-full max-w-[600px] rounded-2xl shadow-2xl bg-white dark:bg-[#222323]">
         <div className="px-7 pt-7 pb-5">
           <div className="flex items-start gap-3">
-            <button onClick={onClose} className="mt-1 text-[#5B6078] dark:text-[#C2C8E0] hover:opacity-70 cursor-pointer shrink-0">
+            <button onClick={onClose} className="mt-1 text-[#1A1D2E] dark:text-[#FFFFFF] hover:opacity-70 cursor-pointer shrink-0">
               <FaArrowLeft size={18} />
             </button>
             <div>
-              <h2 className="text-xl font-bold text-[#1A1D2E] dark:text-[#FFFFFF]">Yangi xodim qo'shish</h2>
+              <h2
+                className="text-[#1A1D2E] dark:text-[#FFFFFF]"
+                style={{ fontSize: 20, fontWeight: 800 }}
+              >Yangi xodim qo'shish</h2>
               <p className="text-sm text-[#8F95A8] dark:text-[#C2C8E0] mt-1">Yangi xodimni tizimga qo'shing va unga tegishli rol hamda maoshni belgilang</p>
             </div>
           </div>
@@ -181,8 +187,21 @@ function AddUserModal({ onClose, onAdd }) {
             <div>
               <label className={labelCls}>Passport ma'lumotlari</label>
               <div className="flex gap-2">
-                <input className={inputCls} placeholder="Seriyasi" value={form.passportSeria} onChange={e => set('passportSeria', e.target.value)} />
-                <input className={inputCls} placeholder="Raqami" value={form.passportRaqam} onChange={e => set('passportRaqam', e.target.value)} />
+                <input
+                  className={inputCls}
+                  placeholder="AA"
+                  maxLength={2}
+                  value={form.passportSeria}
+                  onChange={e => set('passportSeria', e.target.value.replace(/[^a-zA-Z]/g, '').toUpperCase().slice(0, 2))}
+                  style={{ width: 64 }}
+                />
+                <input
+                  className={inputCls}
+                  placeholder="1234567"
+                  maxLength={7}
+                  value={form.passportRaqam}
+                  onChange={e => set('passportRaqam', e.target.value.replace(/\D/g, '').slice(0, 7))}
+                />
               </div>
             </div>
             <div>
@@ -219,13 +238,34 @@ function AddUserModal({ onClose, onAdd }) {
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-red-500 shrink-0" />
-                  <span className="text-sm font-semibold text-[#1A1D2E] dark:text-[#FFFFFF] shrink-0">Rolli</span>
+                  <span className="text-sm font-semibold text-[#1A1D2E] dark:text-[#FFFFFF] shrink-0">Roli</span>
                   <div className="w-[120px]">
                     <Dropdown label="Tanlash" options={ROLLAR_LIST} value={form.rol} onChange={v => set('rol', v)} />
                   </div>
                 </div>
               </div>
             </div>
+          </div>
+
+          {/* Social links */}
+          <div className="grid grid-cols-3 gap-3">
+            {[
+              { key: 'github',   label: 'GitHub',   Icon: FiGithub,      placeholder: 'Github havola yuklang'   },
+              { key: 'linkedin', label: 'Linkedin',  Icon: CiLinkedin,    placeholder: 'Linkedin havola yuklang' },
+              { key: 'telegram', label: 'Telegram',  Icon: PiTelegramLogo, placeholder: 'Telegram havola yuklang' },
+            ].map(({ key, label, Icon, placeholder }) => (
+              <div key={key}>
+                <label className={labelCls + ' flex items-center gap-1.5'}>
+                  {label} <Icon size={14} className="text-[#5B6078] dark:text-[#C2C8E0]" />
+                </label>
+                <input
+                  className={inputCls}
+                  placeholder={placeholder}
+                  value={form[key]}
+                  onChange={e => set(key, e.target.value)}
+                />
+              </div>
+            ))}
           </div>
         </div>
         <div className="px-7 py-5 flex items-center justify-end gap-3">
