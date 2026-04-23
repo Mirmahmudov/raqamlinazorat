@@ -78,42 +78,42 @@ export default function SalaryPage() {
 
       {/* Filters */}
       <div className="flex items-center gap-2">
-        <div className="relative w-[220px]">
-          <svg className="absolute left-3 top-1/2 -translate-y-1/2 text-[#B6BCCB] dark:text-[#8E95B5]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <div className="relative">
+          <svg className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#8F95A8] dark:text-[#C2C8E0]" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
           </svg>
           <input type="text" placeholder="Ism Sharifi bo'yicha izlash" value={search} onChange={e => setSearch(e.target.value)}
-            className="w-full pl-8 pr-3 py-2 rounded-lg text-sm outline-none transition-colors
-              bg-white border border-[#E2E6F2] text-[#1A1D2E] placeholder-[#B6BCCB] focus:border-[#526ED3]
-              dark:bg-[#222323] dark:border-[#292A2A] dark:text-[#FFFFFF] dark:placeholder-[#8E95B5]" />
+            className="pl-9 pr-4 py-2 rounded-lg text-[15px] font-medium outline-none transition-colors w-[240px]
+              bg-[#F1F3F9] border border-[#E2E6F2] text-[#8F95A8] placeholder-[#8F95A8] focus:border-[#526ED3]
+              dark:bg-[#222323] dark:border-[#292A2A] dark:text-[#C2C8E0] dark:placeholder-[#C2C8E0]" />
         </div>
-        <button className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium border transition-colors cursor-pointer
-          bg-white border-[#E2E6F2] text-[#1A1D2E] hover:bg-[#F1F3F9]
-          dark:bg-[#222323] dark:border-[#292A2A] dark:text-[#FFFFFF] dark:hover:bg-[#292A2A]">
+        <button className="flex items-center gap-2 px-4 py-2 rounded-lg text-[15px] font-extrabold border transition-colors cursor-pointer
+          bg-[#F1F3F9] border-[#E2E6F2] text-[#5B6078]
+          dark:bg-[#222323] dark:border-[#292A2A] dark:text-[#C2C8E0]">
           <FaFilter size={13} />
           Filtrlash
         </button>
       </div>
 
       {/* Table */}
-      <div className="rounded-xl overflow-hidden border border-[#E2E6F2] dark:border-[#292A2A] bg-white dark:bg-[#222323]">
-        <table className="w-full text-sm">
+      <div className="rounded-xl border-y border-[#E2E6F2] dark:border-[#292A2A] overflow-x-auto">
+        <table className="w-full text-sm whitespace-nowrap">
           <thead>
-            <tr className="border-b border-[#E2E6F2] dark:border-[#292A2A] bg-white dark:bg-[#222323]">
+            <tr className="border-b border-[#E2E6F2] dark:border-[#292A2A]">
               {selecting && (
-                <th className="w-10 px-4 py-3 text-left">
+                <th className="w-10 px-4 py-3 text-left bg-white dark:bg-[#222323]">
                   <input type="checkbox" checked={allSelected} onChange={toggleAll} className="cursor-pointer accent-[#3F57B3]" />
                 </th>
               )}
-              <th className="px-4 py-3 text-left font-medium text-[#5B6078] dark:text-[#C2C8E0] w-10">№</th>
-              <th className="px-4 py-3 text-left font-medium text-[#5B6078] dark:text-[#C2C8E0]">Ism sharifi</th>
-              <th className="px-4 py-3 text-left font-medium text-[#5B6078] dark:text-[#C2C8E0]">Oy</th>
-              <th className="px-4 py-3 text-right font-medium text-[#5B6078] dark:text-[#C2C8E0]">Oylik maosh (UZS)</th>
-              <th className="px-4 py-3 text-right font-medium text-[#5B6078] dark:text-[#C2C8E0]">KPI bonus (UZS)</th>
-              <th className="px-4 py-3 text-right font-medium text-[#5B6078] dark:text-[#C2C8E0]">Jarima miqdori (UZS)</th>
-              <th className="px-4 py-3 text-right font-medium text-[#5B6078] dark:text-[#C2C8E0]">Jami miqdori (UZS)</th>
-              <th className="px-4 py-3 text-left font-medium text-[#5B6078] dark:text-[#C2C8E0]">Yaratilgan vaqt</th>
-              <th className="px-4 py-3 text-center font-medium text-[#5B6078] dark:text-[#C2C8E0]">Tasdiqlanish</th>
+              <th className="px-4 py-3 text-left font-medium text-[#5B6078] dark:text-[#C2C8E0] w-10 bg-white dark:bg-[#222323]">№</th>
+              <th className="px-4 py-3 text-left font-medium text-[#5B6078] dark:text-[#C2C8E0] bg-white dark:bg-[#222323]">Ism sharifi</th>
+              <th className="px-4 py-3 text-left font-medium text-[#5B6078] dark:text-[#C2C8E0] bg-white dark:bg-[#222323]">Oy</th>
+              <th className="px-4 py-3 text-right font-medium text-[#5B6078] dark:text-[#C2C8E0] bg-white dark:bg-[#222323]">Oylik maosh (UZS)</th>
+              <th className="px-4 py-3 text-right font-medium text-[#5B6078] dark:text-[#C2C8E0] bg-white dark:bg-[#222323]">KPI bonus (UZS)</th>
+              <th className="px-4 py-3 text-right font-medium text-[#5B6078] dark:text-[#C2C8E0] bg-white dark:bg-[#222323]">Jarima miqdori (UZS)</th>
+              <th className="px-4 py-3 text-right font-medium text-[#5B6078] dark:text-[#C2C8E0] bg-white dark:bg-[#222323]">Jami miqdori (UZS)</th>
+              <th className="px-4 py-3 text-left font-medium text-[#5B6078] dark:text-[#C2C8E0] bg-white dark:bg-[#222323]">Yaratilgan vaqt</th>
+              <th className="px-4 py-3 text-center font-medium text-[#5B6078] dark:text-[#C2C8E0] sticky right-0 bg-white dark:bg-[#222323] shadow-[-4px_0_8px_-2px_rgba(0,0,0,0.06)]">Tasdiqlanish</th>
             </tr>
           </thead>
           <tbody>
@@ -122,7 +122,7 @@ export default function SalaryPage() {
                 onClick={() => selecting && toggleOne(u.id)}
                 className={`border-b border-[#EEF1F7] dark:border-[#292A2A] transition-colors last:border-0
                   ${selecting ? 'cursor-pointer' : ''}
-                  ${selected.has(u.id) ? 'bg-[#E9EEFF] dark:bg-[#292A2A]' : 'hover:bg-[#F8F9FC] dark:hover:bg-[#292A2A]'}`}>
+                  ${selected.has(u.id) ? 'bg-[#E9EEFF] dark:bg-[#2A2D3E]' : 'bg-white dark:bg-[#222323] hover:bg-[#F8F9FC] dark:hover:bg-[#292A2A]'}`}>
                 {selecting && (
                   <td className="px-4 py-3" onClick={e => e.stopPropagation()}>
                     <input type="checkbox" checked={selected.has(u.id)} onChange={() => toggleOne(u.id)} className="cursor-pointer accent-[#3F57B3]" />
@@ -136,7 +136,8 @@ export default function SalaryPage() {
                 <td className="px-4 py-3 text-right font-medium text-[#E02D2D] dark:text-[#FA5252]">-{fmt(u.fine)}</td>
                 <td className="px-4 py-3 text-right font-semibold text-[#1A1D2E] dark:text-[#FFFFFF]">{fmt(u.total)}</td>
                 <td className="px-4 py-3 text-[#5B6078] dark:text-[#C2C8E0]">{u.created}</td>
-                <td className="px-4 py-3 text-center">
+                <td className={`px-4 py-3 text-center sticky right-0 shadow-[-4px_0_8px_-2px_rgba(0,0,0,0.06)]
+                  ${selected.has(u.id) ? 'bg-[#E9EEFF] dark:bg-[#2A2D3E]' : 'bg-white dark:bg-[#222323]'}`}>
                   <input
                     type="checkbox"
                     checked={u.approved}

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { FaFilter, FaXmark, FaArrowLeft } from 'react-icons/fa6'
+import { FaFilter, FaXmark, FaArrowLeft, FaCalendarDays, FaChevronDown, FaClock } from 'react-icons/fa6'
 import { MdCheck } from 'react-icons/md'
 import { usePageAction } from '../../context/PageActionContext'
 
@@ -20,129 +20,158 @@ const PAYMENTS_DATA = [
 const XARAJAT_TURLARI = ['Kompaniya xarajatlari', "Mablag' chiqarish", 'Boshqa xarajatlar', 'Moliyaviy']
 const TOIFALAR        = ['Sayohat uchun', "Yo'l kira uchun", 'Ovqatlanish uchun', 'Mukofotlar']
 const LOYIHALAR = [
-  { name: 'Marketing Platform',            desc: 'Marketing platformasi reklama',       date: '15.04.2026' },
-  { name: 'E-commerce Site',               desc: 'E-commerce sayti mahsulotla',         date: '20.05.2026' },
-  { name: 'Analytics Dashboard',           desc: "Analytics dashboardi ma'lumo",        date: '30.06.2026' },
-  { name: 'Social Media Manager',          desc: 'Ijtimoiy tarmoqlarni boshqarish',     date: '15.07.2026' },
-  { name: 'Email Marketing Tool',          desc: 'Email marketing vositalari mijo',     date: '10.09.2026' },
-  { name: 'Customer Relationship Management', desc: 'Mijozlar bilan aloqalarni boshqa', date: '25.10.2026' },
+  { name: 'Marketing Platform',               desc: 'Marketing platformasi reklama',       date: '15.04.2026' },
+  { name: 'E-commerce Site',                  desc: 'E-commerce sayti mahsulotla',         date: '20.05.2026' },
+  { name: 'Analytics Dashboard',              desc: "Analytics dashboardi ma'lumo",        date: '30.06.2026' },
+  { name: 'Social Media Manager',             desc: 'Ijtimoiy tarmoqlarni boshqarish',     date: '15.07.2026' },
+  { name: 'Email Marketing Tool',             desc: 'Email marketing vositalari mijo',     date: '10.09.2026' },
+  { name: 'Customer Relationship Management', desc: 'Mijozlar bilan aloqalarni boshqa',    date: '25.10.2026' },
 ]
-const EMPTY_FILTER = { type: '', toifa: '', loyiha: '', sumFrom: '', sumTo: '', dateFrom: '', dateTo: '', approvedFrom: '', approvedTo: '', completedFrom: '', completedTo: '' }
+
+const EMPTY_FILTER = {
+  type: '', toifa: '', loyiha: '', sumFrom: '', sumTo: '',
+  dateFromD: '', dateFromT: '', dateToD: '', dateToT: '',
+  approvedFromD: '', approvedFromT: '', approvedToD: '', approvedToT: '',
+  completedFromD: '', completedFromT: '', completedToD: '', completedToT: '',
+}
 
 function fmt(n) {
   return n.toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
 }
-
-// Real-time pul formatlash: faqat raqam, 3 xonadan keyin probel
 function fmtMoney(raw) {
   const digits = raw.replace(/\D/g, '')
   return digits.replace(/\B(?=(\d{3})+(?!\d))/g, ' ')
 }
 
-const inputCls = `w-full px-3 py-2.5 rounded-lg text-sm outline-none border transition-colors
-  bg-white border-[#E2E6F2] text-[#1A1D2E] placeholder-[#B6BCCB] focus:border-[#526ED3]
-  dark:bg-[#191A1A] dark:border-[#292A2A] dark:text-[#FFFFFF] dark:placeholder-[#8E95B5]`
 const labelCls = 'block text-xs font-medium text-[#5B6078] dark:text-[#C2C8E0] mb-1.5'
+const dropdownTriggerCls = (hasVal) =>
+  `w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm border transition-colors cursor-pointer
+   bg-white border-[#E2E6F2] dark:bg-[#191A1A] dark:border-[#292A2A]
+   ${hasVal ? 'text-[#1A1D2E] dark:text-[#FFFFFF]' : 'text-[#5B6078] dark:text-[#C2C8E0]'}`
 
-/* ── SelectField with clear button ── */
-function SelectField({ label, value, onChange, options, placeholder }) {
+/* ── useDropdown hook ── */
+function useDropdown() {
+  const [open, setOpen] = useState(false)
+  const ref = useRef(null)
+  useEffect(() => {
+    const h = e => { if (ref.current && !ref.current.contains(e.target)) setOpen(false) }
+    document.addEventListener('mousedown', h)
+    return () => document.removeEventListener('mousedown', h)
+  }, [])
+  return { open, setOpen, ref }
+}
+
+/* ── DropdownShell ── */
+function DropdownShell({ label, value, onChange, placeholder, open, setOpen, dropRef, children }) {
   return (
-    <div>
-      <label className={labelCls}>{label}</label>
+    <div ref={dropRef}>
+      {label && <label className={labelCls}>{label}</label>}
       <div className="relative">
-        <select
-          value={value}
-          onChange={e => onChange(e.target.value)}
-          className={inputCls + ' cursor-pointer pr-8 appearance-none'}
-        >
-          <option value="">{placeholder}</option>
-          {options.map(o => <option key={o}>{o}</option>)}
-        </select>
-        <div className="absolute right-2.5 top-1/2 -translate-y-1/2 flex items-center gap-1 pointer-events-none">
-          {value && (
-            <button
-              type="button"
-              className="pointer-events-auto text-[#B6BCCB] hover:text-[#5B6078] dark:text-[#8E95B5] cursor-pointer"
-              onMouseDown={e => { e.preventDefault(); onChange('') }}
-            >
-              <FaXmark size={11} />
-            </button>
-          )}
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-[#8F95A8] dark:text-[#C2C8E0]">
-            <path d="M6 9l6 6 6-6"/>
-          </svg>
-        </div>
+        <button type="button" onClick={() => setOpen(o => !o)} className={dropdownTriggerCls(!!value)}>
+          <span className="truncate flex-1 text-left">{value || placeholder}</span>
+          <div className="flex items-center gap-1 shrink-0 ml-1">
+            {value && (
+              <span className="text-[#B6BCCB] hover:text-[#5B6078] dark:text-[#8E95B5] cursor-pointer"
+                onMouseDown={e => { e.stopPropagation(); onChange('') }}>
+                <FaXmark size={11} />
+              </span>
+            )}
+            <FaChevronDown size={11} className={`text-[#8F95A8] dark:text-[#C2C8E0] transition-transform ${open ? 'rotate-180' : ''}`} />
+          </div>
+        </button>
+        {open && (
+          <div className="absolute top-full left-0 mt-1 z-60 w-full rounded-2xl shadow-xl border overflow-hidden
+            bg-white border-[#E2E6F2] dark:bg-[#222323] dark:border-[#292A2A]">
+            {children}
+          </div>
+        )}
       </div>
     </div>
   )
 }
 
-/* ── Loyiha custom dropdown with list ── */
-function LoyihaDropdown({ value, onChange }) {
-  const [open, setOpen] = useState(false)
-  const ref = useRef(null)
-
-  useEffect(() => {
-    const h = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false) }
-    document.addEventListener('mousedown', h)
-    return () => document.removeEventListener('mousedown', h)
-  }, [])
-
-  const selected = LOYIHALAR.find(l => l.name === value)
-
+/* ── SelectField ── */
+function SelectField({ label, value, onChange, options, placeholder }) {
+  const { open, setOpen, ref } = useDropdown()
   return (
-    <div ref={ref}>
-      <label className={labelCls}>Loyiha</label>
-      <div className="relative">
-        <button
-          type="button"
-          onClick={() => setOpen(o => !o)}
-          className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm border transition-colors cursor-pointer
-            bg-white border-[#E2E6F2] dark:bg-[#191A1A] dark:border-[#292A2A]
-            ${value ? 'text-[#1A1D2E] dark:text-[#FFFFFF]' : 'text-[#B6BCCB] dark:text-[#8E95B5]'}`}
-        >
-          <span className="truncate flex-1 text-left">{value || 'Loyiha tanlang'}</span>
-          <div className="flex items-center gap-1 shrink-0 ml-1">
-            {value && (
-              <span
-                className="text-[#B6BCCB] hover:text-[#5B6078] dark:text-[#8E95B5] cursor-pointer"
-                onMouseDown={e => { e.stopPropagation(); onChange('') }}
-              >
-                <FaXmark size={11} />
-              </span>
-            )}
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
-              className={`text-[#8F95A8] dark:text-[#C2C8E0] transition-transform ${open ? 'rotate-180' : ''}`}>
-              <path d="M6 9l6 6 6-6"/>
-            </svg>
+    <DropdownShell label={label} value={value} onChange={onChange} placeholder={placeholder} open={open} setOpen={setOpen} dropRef={ref}>
+      {options.map((o, i) => (
+        <button key={o} type="button" onClick={() => { onChange(o); setOpen(false) }}
+          className={`w-full text-left px-4 py-3 text-sm transition-colors cursor-pointer
+            ${i < options.length - 1 ? 'border-b border-[#F1F3F9] dark:border-[#292A2A]' : ''}
+            ${value === o
+              ? 'bg-[#EEF1FB] dark:bg-[#292A2A] text-[#3F57B3] dark:text-[#7F95E6] font-semibold'
+              : 'text-[#1A1D2E] dark:text-[#FFFFFF] hover:bg-[#F8F9FC] dark:hover:bg-[#292A2A]'
+            }`}>
+          {o}
+        </button>
+      ))}
+    </DropdownShell>
+  )
+}
+
+/* ── LoyihaDropdown ── */
+function LoyihaDropdown({ value, onChange }) {
+  const { open, setOpen, ref } = useDropdown()
+  return (
+    <DropdownShell label="Loyiha" value={value} onChange={onChange} placeholder="Loyiha tanlang" open={open} setOpen={setOpen} dropRef={ref}>
+      {LOYIHALAR.map((l, i) => (
+        <button key={l.name} type="button" onClick={() => { onChange(l.name); setOpen(false) }}
+          className={`w-full text-left px-4 py-3 transition-colors cursor-pointer
+            ${i < LOYIHALAR.length - 1 ? 'border-b border-[#F1F3F9] dark:border-[#292A2A]' : ''}
+            ${value === l.name ? 'bg-[#EEF1FB] dark:bg-[#292A2A]' : 'hover:bg-[#F8F9FC] dark:hover:bg-[#292A2A]'}`}>
+          <div className="flex items-start justify-between gap-3">
+            <div className="min-w-0">
+              <p className={`text-sm font-semibold truncate ${value === l.name ? 'text-[#3F57B3] dark:text-[#7F95E6]' : 'text-[#1A1D2E] dark:text-[#FFFFFF]'}`}>{l.name}</p>
+              <p className="text-xs text-[#8F95A8] dark:text-[#C2C8E0] truncate mt-0.5">{l.desc}</p>
+            </div>
+            <span className="text-xs text-[#8F95A8] dark:text-[#C2C8E0] shrink-0 mt-0.5">{l.date}</span>
           </div>
         </button>
+      ))}
+    </DropdownShell>
+  )
+}
 
-        {open && (
-          <div className="absolute top-full left-0 mt-1 z-50 w-full rounded-2xl shadow-xl border overflow-hidden
-            bg-white border-[#E2E6F2] dark:bg-[#222323] dark:border-[#292A2A]">
-            {LOYIHALAR.map((l, i) => (
-              <button
-                key={l.name}
-                type="button"
-                onClick={() => { onChange(l.name); setOpen(false) }}
-                className={`w-full text-left px-4 py-3 transition-colors cursor-pointer
-                  ${i < LOYIHALAR.length - 1 ? 'border-b border-[#F1F3F9] dark:border-[#292A2A]' : ''}
-                  ${value === l.name ? 'bg-[#F1F3F9] dark:bg-[#292A2A]' : 'hover:bg-[#F8F9FC] dark:hover:bg-[#292A2A]'}`}
-              >
-                <div className="flex items-start justify-between gap-3">
-                  <div className="min-w-0">
-                    <p className={`text-sm font-semibold truncate ${value === l.name ? 'text-[#3F57B3] dark:text-[#7F95E6]' : 'text-[#1A1D2E] dark:text-[#FFFFFF]'}`}>
-                      {l.name}
-                    </p>
-                    <p className="text-xs text-[#8F95A8] dark:text-[#C2C8E0] truncate mt-0.5">{l.desc}</p>
-                  </div>
-                  <span className="text-xs text-[#8F95A8] dark:text-[#C2C8E0] shrink-0 mt-0.5">{l.date}</span>
-                </div>
-              </button>
-            ))}
-          </div>
-        )}
+/* ── DateBox — bitta input qutisi (sana yoki vaqt) ── */
+function DateBox({ type, value, onChange, icon, placeholder }) {
+  const ref = useRef(null)
+  return (
+    <div className="flex items-center gap-2 px-3 py-2.5 border border-[#E2E6F2] dark:border-[#292A2A]
+      rounded-xl bg-transparent focus-within:border-[#526ED3] transition-colors cursor-text">
+      {placeholder && (
+        <span className="text-xs text-[#5B6078] dark:text-[#C2C8E0] shrink-0 select-none">{placeholder}:</span>
+      )}
+      <input
+        ref={ref}
+        type={type}
+        value={value}
+        onChange={e => onChange(e.target.value)}
+        className="flex-1 min-w-0 text-xs outline-none bg-transparent
+          text-[#1A1D2E] dark:text-[#FFFFFF] cursor-pointer
+          [&::-webkit-calendar-picker-indicator]:hidden"
+      />
+      <button
+        type="button"
+        onClick={() => ref.current?.showPicker?.()}
+        className="shrink-0 cursor-pointer text-[#8F95A8] dark:text-[#C2C8E0] hover:text-[#526ED3] transition-colors"
+      >
+        {icon}
+      </button>
+    </div>
+  )
+}
+
+/* ── DateTimeRangeRow — 4 ta alohida input ── */
+function DateTimeRangeRow({ label, dateFromD, dateFromT, dateToD, dateToT, onDateFromD, onTimeFromD, onDateToD, onTimeToD }) {
+  return (
+    <div>
+      <label className={labelCls}>{label}</label>
+      <div className="grid grid-cols-4 gap-2">
+        <DateBox type="date" value={dateFromD} onChange={onDateFromD} placeholder="dan"   icon={<FaCalendarDays size={12} />} />
+        <DateBox type="time" value={dateFromT} onChange={onTimeFromD}                     icon={<FaClock size={12} />} />
+        <DateBox type="date" value={dateToD}   onChange={onDateToD}   placeholder="gacha" icon={<FaCalendarDays size={12} />} />
+        <DateBox type="time" value={dateToT}   onChange={onTimeToD}                       icon={<FaClock size={12} />} />
       </div>
     </div>
   )
@@ -154,51 +183,48 @@ function FilterModal({ onClose, onApply, initial }) {
   const set = (k, v) => setF(prev => ({ ...prev, [k]: v }))
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto modal-scroll py-8 px-4">
+    <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto py-8 px-4">
       <div className="fixed inset-0 bg-black/60" onClick={onClose} />
-      <button onClick={onClose} className="fixed top-5 right-5 z-10 w-8 h-8 flex items-center justify-center rounded-full cursor-pointer transition-colors bg-white/20 text-white hover:bg-white/30">
-        <FaXmark size={16} />
-      </button>
+      <div className="relative w-full max-w-[600px] rounded-2xl shadow-2xl bg-white dark:bg-[#222323]">
 
-      <div className="relative w-full max-w-[520px] rounded-2xl shadow-2xl bg-white dark:bg-[#222323]">
         {/* Header */}
-        <div className="px-6 pt-6 pb-5">
-          <div className="flex items-start gap-3">
-            <button onClick={onClose} className="mt-0.5 text-[#5B6078] dark:text-[#C2C8E0] hover:opacity-70 cursor-pointer shrink-0">
+        <div className="px-6 pt-6  dark:border-[#292A2A]">
+          <div className="flex items-center gap-3">
+            <button onClick={onClose} className="text-[#5B6078] dark:text-[#C2C8E0] hover:opacity-70 cursor-pointer shrink-0">
               <FaArrowLeft size={16} />
             </button>
-            <div>
-              <h2 className="text-xl font-bold text-[#1A1D2E] dark:text-[#FFFFFF]">Filtrlash</h2>
-              <p className="text-sm text-[#8F95A8] dark:text-[#C2C8E0] mt-1">
+            <div className='flex'>
+              <h2 className="text-lg font-bold text-[#1A1D2E] dark:text-[#FFFFFF]">Filtrlash</h2>
+             
+            </div>
+           
+          </div>
+            <p className="text-xs text-[#5B6078] dark:text-[#C2C8E0] mt-0.5">
                 Kerakli filtirlarni tanlang, natijalar shunga qarab saralanadi
               </p>
-            </div>
-          </div>
         </div>
 
         {/* Body */}
-        <div className="px-6 pb-2 flex flex-col gap-4">
-
-          {/* Xarajat turi + Toifa */}
-          <div className="grid grid-cols-2 gap-3">
-            <SelectField label="Xarajat turi" value={f.type}  onChange={v => set('type', v)}  options={XARAJAT_TURLARI} placeholder="Xarajat turini tanlang" />
-            <SelectField label="Toifa"        value={f.toifa} onChange={v => set('toifa', v)} options={TOIFALAR}        placeholder="Toifani tanlang" />
-          </div>
+        <div className="px-6 py-5 flex flex-col gap-4">
 
           {/* Loyiha + Summa */}
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-4">
             <LoyihaDropdown value={f.loyiha} onChange={v => set('loyiha', v)} />
             <div>
               <label className={labelCls}>Summa (UZS)</label>
               <div className="flex gap-2">
                 <input
-                  className={inputCls}
+                  className="w-full px-3 py-2.5 rounded-xl text-sm outline-none border transition-colors
+                    bg-white border-[#E2E6F2] text-[#1A1D2E] placeholder-[#5B6078] focus:border-[#526ED3]
+                    dark:bg-[#191A1A] dark:border-[#292A2A] dark:text-[#FFFFFF] dark:placeholder-[#C2C8E0]"
                   placeholder="dan: 0"
                   value={f.sumFrom}
                   onChange={e => set('sumFrom', fmtMoney(e.target.value))}
                 />
                 <input
-                  className={inputCls}
+                  className="w-full px-3 py-2.5 rounded-xl text-sm outline-none border transition-colors
+                    bg-white border-[#E2E6F2] text-[#1A1D2E] placeholder-[#5B6078] focus:border-[#526ED3]
+                    dark:bg-[#191A1A] dark:border-[#292A2A] dark:text-[#FFFFFF] dark:placeholder-[#C2C8E0]"
                   placeholder="gacha: 0"
                   value={f.sumTo}
                   onChange={e => set('sumTo', fmtMoney(e.target.value))}
@@ -207,49 +233,47 @@ function FilterModal({ onClose, onApply, initial }) {
             </div>
           </div>
 
-          {/* Yaratilgan vaqt */}
-          <div>
-            <label className={labelCls}>Yaratilgan vaqt oralig'i</label>
-            <div className="grid grid-cols-2 gap-3">
-              <input type="date" className={inputCls} value={f.dateFrom}    onChange={e => set('dateFrom',    e.target.value)} />
-              <input type="date" className={inputCls} value={f.dateTo}      onChange={e => set('dateTo',      e.target.value)} />
-            </div>
+          {/* Xarajat turi + Toifa */}
+          <div className="grid grid-cols-2 gap-4">
+            <SelectField label="Xarajat turi" value={f.type}  onChange={v => set('type', v)}  options={XARAJAT_TURLARI} placeholder="Xarajat turini tanlang" />
+            <SelectField label="Toifa"        value={f.toifa} onChange={v => set('toifa', v)} options={TOIFALAR}        placeholder="Toifani tanlang" />
           </div>
 
-          {/* To'langan vaqt */}
-          <div>
-            <label className={labelCls}>To'langan vaqt oralig'i</label>
-            <div className="grid grid-cols-2 gap-3">
-              <input type="date" className={inputCls} value={f.approvedFrom} onChange={e => set('approvedFrom', e.target.value)} />
-              <input type="date" className={inputCls} value={f.approvedTo}   onChange={e => set('approvedTo',   e.target.value)} />
-            </div>
-          </div>
-
-          {/* Tasdiqlangan vaqt */}
-          <div>
-            <label className={labelCls}>Tasdiqlangan vaqt oralig'i</label>
-            <div className="grid grid-cols-2 gap-3">
-              <input type="date" className={inputCls} value={f.completedFrom} onChange={e => set('completedFrom', e.target.value)} />
-              <input type="date" className={inputCls} value={f.completedTo}   onChange={e => set('completedTo',   e.target.value)} />
-            </div>
-          </div>
+          {/* Vaqt oraliqlar */}
+          <DateTimeRangeRow
+            label="Yaratilgan vaqt oralig'i"
+            dateFromD={f.dateFromD}      dateFromT={f.dateFromT}
+            dateToD={f.dateToD}          dateToT={f.dateToT}
+            onDateFromD={v => set('dateFromD', v)}   onTimeFromD={v => set('dateFromT', v)}
+            onDateToD={v => set('dateToD', v)}       onTimeToD={v => set('dateToT', v)}
+          />
+          <DateTimeRangeRow
+            label="To'langan vaqt oralig'i"
+            dateFromD={f.approvedFromD}  dateFromT={f.approvedFromT}
+            dateToD={f.approvedToD}      dateToT={f.approvedToT}
+            onDateFromD={v => set('approvedFromD', v)}  onTimeFromD={v => set('approvedFromT', v)}
+            onDateToD={v => set('approvedToD', v)}      onTimeToD={v => set('approvedToT', v)}
+          />
+          <DateTimeRangeRow
+            label="Tasdiqlangan vaqt oralig'i"
+            dateFromD={f.completedFromD} dateFromT={f.completedFromT}
+            dateToD={f.completedToD}     dateToT={f.completedToT}
+            onDateFromD={v => set('completedFromD', v)} onTimeFromD={v => set('completedFromT', v)}
+            onDateToD={v => set('completedToD', v)}     onTimeToD={v => set('completedToT', v)}
+          />
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-5 flex items-center justify-end gap-3">
-          <button
-            onClick={() => setF(EMPTY_FILTER)}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors cursor-pointer
-              text-[#5B6078] hover:bg-[#F1F3F9] dark:text-[#C2C8E0] dark:hover:bg-[#292A2A]"
-          >
+        <div className="px-6 py-4 border-t border-[#E2E6F2] dark:border-[#292A2A] flex items-center justify-end gap-3">
+          <button onClick={() => setF(EMPTY_FILTER)}
+            className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium transition-colors cursor-pointer
+              text-[#5B6078] hover:bg-[#F1F3F9] dark:text-[#C2C8E0] dark:hover:bg-[#292A2A]">
             <FaXmark size={14} />
             Tozalash
           </button>
-          <button
-            onClick={() => onApply(f)}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold transition-colors cursor-pointer
-              bg-[#3F57B3] text-white hover:bg-[#526ED3]"
-          >
+          <button onClick={() => onApply(f)}
+            className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-colors cursor-pointer
+              bg-[#3F57B3] text-white hover:bg-[#526ED3]">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
               <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
             </svg>
@@ -278,7 +302,7 @@ export default function PaymentsPage() {
   useEffect(() => {
     registerAction({
       label: "So'rov",
-      icon: <img src="/imgs/briefcase-dollar.svg" alt="" className="w-4 h-4 brightness-0 invert" />,
+      icon: <img src="/imgs/moneysendflow.svg" alt="" className="w-4 h-4 brightness-0 invert" />,
       onClick: () => alert("Yangi so'rov qo'shish"),
     })
     return () => clearAction()
@@ -333,20 +357,18 @@ export default function PaymentsPage() {
         <h1 className="text-2xl font-bold text-[#1A1D2E] dark:text-[#FFFFFF]">Xarajat so'rovlari</h1>
         {selecting ? (
           <button onClick={() => { setSelecting(false); setSelected(new Set()) }}
-            className="flex items-center gap-2 px-4 py-1.5 rounded-lg text-sm font-medium border transition-colors cursor-pointer
-              bg-white border-[#E2E6F2] text-[#1A1D2E] hover:bg-[#F1F3F9]
-              dark:bg-[#222323] dark:border-[#292A2A] dark:text-[#FFFFFF] dark:hover:bg-[#292A2A]">
+            className="flex items-center gap-2 px-4 py-1.5 rounded-lg text-[13px] font-extrabold transition-colors cursor-pointer
+              bg-[#DADFF0] text-[#1A1D2E]
+              dark:bg-[#2A2D3E] dark:text-[#FFFFFF]">
             <FaXmark size={13} />
             Bekor qilish
           </button>
         ) : (
           <button onClick={() => setSelecting(true)}
-            className="flex items-center gap-2 px-4 py-1.5 rounded-lg text-sm font-medium border transition-colors cursor-pointer
-              bg-white border-[#E2E6F2] text-[#1A1D2E] hover:bg-[#F1F3F9]
-              dark:bg-[#222323] dark:border-[#292A2A] dark:text-[#FFFFFF] dark:hover:bg-[#292A2A]">
-            <svg width="15" height="15" viewBox="0 0 15 15" fill="none" className="text-[#5B6078] dark:text-[#C2C8E0]">
-              <path d="M2 4h11M2 7.5h11M2 11h11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-            </svg>
+            className="flex items-center gap-2 px-4 py-1.5 rounded-lg text-[13px] font-extrabold transition-colors cursor-pointer
+              bg-[#DADFF0] text-[#1A1D2E]
+              dark:bg-[#2A2D3E] dark:text-[#FFFFFF]">
+            <img src="/imgs/checkIcon.svg" alt="" className="w-4 h-4" />
             Tanlash
           </button>
         )}
@@ -354,19 +376,19 @@ export default function PaymentsPage() {
 
       {/* Search + Filter */}
       <div className="flex items-center gap-2">
-        <div className="relative w-[220px]">
-          <svg className="absolute left-3 top-1/2 -translate-y-1/2 text-[#B6BCCB] dark:text-[#8E95B5]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <div className="relative">
+          <svg className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#8F95A8] dark:text-[#C2C8E0]" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
           </svg>
           <input type="text" placeholder="Ism Sharifi bo'yicha izlash" value={search} onChange={e => setSearch(e.target.value)}
-            className="w-full pl-8 pr-3 py-2 rounded-lg text-sm outline-none transition-colors
-              bg-white border border-[#E2E6F2] text-[#1A1D2E] placeholder-[#B6BCCB] focus:border-[#526ED3]
-              dark:bg-[#222323] dark:border-[#292A2A] dark:text-[#FFFFFF] dark:placeholder-[#8E95B5]" />
+            className="pl-9 pr-4 py-2 rounded-lg text-[15px] font-medium outline-none transition-colors w-[240px]
+              bg-[#F1F3F9] border border-[#E2E6F2] text-[#8F95A8] placeholder-[#8F95A8] focus:border-[#526ED3]
+              dark:bg-[#222323] dark:border-[#292A2A] dark:text-[#C2C8E0] dark:placeholder-[#C2C8E0]" />
         </div>
         <button onClick={() => setShowFilter(true)}
-          className="relative flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium border transition-colors cursor-pointer
-            bg-white border-[#E2E6F2] text-[#1A1D2E] hover:bg-[#F1F3F9]
-            dark:bg-[#222323] dark:border-[#292A2A] dark:text-[#FFFFFF] dark:hover:bg-[#292A2A]">
+          className="relative flex items-center gap-2 px-4 py-2 rounded-lg text-[15px] font-extrabold border transition-colors cursor-pointer
+            bg-[#F1F3F9] border-[#E2E6F2] text-[#5B6078]
+          dark:bg-[#222323] dark:border-[#292A2A] dark:text-[#C2C8E0]">
           <FaFilter size={13} />
           Filtrlash
           {hasFilter && <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-[#3F57B3]" />}
@@ -374,8 +396,8 @@ export default function PaymentsPage() {
       </div>
 
       {/* Table */}
-      <div className="rounded-xl overflow-hidden border border-[#E2E6F2] dark:border-[#292A2A] bg-[#F8F9FC] dark:bg-[#222323]">
-        <table className="w-full text-sm">
+      <div className="border-y border-[#E2E6F2] dark:border-[#292A2A] overflow-x-auto">
+        <table className="w-full text-sm whitespace-nowrap">
           <thead>
             <tr className="border-b border-[#E2E6F2] dark:border-[#292A2A]">
               {selecting && <th className="w-10 px-4 py-3 text-left"><input type="checkbox" checked={allSelected} onChange={toggleAll} className="cursor-pointer accent-[#3F57B3]" /></th>}
@@ -383,12 +405,12 @@ export default function PaymentsPage() {
               <th className="px-4 py-3 text-left font-medium text-[#5B6078] dark:text-[#C2C8E0]">Ism Sharifi</th>
               <th className="px-4 py-3 text-left font-medium text-[#5B6078] dark:text-[#C2C8E0]">Xarajat turi</th>
               <th className="px-4 py-3 text-left font-medium text-[#5B6078] dark:text-[#C2C8E0]">Toifa</th>
-              <th className="px-4 py-3 text-left font-medium text-[#5B6078] dark:text-[#C2C8E0]">Loyiha</th>
+              <th className="px-4 py-3 text-right font-medium text-[#5B6078] dark:text-[#C2C8E0]">Loyiha</th>
               <th className="px-4 py-3 text-right font-medium text-[#5B6078] dark:text-[#C2C8E0]">Summa (UZS)</th>
-              <th className="px-4 py-3 text-left font-medium text-[#5B6078] dark:text-[#C2C8E0]">Yaratilgan vaqt</th>
-              <th className="px-4 py-3 text-left font-medium text-[#5B6078] dark:text-[#C2C8E0]">To'langan vaqt</th>
-              <th className="px-4 py-3 text-left font-medium text-[#5B6078] dark:text-[#C2C8E0]">Tasdiqlangan vaqt</th>
-              <th className="px-4 py-3 text-center font-medium text-[#5B6078] dark:text-[#C2C8E0]">Xolat</th>
+              <th className="px-4 py-3 text-right font-medium text-[#5B6078] dark:text-[#C2C8E0]">Yaratilgan vaqt</th>
+              <th className="px-4 py-3 text-right font-medium text-[#5B6078] dark:text-[#C2C8E0]">To'langan vaqt</th>
+              <th className="px-4 py-3 text-right font-medium text-[#5B6078] dark:text-[#C2C8E0]">Tasdiqlangan vaqt</th>
+              <th className="px-4 py-3 text-center font-medium text-[#5B6078] dark:text-[#C2C8E0] sticky right-0 backdrop-blur-sm bg-white/80 dark:bg-black/20 shadow-[-4px_0_8px_-2px_rgba(0,0,0,0.06)]">Xolat</th>
             </tr>
           </thead>
           <tbody>
@@ -396,22 +418,26 @@ export default function PaymentsPage() {
               <tr key={p.id} onClick={() => selecting && toggleOne(p.id)}
                 className={`border-b border-[#EEF1F7] dark:border-[#292A2A] transition-colors last:border-0
                   ${selecting ? 'cursor-pointer' : ''}
-                  ${selected.has(p.id) ? 'bg-[#E9EEFF] dark:bg-[#292A2A]' : 'hover:bg-[#EEF1F7] dark:hover:bg-[#292A2A]'}`}>
+                  ${selected.has(p.id) ? 'bg-[#E9EEFF]/60 dark:bg-[#2A2D3E]/60' : 'hover:bg-black/3 dark:hover:bg-white/3'}`}>
                 {selecting && (
                   <td className="px-4 py-3" onClick={e => e.stopPropagation()}>
-                    <input type="checkbox" checked={selected.has(p.id)} onChange={() => toggleOne(p.id)} className="cursor-pointer accent-[#3F57B3]" />
+                    <div className={`transition-transform duration-200 ${selected.has(p.id) ? 'translate-x-2' : ''}`}>
+                      <input type="checkbox" checked={selected.has(p.id)} onChange={() => toggleOne(p.id)} className="cursor-pointer accent-[#3F57B3]" />
+                    </div>
                   </td>
                 )}
-                <td className="px-4 py-3 text-[#5B6078] dark:text-[#C2C8E0]">{idx + 1}</td>
+                <td className="px-4 py-3 text-[#5B6078] dark:text-[#C2C8E0]">
+                  <span className={`inline-block transition-transform duration-200 ${selected.has(p.id) ? 'translate-x-2' : ''}`}>{idx + 1}</span>
+                </td>
                 <td className="px-4 py-3 font-medium text-[#1A1D2E] dark:text-[#FFFFFF]">{p.name}</td>
                 <td className="px-4 py-3 text-[#5B6078] dark:text-[#C2C8E0]">{p.type}</td>
                 <td className="px-4 py-3 text-[#5B6078] dark:text-[#C2C8E0]">{p.toifa}</td>
-                <td className="px-4 py-3 text-[#5B6078] dark:text-[#C2C8E0]">{p.loyiha}</td>
+                <td className="px-4 py-3 text-right text-[#5B6078] dark:text-[#C2C8E0]">{p.loyiha}</td>
                 <td className="px-4 py-3 text-right font-semibold text-[#1A1D2E] dark:text-[#FFFFFF]">{fmt(p.amount)}</td>
-                <td className="px-4 py-3 text-[#5B6078] dark:text-[#C2C8E0]">{p.created}</td>
-                <td className="px-4 py-3 text-[#5B6078] dark:text-[#C2C8E0]">{p.approved}</td>
-                <td className="px-4 py-3 text-[#5B6078] dark:text-[#C2C8E0]">{p.completed}</td>
-                <td className="px-4 py-3 text-center">
+                <td className="px-4 py-3 text-right text-[#5B6078] dark:text-[#C2C8E0]">{p.created}</td>
+                <td className="px-4 py-3 text-right text-[#5B6078] dark:text-[#C2C8E0]">{p.approved}</td>
+                <td className="px-4 py-3 text-right text-[#5B6078] dark:text-[#C2C8E0]">{p.completed}</td>
+                <td className="px-4 py-3 text-center sticky right-0 backdrop-blur-sm bg-white/80 dark:bg-black/20 shadow-[-4px_0_8px_-2px_rgba(0,0,0,0.06)]">
                   {p.active
                     ? <span className="inline-flex items-center justify-center w-6 h-6 rounded bg-green-500"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
                     : <span className="inline-flex items-center justify-center w-6 h-6 rounded bg-[#E02D2D]"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 3l6 6M9 3l-6 6" stroke="white" strokeWidth="1.5" strokeLinecap="round"/></svg></span>
