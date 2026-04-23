@@ -36,10 +36,10 @@ function fmt(n) {
 }
 
 /* ── Custom Filter Dropdown ── */
-function FilterSelect({ options, value, onChange, label }) {
+function FilterSelect({ options, value, onChange, label, width = 250 }) {
   const [open, setOpen] = useState(false)
   const [hovered, setHovered] = useState(null)
-  const [dropUp, setDropUp] = useState(false)
+  const [dropPos, setDropPos] = useState({ top: 0, left: 0, dropUp: false })
   const ref = useRef(null)
 
   useEffect(() => {
@@ -51,7 +51,12 @@ function FilterSelect({ options, value, onChange, label }) {
   const handleToggle = () => {
     if (!open && ref.current) {
       const rect = ref.current.getBoundingClientRect()
-      setDropUp(window.innerHeight - rect.bottom < 220)
+      const spaceBelow = window.innerHeight - rect.bottom
+      const isDropUp = spaceBelow < 220
+      const leftPos = rect.left + width > window.innerWidth - 8
+        ? window.innerWidth - width - 8
+        : rect.left
+      setDropPos({ top: isDropUp ? rect.top - 4 : rect.bottom + 4, left: leftPos, dropUp: isDropUp })
     }
     setOpen(o => !o)
   }
@@ -60,14 +65,14 @@ function FilterSelect({ options, value, onChange, label }) {
   const isDark = document.documentElement.classList.contains('dark')
 
   return (
-    <div className="relative" ref={ref}>
+    <div className="relative" ref={ref} style={{ width }}>
       <button
         type="button"
         onClick={handleToggle}
         className="flex items-center gap-2 cursor-pointer transition-colors
           bg-white border border-[#E2E6F2] text-[#1A1D2E]
           dark:bg-[#222323] dark:border-[#292A2A] dark:text-[#FFFFFF]"
-        style={{ fontSize: 13, fontWeight: 500, padding: '6px 12px', borderRadius: 12, minWidth: 140, width: '100%' }}
+        style={{ fontSize: 13, fontWeight: 500, padding: '6px 12px', borderRadius: 12, width: '100%' }}
       >
         <span className="flex-1 text-left truncate">{display}</span>
         <MdExpandMore
@@ -79,13 +84,19 @@ function FilterSelect({ options, value, onChange, label }) {
 
       {open && (
         <div
-          className="absolute left-0 z-50 rounded-2xl shadow-xl bg-white dark:bg-[#1C1D1D]"
+          className="rounded-2xl shadow-xl bg-white dark:bg-[#1C1D1D]"
           style={{
+            position: 'fixed',
+            top: dropPos.dropUp ? 'auto' : dropPos.top,
+            bottom: dropPos.dropUp ? window.innerHeight - dropPos.top : 'auto',
+            left: dropPos.left,
             border: isDark ? '1px solid #292A2A' : '1px solid #EEF1F7',
             padding: '6px 8px',
-            minWidth: 200,
+            width,
+            maxHeight: 260,
+            overflowY: 'auto',
             animation: 'dropdownIn 0.18s cubic-bezier(0.16,1,0.3,1)',
-            ...(dropUp ? { bottom: 'calc(100% + 4px)' } : { top: 'calc(100% + 4px)' }),
+            zIndex: 9999,
           }}
         >
           {options.map((opt) => (
@@ -105,6 +116,9 @@ function FilterSelect({ options, value, onChange, label }) {
                   : hovered === opt
                     ? (isDark ? '#222323' : '#F8F9FC')
                     : 'transparent',
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
               }}
             >
               {opt}
@@ -115,6 +129,7 @@ function FilterSelect({ options, value, onChange, label }) {
     </div>
   )
 }
+
 /* ── Dropdown alias (UserDetail ichida ishlatiladi) ── */
 const Dropdown = FilterSelect
 
@@ -245,20 +260,16 @@ function AddUserModal({ onClose, onAdd }) {
                 }
               </button>
               <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={handleAvatar} />
-              <div className="flex items-center gap-3 flex-wrap">
+              <div className="grid grid-cols-2 gap-3 flex-1">
                 <div className="flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-green-500 shrink-0" />
                   <span className="text-sm font-semibold text-[#1A1D2E] dark:text-[#FFFFFF] shrink-0">Lavozimi</span>
-                  <div className="w-[120px]">
-                    <Dropdown label="Tanlash" options={LAVOZIMLAR} value={form.lavozim} onChange={v => set('lavozim', v)} />
-                  </div>
+                  <Dropdown label="Tanlash" options={LAVOZIMLAR} value={form.lavozim} onChange={v => set('lavozim', v)} width={130} />
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-red-500 shrink-0" />
                   <span className="text-sm font-semibold text-[#1A1D2E] dark:text-[#FFFFFF] shrink-0">Roli</span>
-                  <div className="w-[120px]">
-                    <Dropdown label="Tanlash" options={ROLLAR_LIST} value={form.rol} onChange={v => set('rol', v)} />
-                  </div>
+                  <Dropdown label="Tanlash" options={ROLLAR_LIST} value={form.rol} onChange={v => set('rol', v)} width={130} />
                 </div>
               </div>
             </div>
@@ -339,6 +350,39 @@ function UserDetail({ user, onBack, onDelete }) {
 
   return (
     <div className="flex flex-col gap-5">
+      {/* Confirm Delete Modal */}
+      {confirmDelete && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
+          <div className="fixed inset-0 bg-black/60" onClick={() => setConfirmDelete(false)} />
+          <div className="relative w-full max-w-[480px] rounded-2xl shadow-2xl bg-white dark:bg-[#222323] p-7">
+            <div className="flex items-center gap-3 mb-3">
+              <button onClick={() => setConfirmDelete(false)} className="text-[#1A1D2E] dark:text-[#FFFFFF] hover:opacity-70 cursor-pointer">
+                <FaArrowLeft size={16} />
+              </button>
+              <h2 className="text-lg font-bold text-[#1A1D2E] dark:text-[#FFFFFF]">Foydalanuvchini o'chirmoqchimisiz?</h2>
+            </div>
+            <p className="text-sm text-[#8F95A8] dark:text-[#C2C8E0] mb-6">
+              Bu foydalanuvchi tizimdan o'chiriladi va unga tegishli ma'lumotlar o'chirish mumkin.
+            </p>
+            <div className="flex items-center justify-end gap-3">
+              <button
+                onClick={() => setConfirmDelete(false)}
+                className="flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors cursor-pointer
+                  text-[#5B6078] hover:bg-[#F1F3F9] dark:text-[#C2C8E0] dark:hover:bg-[#292A2A]"
+              >
+                <FaXmark size={14} /> Bekor qilish
+              </button>
+              <button
+                onClick={() => { setConfirmDelete(false); onDelete(user.id) }}
+                className="flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold transition-colors cursor-pointer bg-[#E02D2D] text-white hover:bg-[#c42424]"
+              >
+                O'chirish
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Header */}
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-[#1A1D2E] dark:text-[#FFFFFF]">Foydalanuvchining ma'lumotlari</h1>
@@ -353,7 +397,7 @@ function UserDetail({ user, onBack, onDelete }) {
           )}
           <button onClick={() => setConfirmDelete(true)}
             className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors cursor-pointer
-              text-[#E02D2D] hover:bg-[#FFF2F2] dark:text-[#FA5252] dark:hover:bg-[#E02D2D]/10">
+              text-[#E02D2D] bg-[#FFF2F2] hover:bg-[#fdcaca] dark:text-[#FA5252] dark:hover:bg-[#E02D2D]/6 dark:bg-[#E02D2D]/10">
             <FaTrash size={13} /> O'chirish
           </button>
         </div>
@@ -474,16 +518,21 @@ function UserDetail({ user, onBack, onDelete }) {
         </div>
 
         {/* Lavozim + Rol — space-between */}
-        <div className="flex items-center justify-between gap-3">
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-green-500 shrink-0" />
-            <span className="text-sm font-medium text-[#1A1D2E] dark:text-[#FFFFFF] shrink-0">Lavozimi</span>
-            <Dropdown label="Tanlash" options={LAVOZIMLAR} value={form.lavozim} onChange={v => set('lavozim', v)} />
+        <div className="flex items-center justify-between gap-5">
+          <div className="flex items-center gap-2 justify-between w-[50%]">
+            <div className='flex items-center gap-2'>
+              <span className="w-2 h-2 rounded-full bg-green-500 shrink-0 " />
+              <span className="text-sm font-medium text-[#1A1D2E] dark:text-[#FFFFFF] shrink-0">Lavozimi</span>
+            </div>
+            <Dropdown width={150} label="Tanlash" options={LAVOZIMLAR} value={form.lavozim} onChange={v => set('lavozim', v)} />
           </div>
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-red-500 shrink-0" />
-            <span className="text-sm font-medium text-[#1A1D2E] dark:text-[#FFFFFF] shrink-0">Rolli</span>
-            <Dropdown label="Tanlash" options={ROLLAR_LIST} value={form.rol} onChange={v => set('rol', v)} />
+          <div className="flex items-center gap-2 justify-between w-[50%]">
+            <div className='flex items-center gap-2'>
+              <span className="w-2 h-2 rounded-full bg-red-500 shrink-0" />
+              <span className="text-sm font-medium text-[#1A1D2E] dark:text-[#FFFFFF] shrink-0">Rolli</span>
+            </div>
+
+            <Dropdown width={150} label="Tanlash" options={ROLLAR_LIST} value={form.rol} onChange={v => set('rol', v)} />
           </div>
         </div>
 
@@ -656,7 +705,7 @@ export default function UsersPage() {
       <div className="overflow-hidden">
         <table className="w-full" style={{ fontSize: 13 }}>
           <thead>
-            <tr style={{ borderBottom: '1px solid #EEF1F7' }}>
+            <tr className="border-b border-[#EEF1F7] dark:border-[#292A2A]">
               <th className="px-4 py-3 text-left w-14" style={{ fontWeight: 500, color: '#5B6078' }}>
                 {selecting ? (
                   <span className="flex items-center gap-2">
@@ -688,8 +737,7 @@ export default function UsersPage() {
               <tr
                 key={u.id}
                 onClick={() => handleRowClick(u)}
-                className="transition-colors cursor-pointer"
-                style={{ borderBottom: '1px solid #EEF1F7' }}
+                className="transition-colors cursor-pointer border-b border-[#EEF1F7] dark:border-[#292A2A]"
               >
                 <td
                   className="px-4 py-3 w-14"
