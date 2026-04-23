@@ -8,28 +8,28 @@ import { PiTelegramLogo } from 'react-icons/pi'
 import { usePageAction } from '../../context/PageActionContext'
 
 const VILOYATLAR = ['Toshkent', 'Samarqand', 'Buxoro', 'Andijon', "Farg'ona", 'Namangan', 'Qashqadaryo', 'Surxondaryo', 'Xorazm', 'Navoiy', 'Jizzax', 'Sirdaryo', "Qoraqalpog'iston"]
-const TUMANLAR  = ["Yunusobod", 'Chilonzor', "Mirzo Ulug'bek", 'Shayxontohur', 'Uchtepa', 'Yakkasaroy', 'Olmazar', 'Bektemir', 'Sergeli', 'Yashnobod']
-const LAVOZIMLAR  = ['Admin', 'Menejer', 'Bugalter', 'Tester', 'Dasturchi', 'Dizayner']
+const TUMANLAR = ["Yunusobod", 'Chilonzor', "Mirzo Ulug'bek", 'Shayxontohur', 'Uchtepa', 'Yakkasaroy', 'Olmazar', 'Bektemir', 'Sergeli', 'Yashnobod']
+const LAVOZIMLAR = ['Admin', 'Menejer', 'Bugalter', 'Tester', 'Dasturchi', 'Dizayner']
 const ROLLAR_LIST = ['Dasturchi', 'Dizayner', 'Analitik', 'Xisobchi', 'Menejer', 'Tester']
 
 const USERS_DATA = [
-  { id: 1,  name: 'Doston Dostonov Dostonovich', position: 'Bosh administrator',    role: 'Dasturchi',             salary: 10000000,  balance: 200000000, active: true,  viloyat: 'Toshkent', tuman: 'Yunusobod',   passportSeria: 'AA', passportRaqam: '1234567' },
-  { id: 2,  name: 'Alyona Sokolova',             position: 'Senior Developer',       role: 'Programmer',            salary: 8500000,   balance: 150000000, active: true,  viloyat: 'Samarqand', tuman: 'Chilonzor',  passportSeria: 'AB', passportRaqam: '2345678' },
-  { id: 3,  name: 'Timur Akhmedov',              position: 'Project Manager',        role: 'Team Lead',             salary: 12000000,  balance: 250000000, active: false, viloyat: 'Buxoro',   tuman: 'Olmazar',     passportSeria: 'AC', passportRaqam: '3456789' },
-  { id: 4,  name: 'Irina Petrovna',              position: 'UI/UX Designer',         role: 'Designer',              salary: 9750000,   balance: 170000000, active: true,  viloyat: 'Andijon',  tuman: 'Bektemir',    passportSeria: 'AD', passportRaqam: '4567890' },
-  { id: 5,  name: 'Sergei Ivanovich',            position: 'Database Administrator', role: 'Data Specialist',       salary: 11200000,  balance: 220000000, active: true,  viloyat: 'Toshkent', tuman: 'Sergeli',     passportSeria: 'AE', passportRaqam: '5678901' },
-  { id: 6,  name: 'Natalia Fedorova',            position: 'Frontend Developer',     role: 'Developer',             salary: 7800000,   balance: 130000000, active: false, viloyat: 'Namangan', tuman: 'Yashnobod',   passportSeria: 'AF', passportRaqam: '6789012' },
-  { id: 7,  name: 'Vladimir Smirnov',            position: 'Backend Developer',      role: 'Engineer',              salary: 10500000,  balance: 190000000, active: true,  viloyat: 'Toshkent', tuman: 'Uchtepa',     passportSeria: 'AG', passportRaqam: '7890123' },
-  { id: 8,  name: 'Ekaterina Vasilievna',        position: 'QA Engineer',            role: 'Tester',                salary: 9200000,   balance: 160000000, active: true,  viloyat: 'Toshkent', tuman: 'Yakkasaroy',  passportSeria: 'AH', passportRaqam: '8901234' },
-  { id: 9,  name: 'Andrei Sergeyevich',          position: 'DevOps Engineer',        role: 'Operations Specialist', salary: 11800000,  balance: 210000000, active: false, viloyat: 'Samarqand', tuman: 'Chilonzor', passportSeria: 'AI', passportRaqam: '9012345' },
-  { id: 10, name: 'Olga Dmitrievna',             position: 'Marketing Specialist',   role: 'Strategist',            salary: 9300000,   balance: 175000000, active: true,  viloyat: 'Buxoro',   tuman: 'Olmazar',     passportSeria: 'AJ', passportRaqam: '0123456' },
-  { id: 11, name: 'Mikhail Borisov',             position: 'Systems Analyst',        role: 'Analyst',               salary: 8000000,   balance: 140000000, active: false, viloyat: 'Toshkent', tuman: 'Yunusobod',   passportSeria: 'AK', passportRaqam: '1234560' },
-  { id: 12, name: 'Doston Ochilov',              position: 'Administrator',          role: 'Developer',             salary: 12000000,  balance: 220000000, active: true,  viloyat: 'Toshkent', tuman: 'Sergeli',     passportSeria: 'AL', passportRaqam: '2345601' },
+  { id: 1, name: 'Doston Dostonov Dostonovich', position: 'Bosh administrator', role: 'Dasturchi', salary: 10000000, balance: 200000000, active: true, viloyat: 'Toshkent', tuman: 'Yunusobod', passportSeria: 'AA', passportRaqam: '1234567' },
+  { id: 2, name: 'Alyona Sokolova', position: 'Senior Developer', role: 'Programmer', salary: 8500000, balance: 150000000, active: true, viloyat: 'Samarqand', tuman: 'Chilonzor', passportSeria: 'AB', passportRaqam: '2345678' },
+  { id: 3, name: 'Timur Akhmedov', position: 'Project Manager', role: 'Team Lead', salary: 12000000, balance: 250000000, active: false, viloyat: 'Buxoro', tuman: 'Olmazar', passportSeria: 'AC', passportRaqam: '3456789' },
+  { id: 4, name: 'Irina Petrovna', position: 'UI/UX Designer', role: 'Designer', salary: 9750000, balance: 170000000, active: true, viloyat: 'Andijon', tuman: 'Bektemir', passportSeria: 'AD', passportRaqam: '4567890' },
+  { id: 5, name: 'Sergei Ivanovich', position: 'Database Administrator', role: 'Data Specialist', salary: 11200000, balance: 220000000, active: true, viloyat: 'Toshkent', tuman: 'Sergeli', passportSeria: 'AE', passportRaqam: '5678901' },
+  { id: 6, name: 'Natalia Fedorova', position: 'Frontend Developer', role: 'Developer', salary: 7800000, balance: 130000000, active: false, viloyat: 'Namangan', tuman: 'Yashnobod', passportSeria: 'AF', passportRaqam: '6789012' },
+  { id: 7, name: 'Vladimir Smirnov', position: 'Backend Developer', role: 'Engineer', salary: 10500000, balance: 190000000, active: true, viloyat: 'Toshkent', tuman: 'Uchtepa', passportSeria: 'AG', passportRaqam: '7890123' },
+  { id: 8, name: 'Ekaterina Vasilievna', position: 'QA Engineer', role: 'Tester', salary: 9200000, balance: 160000000, active: true, viloyat: 'Toshkent', tuman: 'Yakkasaroy', passportSeria: 'AH', passportRaqam: '8901234' },
+  { id: 9, name: 'Andrei Sergeyevich', position: 'DevOps Engineer', role: 'Operations Specialist', salary: 11800000, balance: 210000000, active: false, viloyat: 'Samarqand', tuman: 'Chilonzor', passportSeria: 'AI', passportRaqam: '9012345' },
+  { id: 10, name: 'Olga Dmitrievna', position: 'Marketing Specialist', role: 'Strategist', salary: 9300000, balance: 175000000, active: true, viloyat: 'Buxoro', tuman: 'Olmazar', passportSeria: 'AJ', passportRaqam: '0123456' },
+  { id: 11, name: 'Mikhail Borisov', position: 'Systems Analyst', role: 'Analyst', salary: 8000000, balance: 140000000, active: false, viloyat: 'Toshkent', tuman: 'Yunusobod', passportSeria: 'AK', passportRaqam: '1234560' },
+  { id: 12, name: 'Doston Ochilov', position: 'Administrator', role: 'Developer', salary: 12000000, balance: 220000000, active: true, viloyat: 'Toshkent', tuman: 'Sergeli', passportSeria: 'AL', passportRaqam: '2345601' },
 ]
 
 const ALL_POSITIONS = ['Barcha lavozimlar', ...new Set(USERS_DATA.map(u => u.position))]
-const ALL_ROLES     = ['Barcha rollar',     ...new Set(USERS_DATA.map(u => u.role))]
-const SORTS         = ['A dan Z gacha', 'Z dan A gacha', 'Yangi → Eski', 'Eski → Yangi']
+const ALL_ROLES = ['Barcha rollar', ...new Set(USERS_DATA.map(u => u.role))]
+const SORTS = ['A dan Z gacha', 'Z dan A gacha', 'Yangi → Eski', 'Eski → Yangi']
 
 function fmt(n) {
   return n.toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
@@ -38,6 +38,8 @@ function fmt(n) {
 /* ── Custom Filter Dropdown ── */
 function FilterSelect({ options, value, onChange, label }) {
   const [open, setOpen] = useState(false)
+  const [hovered, setHovered] = useState(null)
+  const [dropUp, setDropUp] = useState(false)
   const ref = useRef(null)
 
   useEffect(() => {
@@ -46,36 +48,44 @@ function FilterSelect({ options, value, onChange, label }) {
     return () => document.removeEventListener('mousedown', h)
   }, [])
 
+  const handleToggle = () => {
+    if (!open && ref.current) {
+      const rect = ref.current.getBoundingClientRect()
+      setDropUp(window.innerHeight - rect.bottom < 220)
+    }
+    setOpen(o => !o)
+  }
+
   const display = value || label || options[0]
+  const isDark = document.documentElement.classList.contains('dark')
 
   return (
     <div className="relative" ref={ref}>
-      {/* Trigger */}
       <button
         type="button"
-        onClick={() => setOpen(o => !o)}
+        onClick={handleToggle}
         className="flex items-center gap-2 cursor-pointer transition-colors
           bg-white border border-[#E2E6F2] text-[#1A1D2E]
           dark:bg-[#222323] dark:border-[#292A2A] dark:text-[#FFFFFF]"
-        style={{ fontSize: 13, fontWeight: 500, padding: '6px 12px', borderRadius: 12, minWidth: 140 }}
+        style={{ fontSize: 13, fontWeight: 500, padding: '6px 12px', borderRadius: 12, minWidth: 140, width: '100%' }}
       >
         <span className="flex-1 text-left truncate">{display}</span>
         <MdExpandMore
           size={16}
-          className={`shrink-0 text-[#8F95A8] transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
+          className={`shrink-0 transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
+          style={{ color: isDark ? '#FFFFFF' : '#8F95A8' }}
         />
       </button>
 
-      {/* Dropdown list */}
       {open && (
         <div
-          className="absolute top-full left-0 mt-1 z-50 rounded-2xl shadow-xl overflow-hidden
-            bg-white dark:bg-[#222323]"
+          className="absolute left-0 z-50 rounded-2xl shadow-xl bg-white dark:bg-[#1C1D1D]"
           style={{
-            border: '1px solid #EEF1F7',
+            border: isDark ? '1px solid #292A2A' : '1px solid #EEF1F7',
             padding: '6px 8px',
-            width: 250,
+            minWidth: 200,
             animation: 'dropdownIn 0.18s cubic-bezier(0.16,1,0.3,1)',
+            ...(dropUp ? { bottom: 'calc(100% + 4px)' } : { top: 'calc(100% + 4px)' }),
           }}
         >
           {options.map((opt) => (
@@ -83,15 +93,19 @@ function FilterSelect({ options, value, onChange, label }) {
               key={opt}
               type="button"
               onClick={() => { onChange(opt); setOpen(false) }}
+              onMouseEnter={() => setHovered(opt)}
+              onMouseLeave={() => setHovered(null)}
               className="w-full text-left px-3 py-2.5 rounded-xl cursor-pointer transition-colors"
               style={{
                 fontSize: 13,
                 fontWeight: 500,
-                color: '#1A1D2E',
-                background: value === opt ? '#F1F3F9' : 'transparent',
+                color: isDark ? '#FFFFFF' : '#1A1D2E',
+                background: value === opt
+                  ? (isDark ? '#303131' : '#F1F3F9')
+                  : hovered === opt
+                    ? (isDark ? '#222323' : '#F8F9FC')
+                    : 'transparent',
               }}
-              onMouseEnter={e => { if (value !== opt) e.currentTarget.style.background = '#F8F9FC' }}
-              onMouseLeave={e => { if (value !== opt) e.currentTarget.style.background = 'transparent' }}
             >
               {opt}
             </button>
@@ -140,14 +154,15 @@ function AddUserModal({ onClose, onAdd }) {
       <div className="relative w-full max-w-[600px] rounded-2xl shadow-2xl bg-white dark:bg-[#222323]">
         <div className="px-7 pt-7 pb-5">
           <div className="flex items-start gap-3">
-            <button onClick={onClose} className="mt-1 text-[#1A1D2E] dark:text-[#FFFFFF] hover:opacity-70 cursor-pointer shrink-0">
-              <FaArrowLeft size={18} />
-            </button>
+
             <div>
-              <h2
-                className="text-[#1A1D2E] dark:text-[#FFFFFF]"
-                style={{ fontSize: 20, fontWeight: 800 }}
-              >Yangi xodim qo'shish</h2>
+              <div className='flex gap-3'> <button onClick={onClose} className="mt-1 text-[#1A1D2E] dark:text-[#FFFFFF] hover:opacity-70 cursor-pointer shrink-0">
+                <FaArrowLeft size={18} />
+              </button>
+                <h2
+                  className="text-[#1A1D2E] dark:text-[#FFFFFF]"
+                  style={{ fontSize: 20, fontWeight: 800 }}
+                >Yangi xodim qo'shish</h2></div>
               <p className="text-sm text-[#8F95A8] dark:text-[#C2C8E0] mt-1">Yangi xodimni tizimga qo'shing va unga tegishli rol hamda maoshni belgilang</p>
             </div>
           </div>
@@ -170,17 +185,19 @@ function AddUserModal({ onClose, onAdd }) {
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label className={labelCls}>Viloyat</label>
-              <select value={form.viloyat} onChange={e => set('viloyat', e.target.value)} className={inputCls + ' cursor-pointer'}>
-                <option value="">Viloyatni tanlang</option>
-                {VILOYATLAR.map(v => <option key={v}>{v}</option>)}
-              </select>
+              <FilterSelect
+                options={['Viloyatni tanlang', ...VILOYATLAR]}
+                value={form.viloyat || 'Viloyatni tanlang'}
+                onChange={v => set('viloyat', v === 'Viloyatni tanlang' ? '' : v)}
+              />
             </div>
             <div>
               <label className={labelCls}>Tuman</label>
-              <select value={form.tuman} onChange={e => set('tuman', e.target.value)} className={inputCls + ' cursor-pointer'}>
-                <option value="">Tuman tanlang</option>
-                {TUMANLAR.map(t => <option key={t}>{t}</option>)}
-              </select>
+              <FilterSelect
+                options={['Tuman tanlang', ...TUMANLAR]}
+                value={form.tuman || 'Tuman tanlang'}
+                onChange={v => set('tuman', v === 'Tuman tanlang' ? '' : v)}
+              />
             </div>
           </div>
           <div className="grid grid-cols-2 gap-3">
@@ -250,9 +267,9 @@ function AddUserModal({ onClose, onAdd }) {
           {/* Social links */}
           <div className="grid grid-cols-3 gap-3">
             {[
-              { key: 'github',   label: 'GitHub',   Icon: FiGithub,      placeholder: 'Github havola yuklang'   },
-              { key: 'linkedin', label: 'Linkedin',  Icon: CiLinkedin,    placeholder: 'Linkedin havola yuklang' },
-              { key: 'telegram', label: 'Telegram',  Icon: PiTelegramLogo, placeholder: 'Telegram havola yuklang' },
+              { key: 'github', label: 'GitHub', Icon: FiGithub, placeholder: 'Github havola yuklang' },
+              { key: 'linkedin', label: 'Linkedin', Icon: CiLinkedin, placeholder: 'Linkedin havola yuklang' },
+              { key: 'telegram', label: 'Telegram', Icon: PiTelegramLogo, placeholder: 'Telegram havola yuklang' },
             ].map(({ key, label, Icon, placeholder }) => (
               <div key={key}>
                 <label className={labelCls + ' flex items-center gap-1.5'}>
@@ -289,7 +306,7 @@ function UserDetail({ user, onBack, onDelete }) {
 
   const initial = {
     name: user.name,
-    password: '••••••••',
+    password: '',
     salary: user.salary,
     balance: user.balance,
     viloyat: user.viloyat || '',
@@ -298,20 +315,17 @@ function UserDetail({ user, onBack, onDelete }) {
     passportRaqam: user.passportRaqam || '',
     lavozim: user.position,
     rol: user.role,
+    github: '',
+    linkedin: '',
+    telegram: '',
   }
 
   const [form, setForm] = useState(initial)
   const [isDirty, setIsDirty] = useState(false)
+  const [confirmDelete, setConfirmDelete] = useState(false)
 
-  const set = (k, v) => {
-    setForm(prev => ({ ...prev, [k]: v }))
-    setIsDirty(true)
-  }
-
-  const handleCancel = () => {
-    setForm(initial)
-    setIsDirty(false)
-  }
+  const set = (k, v) => { setForm(prev => ({ ...prev, [k]: v })); setIsDirty(true) }
+  const handleCancel = () => { setForm(initial); setIsDirty(false) }
 
   useEffect(() => {
     registerBreadcrumb(user.name)
@@ -319,7 +333,7 @@ function UserDetail({ user, onBack, onDelete }) {
   }, [user.name, registerBreadcrumb, clearBreadcrumb])
 
   const inputCls = `w-full px-3 py-2.5 rounded-lg text-sm outline-none border transition-colors
-    bg-white border-[#E2E6F2] text-[#1A1D2E] placeholder-[#B6BCCB] focus:border-[#526ED3]
+    bg-white border-[#E2E6F2] text-[#1A1D2E] placeholder-[#B6BCCB]
     dark:bg-[#191A1A] dark:border-[#292A2A] dark:text-[#FFFFFF] dark:placeholder-[#8E95B5]`
   const labelCls = 'block text-xs font-medium text-[#5B6078] dark:text-[#C2C8E0] mb-1'
 
@@ -330,39 +344,27 @@ function UserDetail({ user, onBack, onDelete }) {
         <h1 className="text-2xl font-bold text-[#1A1D2E] dark:text-[#FFFFFF]">Foydalanuvchining ma'lumotlari</h1>
         <div className="flex items-center gap-2">
           {isDirty && (
-            <button
-              onClick={handleCancel}
+            <button onClick={handleCancel}
               className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium border transition-colors cursor-pointer
                 bg-white border-[#E2E6F2] text-[#1A1D2E] hover:bg-[#F1F3F9]
-                dark:bg-[#222323] dark:border-[#292A2A] dark:text-[#FFFFFF] dark:hover:bg-[#292A2A]"
-            >
-              <FaArrowLeft size={13} />
-              Bekor qilish
+                dark:bg-[#222323] dark:border-[#292A2A] dark:text-[#FFFFFF] dark:hover:bg-[#292A2A]">
+              <FaArrowLeft size={13} /> Bekor qilish
             </button>
           )}
-          <button
-            onClick={() => onDelete(user.id)}
+          <button onClick={() => setConfirmDelete(true)}
             className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors cursor-pointer
-              text-[#E02D2D] hover:bg-[#FFF2F2]
-              dark:text-[#FA5252] dark:hover:bg-[#E02D2D]/10"
-          >
-            <FaTrash size={13} />
-            O'chirish
+              text-[#E02D2D] hover:bg-[#FFF2F2] dark:text-[#FA5252] dark:hover:bg-[#E02D2D]/10">
+            <FaTrash size={13} /> O'chirish
           </button>
         </div>
       </div>
 
       {/* Avatar */}
-      <div>
-        <img
-          src="/imgs/userImg.png"
-          alt={user.name}
-          className="w-[80px] h-[80px] rounded-xl object-cover"
-        />
-      </div>
+      <img src="/imgs/userImg.png" alt={user.name} className="w-[80px] h-[80px] rounded-xl object-cover" />
 
       {/* Form */}
       <div className="flex flex-col gap-4">
+
         {/* Ism */}
         <div>
           <label className={labelCls}>Ism Sharifi</label>
@@ -373,22 +375,38 @@ function UserDetail({ user, onBack, onDelete }) {
         <div className="grid grid-cols-3 gap-3">
           <div>
             <label className={labelCls}>Parol</label>
-            <input className={inputCls} value={form.password} onChange={e => set('password', e.target.value)} />
+            <input
+              className={inputCls}
+              type="password"
+              placeholder="Yangi parol"
+              value={form.password}
+              onChange={e => set('password', e.target.value)}
+            />
           </div>
           <div>
             <label className={labelCls}>Oylik maosh (UZS)</label>
-            <input className={inputCls + ' text-right'} value={fmt(form.salary)}
-              onFocus={e => { e.target.value = form.salary; e.target.type = 'number' }}
-              onBlur={e => { set('salary', parseFloat(e.target.value) || 0); e.target.type = 'text'; e.target.value = fmt(form.salary) }}
-              onChange={e => set('salary', parseFloat(e.target.value) || 0)}
+            <input
+              className={inputCls + ' text-right'}
+              type="text"
+              inputMode="numeric"
+              value={form.salary === '' ? '' : Number(form.salary).toLocaleString('ru-RU')}
+              onChange={e => {
+                const raw = e.target.value.replace(/\D/g, '')
+                set('salary', raw === '' ? '' : Number(raw))
+              }}
             />
           </div>
           <div>
             <label className={labelCls}>Balansi (UZS)</label>
-            <input className={inputCls + ' text-right'} value={fmt(form.balance)}
-              onFocus={e => { e.target.value = form.balance; e.target.type = 'number' }}
-              onBlur={e => { set('balance', parseFloat(e.target.value) || 0); e.target.type = 'text'; e.target.value = fmt(form.balance) }}
-              onChange={e => set('balance', parseFloat(e.target.value) || 0)}
+            <input
+              className={inputCls + ' text-right'}
+              type="text"
+              inputMode="numeric"
+              value={form.balance === '' ? '' : Number(form.balance).toLocaleString('ru-RU')}
+              onChange={e => {
+                const raw = e.target.value.replace(/\D/g, '')
+                set('balance', raw === '' ? '' : Number(raw))
+              }}
             />
           </div>
         </div>
@@ -397,27 +415,33 @@ function UserDetail({ user, onBack, onDelete }) {
         <div className="grid grid-cols-2 gap-3">
           <div>
             <label className={labelCls}>Viloyat</label>
-            <select value={form.viloyat} onChange={e => set('viloyat', e.target.value)} className={inputCls + ' cursor-pointer'}>
-              <option value="">Viloyatni tanlang</option>
-              {VILOYATLAR.map(v => <option key={v}>{v}</option>)}
-            </select>
+            <FilterSelect
+              options={['Viloyatni tanlang', ...VILOYATLAR]}
+              value={form.viloyat || 'Viloyatni tanlang'}
+              onChange={v => set('viloyat', v === 'Viloyatni tanlang' ? '' : v)}
+            />
           </div>
           <div>
             <label className={labelCls}>Tuman</label>
-            <select value={form.tuman} onChange={e => set('tuman', e.target.value)} className={inputCls + ' cursor-pointer'}>
-              <option value="">Tuman tanlang</option>
-              {TUMANLAR.map(t => <option key={t}>{t}</option>)}
-            </select>
+            <FilterSelect
+              options={['Tuman tanlang', ...TUMANLAR]}
+              value={form.tuman || 'Tuman tanlang'}
+              onChange={v => set('tuman', v === 'Tuman tanlang' ? '' : v)}
+            />
           </div>
         </div>
 
-        {/* Passport + Passport rasmi */}
+        {/* Passport */}
         <div className="grid grid-cols-2 gap-3">
           <div>
             <label className={labelCls}>Passport ma'lumotlari</label>
             <div className="flex gap-2">
-              <input className={inputCls} style={{maxWidth: 80}} placeholder="Seriya" value={form.passportSeria} onChange={e => set('passportSeria', e.target.value)} />
-              <input className={inputCls} placeholder="Raqami" value={form.passportRaqam} onChange={e => set('passportRaqam', e.target.value)} />
+              <input className={inputCls} style={{ maxWidth: 72 }} placeholder="AA" maxLength={2}
+                value={form.passportSeria}
+                onChange={e => set('passportSeria', e.target.value.replace(/[^a-zA-Z]/g, '').toUpperCase().slice(0, 2))} />
+              <input className={inputCls} placeholder="1234567" maxLength={7}
+                value={form.passportRaqam}
+                onChange={e => set('passportRaqam', e.target.value.replace(/\D/g, '').slice(0, 7))} />
             </div>
           </div>
           <div>
@@ -432,23 +456,37 @@ function UserDetail({ user, onBack, onDelete }) {
           </div>
         </div>
 
-        {/* Lavozim + Rol */}
-        <div className="grid grid-cols-2 gap-3">
+        {/* Social links */}
+        <div className="grid grid-cols-3 gap-3">
+          {[
+            { key: 'github', label: 'GitHub', Icon: FiGithub, placeholder: 'Github havola' },
+            { key: 'linkedin', label: 'Linkedin', Icon: CiLinkedin, placeholder: 'Linkedin havola' },
+            { key: 'telegram', label: 'Telegram', Icon: PiTelegramLogo, placeholder: 'Telegram havola' },
+          ].map(({ key, label, Icon, placeholder }) => (
+            <div key={key}>
+              <label className={labelCls + ' flex items-center gap-1.5'}>
+                {label} <Icon size={14} className="text-[#5B6078] dark:text-[#C2C8E0]" />
+              </label>
+              <input className={inputCls} placeholder={placeholder}
+                value={form[key] || ''} onChange={e => set(key, e.target.value)} />
+            </div>
+          ))}
+        </div>
+
+        {/* Lavozim + Rol — space-between */}
+        <div className="flex items-center justify-between gap-3">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-green-500 shrink-0" />
             <span className="text-sm font-medium text-[#1A1D2E] dark:text-[#FFFFFF] shrink-0">Lavozimi</span>
-            <div className="flex-1">
-              <Dropdown label="Tanlash" options={LAVOZIMLAR} value={form.lavozim} onChange={v => set('lavozim', v)} />
-            </div>
+            <Dropdown label="Tanlash" options={LAVOZIMLAR} value={form.lavozim} onChange={v => set('lavozim', v)} />
           </div>
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-red-500 shrink-0" />
             <span className="text-sm font-medium text-[#1A1D2E] dark:text-[#FFFFFF] shrink-0">Rolli</span>
-            <div className="flex-1">
-              <Dropdown label="Tanlash" options={ROLLAR_LIST} value={form.rol} onChange={v => set('rol', v)} />
-            </div>
+            <Dropdown label="Tanlash" options={ROLLAR_LIST} value={form.rol} onChange={v => set('rol', v)} />
           </div>
         </div>
+
       </div>
     </div>
   )
@@ -458,14 +496,14 @@ function UserDetail({ user, onBack, onDelete }) {
 export default function UsersPage() {
   const { registerAction, clearAction } = usePageAction()
 
-  const [users, setUsers]         = useState(USERS_DATA)
-  const [search, setSearch]       = useState('')
-  const [position, setPosition]   = useState('Barcha lavozimlar')
-  const [role, setRole]           = useState('Barcha rollar')
-  const [sort, setSort]           = useState('A dan Z gacha')
+  const [users, setUsers] = useState(USERS_DATA)
+  const [search, setSearch] = useState('')
+  const [position, setPosition] = useState('Barcha lavozimlar')
+  const [role, setRole] = useState('Barcha rollar')
+  const [sort, setSort] = useState('A dan Z gacha')
   const [selecting, setSelecting] = useState(false)
-  const [selected, setSelected]   = useState(new Set())
-  const [toast, setToast]         = useState(null)
+  const [selected, setSelected] = useState(new Set())
+  const [toast, setToast] = useState(null)
   const [showModal, setShowModal] = useState(false)
   const [activeUser, setActiveUser] = useState(null)
 
@@ -503,7 +541,7 @@ export default function UsersPage() {
     else setSelected(prev => { const s = new Set(prev); filtered.forEach(u => s.add(u.id)); return s })
   }
   const toggleOne = (id) => setSelected(prev => { const s = new Set(prev); s.has(id) ? s.delete(id) : s.add(id); return s })
-  const startSelecting  = () => { setSelecting(true);  setSelected(new Set()) }
+  const startSelecting = () => { setSelecting(true); setSelected(new Set()) }
   const cancelSelecting = () => { setSelecting(false); setSelected(new Set()) }
 
   const showToast = (title, msg) => { setToast({ title, msg }); setTimeout(() => setToast(null), 3000) }
@@ -585,7 +623,7 @@ export default function UsersPage() {
               bg-[#DADFF0] text-[#1A1D2E] hover:bg-[#c8ceea]
               dark:bg-[#292A2A] dark:text-[#FFFFFF] dark:hover:bg-[#303131]"
           >
-            <img src="/imgs/checkIcon.svg" alt="" className="w-4 h-4" />
+            <img src="/imgs/checkIcon.svg" alt="" className="w-4 h-4 dark:invert" />
             Tanlash
           </button>
         )}
@@ -596,7 +634,7 @@ export default function UsersPage() {
         {/* Search */}
         <div className="relative">
           <svg className="absolute left-3 top-1/2 -translate-y-1/2 text-[#8F95A8] dark:text-[#8E95B5]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+            <circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" />
           </svg>
           <input
             type="text"
@@ -610,8 +648,8 @@ export default function UsersPage() {
           />
         </div>
         <FilterSelect options={ALL_POSITIONS} value={position} onChange={setPosition} />
-        <FilterSelect options={ALL_ROLES}     value={role}     onChange={setRole}     />
-        <FilterSelect options={SORTS}         value={sort}     onChange={setSort}     />
+        <FilterSelect options={ALL_ROLES} value={role} onChange={setRole} />
+        <FilterSelect options={SORTS} value={sort} onChange={setSort} />
       </div>
 
       {/* Table */}
@@ -668,21 +706,21 @@ export default function UsersPage() {
                         onChange={() => toggleOne(u.id)}
                         className="cursor-pointer accent-[#3F57B3] shrink-0"
                       />
-                      <span style={{ color: '#8F95A8', fontWeight: 500 }}>{idx + 1}</span>
+                      <span className="text-[#8F95A8]" style={{ fontWeight: 500 }}>{idx + 1}</span>
                     </span>
                   ) : (
-                    <span style={{ color: '#8F95A8', fontWeight: 500 }}>{idx + 1}</span>
+                    <span className="text-[#8F95A8]" style={{ fontWeight: 500 }}>{idx + 1}</span>
                   )}
                 </td>
-                <td className="px-4 py-3 font-medium" style={{ color: '#1A1D2E' }}>{u.name}</td>
-                <td className="px-4 py-3" style={{ color: '#1A1D2E', fontWeight: 500 }}>{u.position}</td>
-                <td className="px-4 py-3 text-right" style={{ color: '#1A1D2E', fontWeight: 500 }}>{u.role}</td>
-                <td className="px-4 py-3 text-right" style={{ color: '#1A1D2E', fontWeight: 800 }}>{fmt(u.salary)}</td>
-                <td className="px-4 py-3 text-right" style={{ color: '#1A1D2E', fontWeight: 500 }}>{fmt(u.balance)}</td>
+                <td className="px-4 py-3 font-medium text-[#1A1D2E] dark:text-white">{u.name}</td>
+                <td className="px-4 py-3 text-[#1A1D2E] dark:text-white" style={{ fontWeight: 500 }}>{u.position}</td>
+                <td className="px-4 py-3 text-right text-[#1A1D2E] dark:text-white" style={{ fontWeight: 500 }}>{u.role}</td>
+                <td className="px-4 py-3 text-right text-[#1A1D2E] dark:text-white" style={{ fontWeight: 800 }}>{fmt(u.salary)}</td>
+                <td className="px-4 py-3 text-right text-[#1A1D2E] dark:text-white" style={{ fontWeight: 500 }}>{fmt(u.balance)}</td>
                 <td className="px-4 py-3 text-center">
                   {u.active
-                    ? <span className="inline-flex items-center justify-center w-6 h-6 rounded bg-green-500"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
-                    : <span className="inline-flex items-center justify-center w-6 h-6 rounded bg-[#E02D2D]"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 3l6 6M9 3l-6 6" stroke="white" strokeWidth="1.5" strokeLinecap="round"/></svg></span>
+                    ? <span className="inline-flex items-center justify-center w-6 h-6 rounded bg-green-500"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg></span>
+                    : <span className="inline-flex items-center justify-center w-6 h-6 rounded bg-[#E02D2D]"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 3l6 6M9 3l-6 6" stroke="white" strokeWidth="1.5" strokeLinecap="round" /></svg></span>
                   }
                 </td>
               </tr>
