@@ -195,7 +195,7 @@ export default function Sidebar() {
                   onClick={() => toggleGroup(i)}
                   className={[
                     'w-full flex items-center gap-2.5 px-4 py-3 rounded-lg transition-colors cursor-pointer',
-                    'text-[13px] font-[500]',
+                    'text-[13px] font-medium',
                     active
                       ? 'bg-[#E2E6F2] text-[#1A1D2E] border border-[#EEF1F7] dark:bg-[#303131] dark:text-white dark:border-[#474848]'
                       : 'text-[#5B6078] border border-transparent hover:bg-[#E2E6F2] hover:text-[#1A1D2E] hover:border-[#EEF1F7] dark:text-[#C2C8E0] dark:hover:bg-[#303131] dark:hover:text-white dark:hover:border-[#474848]',
@@ -226,7 +226,7 @@ export default function Sidebar() {
                         key={child.path}
                         to={child.path}
                         className={() => [
-                          'block px-4 py-3 rounded-lg text-[13px] font-[500] transition-colors cursor-pointer border',
+                          'block px-4 py-3 rounded-lg text-[13px] font-medium transition-colors cursor-pointer border',
                           childActive
                             ? 'bg-[#E9ECF5] text-[#5B6078] border-[#E2E6F2] dark:bg-[#292A2A] dark:text-[#C2C8E0] dark:border-[#292A2A]'
                             : 'text-[#5B6078] border-transparent hover:bg-[#E9ECF5] hover:border-[#E2E6F2] dark:text-[#C2C8E0] dark:hover:bg-[#292A2A] dark:hover:border-[#292A2A]',

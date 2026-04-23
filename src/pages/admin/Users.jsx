@@ -53,10 +53,12 @@ function FilterSelect({ options, value, onChange, label, width = 250 }) {
       const rect = ref.current.getBoundingClientRect()
       const spaceBelow = window.innerHeight - rect.bottom
       const isDropUp = spaceBelow < 220
-      const leftPos = rect.left + width > window.innerWidth - 8
-        ? window.innerWidth - width - 8
+      // dropdown kengligi: container kengligidan kam bo'lmasin, lekin min 200px
+      const dropWidth = Math.max(rect.width, 200)
+      const leftPos = rect.left + dropWidth > window.innerWidth - 8
+        ? window.innerWidth - dropWidth - 8
         : rect.left
-      setDropPos({ top: isDropUp ? rect.top - 4 : rect.bottom + 4, left: leftPos, dropUp: isDropUp })
+      setDropPos({ top: isDropUp ? rect.top - 4 : rect.bottom + 4, left: leftPos, dropUp: isDropUp, dropWidth })
     }
     setOpen(o => !o)
   }
@@ -92,7 +94,7 @@ function FilterSelect({ options, value, onChange, label, width = 250 }) {
             left: dropPos.left,
             border: isDark ? '1px solid #292A2A' : '1px solid #EEF1F7',
             padding: '6px 8px',
-            width,
+            width: dropPos.dropWidth || width,
             maxHeight: 260,
             overflowY: 'auto',
             animation: 'dropdownIn 0.18s cubic-bezier(0.16,1,0.3,1)',
@@ -278,9 +280,9 @@ function AddUserModal({ onClose, onAdd }) {
           {/* Social links */}
           <div className="grid grid-cols-3 gap-3">
             {[
-              { key: 'github', label: 'GitHub', Icon: FiGithub, placeholder: 'Github havola yuklang' },
-              { key: 'linkedin', label: 'Linkedin', Icon: CiLinkedin, placeholder: 'Linkedin havola yuklang' },
-              { key: 'telegram', label: 'Telegram', Icon: PiTelegramLogo, placeholder: 'Telegram havola yuklang' },
+              { key: 'github', label: 'GitHub', Icon: FiGithub, placeholder: 'Github havola ' },
+              { key: 'linkedin', label: 'Linkedin', Icon: CiLinkedin, placeholder: 'Linkedin havola ' },
+              { key: 'telegram', label: 'Telegram', Icon: PiTelegramLogo, placeholder: 'Telegram havola ' },
             ].map(({ key, label, Icon, placeholder }) => (
               <div key={key}>
                 <label className={labelCls + ' flex items-center gap-1.5'}>
@@ -524,7 +526,7 @@ function UserDetail({ user, onBack, onDelete }) {
               <span className="w-2 h-2 rounded-full bg-green-500 shrink-0 " />
               <span className="text-sm font-medium text-[#1A1D2E] dark:text-[#FFFFFF] shrink-0">Lavozimi</span>
             </div>
-            <Dropdown width={150} label="Tanlash" options={LAVOZIMLAR} value={form.lavozim} onChange={v => set('lavozim', v)} />
+            <Dropdown width={200} label="Tanlash" options={LAVOZIMLAR} value={form.lavozim} onChange={v => set('lavozim', v)} />
           </div>
           <div className="flex items-center gap-2 justify-between w-[50%]">
             <div className='flex items-center gap-2'>
@@ -532,7 +534,7 @@ function UserDetail({ user, onBack, onDelete }) {
               <span className="text-sm font-medium text-[#1A1D2E] dark:text-[#FFFFFF] shrink-0">Rolli</span>
             </div>
 
-            <Dropdown width={150} label="Tanlash" options={ROLLAR_LIST} value={form.rol} onChange={v => set('rol', v)} />
+            <Dropdown width={200} label="Tanlash" options={ROLLAR_LIST} value={form.rol} onChange={v => set('rol', v)} />
           </div>
         </div>
 

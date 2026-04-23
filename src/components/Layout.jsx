@@ -149,6 +149,24 @@ function Breadcrumb() {
 export default function Layout() {
   const { action, breadcrumbExtra } = usePageAction()
   const [notifOpen, setNotifOpen] = useState(false)
+
+  // dark mode detector
+  const isDark = () => document.documentElement.classList.contains('dark')
+
+  function NotifIcon() {
+    return (
+      <img
+        src="/imgs/notification.svg"
+        alt="notification"
+        className="w-[18px] h-[18px]"
+        style={{
+          filter: isDark()
+            ? 'brightness(0) invert(1)'
+            : 'brightness(0) saturate(100%) invert(10%) sepia(10%) saturate(1000%) hue-rotate(190deg) brightness(90%)'
+        }}
+      />
+    )
+  }
   const [notifs, setNotifs] = useState(NOTIFS_DATA)
   const unreadCount = notifs.filter(n => !n.read).length
 
@@ -190,14 +208,19 @@ export default function Layout() {
             )}
 
             {/* Notification bell */}
-            <button
-              onClick={() => setNotifOpen(o => !o)}
-              className="w-9 h-9 flex items-center justify-center rounded-lg cursor-pointer transition-colors
-                bg-white border border-[#EEF1F7] hover:bg-[#F1F3F9]
-                dark:bg-[#222323] dark:border-[#292A2A] dark:hover:bg-[#292A2A]"
-            >
-              <img src="/imgs/notification.svg" alt="notification" className="w-4 h-4 dark:invert dark:opacity-60" />
-            </button>
+            <div className="relative">
+              <button
+                onClick={() => setNotifOpen(o => !o)}
+                className="w-9 h-9 flex items-center justify-center rounded-xl cursor-pointer transition-colors
+                  bg-[#F1F3F9] hover:bg-[#E8EAF2]
+                  dark:bg-[#292A2A] dark:hover:bg-[#333435]"
+              >
+                <NotifIcon />
+              </button>
+              {notifs.some(n => !n.read) && (
+                <span className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-[#3F57B3] border-2 border-white dark:border-[#191A1A]" />
+              )}
+            </div>
           </div>
         </header>
 
