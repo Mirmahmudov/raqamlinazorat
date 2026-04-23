@@ -224,21 +224,20 @@ function SorovModal({ onClose, onSubmit }) {
       <div className="relative w-full max-w-[560px] rounded-2xl shadow-2xl bg-white dark:bg-[#222323]">
 
         {/* Header */}
-        <div className="px-6 pt-5 pb-4 border-b border-[#E2E6F2] dark:border-[#292A2A]">
+        <div className="px-6 pt-7  ">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <button onClick={onClose} className="text-[#5B6078] dark:text-[#C2C8E0] hover:opacity-70 cursor-pointer shrink-0">
-                <FaArrowLeft size={16} />
+            <div className="">
+             
+              <div className='flex items-center gap-3 mb-2'>
+                 <button onClick={onClose} className="text-[#5B6078] dark:text-[#C2C8E0] hover:opacity-70 cursor-pointer shrink-0">
+                <FaArrowLeft color='#1A1D2E' size={16} />
               </button>
-              <div>
-                <h2 className="text-lg font-bold text-[#1A1D2E] dark:text-[#FFFFFF]">So'rov yuborish</h2>
-                <p className="text-xs text-[#8F95A8] dark:text-[#C2C8E0] mt-0.5">So'rov uchun kerakli ma'lumotlarni kiriting</p>
+                <h2 className="text-[20px] font-extrabold text-[#1A1D2E] dark:text-[#FFFFFF]">So'rov yuborish</h2>
+              
               </div>
+                <p className="text-[15px] text-[#5B6078] dark:text-[#C2C8E0] mt-0.5">So'rov uchun kerakli ma'lumotlarni kiriting</p>
             </div>
-            <button onClick={onClose} className="w-7 h-7 flex items-center justify-center rounded-full cursor-pointer transition-colors
-              text-[#8F95A8] hover:bg-[#F1F3F9] dark:text-[#C2C8E0] dark:hover:bg-[#292A2A]">
-              <FaXmark size={14} />
-            </button>
+           
           </div>
         </div>
 
@@ -442,21 +441,17 @@ function FilterModal({ onClose, onApply, initial }) {
       <div className="relative w-full max-w-[600px] rounded-2xl shadow-2xl bg-white dark:bg-[#222323]">
 
         {/* Header */}
-        <div className="px-6 pt-5 pb-4 border-b border-[#E2E6F2] dark:border-[#292A2A]">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
+        <div className="px-6 pt-5 dark:border-[#292A2A]">
+          <div className="">
+           
+             <div className="flex px-2 items-center gap-3 mb-2">
               <button onClick={onClose} className="text-[#5B6078] dark:text-[#C2C8E0] hover:opacity-70 cursor-pointer shrink-0">
-                <FaArrowLeft size={16} />
+                <FaArrowLeft fontWeight={800} color='#1A1D2E' size={16} />
               </button>
-              <div>
-                <h2 className="text-lg font-bold text-[#1A1D2E] dark:text-[#FFFFFF]">Filtrlash</h2>
-                <p className="text-xs text-[#8F95A8] dark:text-[#C2C8E0] mt-0.5">Kerakli filtirlarni tanlang, natijalar shunga qarab saralanadi</p>
-              </div>
+              <h2 className="text-[20px] font-extrabold text-[#1A1D2E] dark:text-[#FFFFFF]">Filtrlash</h2>
+
             </div>
-            <button onClick={onClose} className="w-7 h-7 flex items-center justify-center rounded-full cursor-pointer transition-colors
-              text-[#8F95A8] hover:bg-[#F1F3F9] dark:text-[#C2C8E0] dark:hover:bg-[#292A2A]">
-              <FaXmark size={14} />
-            </button>
+            <p className="text-[15px] text-[#5B6078] dark:text-[#C2C8E0] mt-0.5">Kerakli filtirlarni tanlang, natijalar shunga qarab saralanadi</p>
           </div>
         </div>
 
@@ -520,10 +515,10 @@ function FilterModal({ onClose, onApply, initial }) {
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-4 border-t border-[#E2E6F2] dark:border-[#292A2A] flex items-center justify-end gap-3">
+        <div className="px-6 py-4 flex items-center justify-end gap-3">
           <button onClick={() => setF(EMPTY_FILTER)}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium transition-colors cursor-pointer
-              text-[#5B6078] hover:bg-[#F1F3F9] dark:text-[#C2C8E0] dark:hover:bg-[#292A2A]">
+            className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-[15px] font-extrabold transition-colors cursor-pointer
+              text-[#1A1D2E] hover:bg-[#F1F3F9] dark:text-[#C2C8E0] dark:hover:bg-[#292A2A]">
             <FaXmark size={14} />
             Tozalash
           </button>
