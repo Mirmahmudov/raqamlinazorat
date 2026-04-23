@@ -177,7 +177,261 @@ function DateTimeRangeRow({ label, dateFromD, dateFromT, dateToD, dateToT, onDat
   )
 }
 
-/* ── Filter Modal ── */
+/* ── To'lov turlari ── */
+const TOLOV_TURLARI = ["Naqd pulda", "Karta orqali", "Bank o'tkazmasi", "Elektron to'lov"]
+
+/* ── Karta raqam formatlash: 0000 0000 0000 0000 ── */
+function fmtCard(raw) {
+  const digits = raw.replace(/\D/g, '').slice(0, 16)
+  return digits.replace(/(.{4})/g, '$1 ').trim()
+}
+
+/* ── SorovModal ── */
+function SorovModal({ onClose, onSubmit }) {
+  const [form, setForm] = useState({
+    loyiha: '', type: '', toifa: '', amount: '', sabab: '', tolovTuri: '', karta: ''
+  })
+  const [errors, setErrors] = useState({})
+  const setF = (k, v) => { setForm(p => ({ ...p, [k]: v })); setErrors(p => ({ ...p, [k]: '' })) }
+
+  const showKarta = form.tolovTuri === 'Karta orqali'
+
+  const validate = () => {
+    const e = {}
+    if (!form.loyiha)    e.loyiha    = 'Loyiha tanlanmagan'
+    if (!form.type)      e.type      = 'Xarajat turi tanlanmagan'
+    if (!form.toifa)     e.toifa     = 'Toifa tanlanmagan'
+    if (!form.amount)    e.amount    = 'Miqdor kiritilmagan'
+    if (!form.tolovTuri) e.tolovTuri = "To'lov turi tanlanmagan"
+    if (showKarta && form.karta.replace(/\s/g, '').length < 16) e.karta = 'Karta raqami to\'liq emas'
+    return e
+  }
+
+  const handleSubmit = () => {
+    const e = validate()
+    if (Object.keys(e).length) { setErrors(e); return }
+    onSubmit(form)
+  }
+
+  const iCls = (k) => `w-full px-3 py-2.5 rounded-xl text-sm outline-none border transition-colors
+    bg-white text-[#1A1D2E] placeholder-[#8F95A8] focus:border-[#526ED3]
+    dark:bg-[#191A1A] dark:text-[#FFFFFF] dark:placeholder-[#C2C8E0]
+    ${errors[k] ? 'border-red-400 dark:border-red-500' : 'border-[#E2E6F2] dark:border-[#292A2A]'}`
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto py-8 px-4">
+      <div className="fixed inset-0 bg-black/60" onClick={onClose} />
+      <div className="relative w-full max-w-[560px] rounded-2xl shadow-2xl bg-white dark:bg-[#222323]">
+
+        {/* Header */}
+        <div className="px-6 pt-5 pb-4 border-b border-[#E2E6F2] dark:border-[#292A2A]">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <button onClick={onClose} className="text-[#5B6078] dark:text-[#C2C8E0] hover:opacity-70 cursor-pointer shrink-0">
+                <FaArrowLeft size={16} />
+              </button>
+              <div>
+                <h2 className="text-lg font-bold text-[#1A1D2E] dark:text-[#FFFFFF]">So'rov yuborish</h2>
+                <p className="text-xs text-[#8F95A8] dark:text-[#C2C8E0] mt-0.5">So'rov uchun kerakli ma'lumotlarni kiriting</p>
+              </div>
+            </div>
+            <button onClick={onClose} className="w-7 h-7 flex items-center justify-center rounded-full cursor-pointer transition-colors
+              text-[#8F95A8] hover:bg-[#F1F3F9] dark:text-[#C2C8E0] dark:hover:bg-[#292A2A]">
+              <FaXmark size={14} />
+            </button>
+          </div>
+        </div>
+
+        {/* Body */}
+        <div className="px-6 py-5 flex flex-col gap-4">
+
+          {/* Loyiha */}
+          <div>
+            <label className={labelCls}>Loyiha uchun</label>
+            <LoyihaDropdownForm value={form.loyiha} onChange={v => setF('loyiha', v)} error={errors.loyiha} />
+          </div>
+
+          {/* Xarajat turi + Toifa */}
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className={labelCls}>Xarajat turi</label>
+              <SelectFieldForm label="" value={form.type} onChange={v => setF('type', v)} options={XARAJAT_TURLARI} placeholder="Xarajat turini tanlang" error={errors.type} />
+            </div>
+            <div>
+              <label className={labelCls}>Toifa</label>
+              <SelectFieldForm label="" value={form.toifa} onChange={v => setF('toifa', v)} options={TOIFALAR} placeholder="Toifani tanlang" error={errors.toifa} />
+            </div>
+          </div>
+
+          {/* Miqdor */}
+          <div>
+            <label className={labelCls}>Miqdor (UZS)</label>
+            <input
+              className={iCls('amount') + ' text-right'}
+              placeholder="Summani kiriting: 0.00"
+              value={form.amount}
+              onChange={e => setF('amount', fmtMoney(e.target.value))}
+            />
+            {errors.amount && <p className="text-xs text-red-500 mt-1">{errors.amount}</p>}
+          </div>
+
+          {/* Sabab */}
+          <div>
+            <label className={labelCls}>Sabab</label>
+            <div className="relative">
+              <textarea
+                rows={3}
+                className={iCls('sabab') + ' resize-none pr-8'}
+                placeholder="Sababni yozing..."
+                value={form.sabab}
+                onChange={e => setF('sabab', e.target.value)}
+              />
+              {form.sabab && (
+                <button type="button" onClick={() => setF('sabab', '')}
+                  className="absolute top-2.5 right-2.5 text-[#B6BCCB] hover:text-[#5B6078] dark:text-[#8E95B5] cursor-pointer">
+                  <FaXmark size={12} />
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* To'lov turi */}
+          <div className={showKarta ? 'grid grid-cols-2 gap-4' : ''}>
+            <div>
+              <label className={labelCls}>To'lov turi</label>
+              <SelectFieldForm label="" value={form.tolovTuri} onChange={v => setF('tolovTuri', v)} options={TOLOV_TURLARI} placeholder="To'lov turini tanlang" error={errors.tolovTuri} />
+            </div>
+            {showKarta && (
+              <div>
+                <label className={labelCls}>Karta raqami</label>
+                <div className="relative">
+                  <input
+                    className={iCls('karta')}
+                    placeholder="0000 0000 0000 0000"
+                    value={form.karta}
+                    onChange={e => setF('karta', fmtCard(e.target.value))}
+                    maxLength={19}
+                  />
+                  {form.karta && (
+                    <button type="button" onClick={() => setF('karta', '')}
+                      className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#B6BCCB] hover:text-[#5B6078] dark:text-[#8E95B5] cursor-pointer">
+                      <FaXmark size={12} />
+                    </button>
+                  )}
+                </div>
+                {errors.karta && <p className="text-xs text-red-500 mt-1">{errors.karta}</p>}
+              </div>
+            )}
+          </div>
+
+        </div>
+
+        {/* Footer */}
+        <div className="px-6 py-4 border-t border-[#E2E6F2] dark:border-[#292A2A] flex items-center justify-end gap-3">
+          <button onClick={onClose}
+            className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium transition-colors cursor-pointer
+              text-[#5B6078] hover:bg-[#F1F3F9] dark:text-[#C2C8E0] dark:hover:bg-[#292A2A]">
+            <FaXmark size={14} />
+            Yopish
+          </button>
+          <button onClick={handleSubmit}
+            className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-colors cursor-pointer
+              bg-[#3F57B3] text-white hover:bg-[#526ED3]">
+            <img src="/imgs/checkIcon.svg" alt="" className="w-3.5 h-3.5 brightness-0 invert" />
+            So'rov yuborish
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+/* ── SelectFieldForm — error support bilan ── */
+function SelectFieldForm({ value, onChange, options, placeholder, error }) {
+  const { open, setOpen, ref } = useDropdown()
+  return (
+    <div ref={ref} className="relative">
+      <button type="button" onClick={() => setOpen(o => !o)}
+        className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm border transition-colors cursor-pointer
+          bg-white dark:bg-[#191A1A]
+          ${error ? 'border-red-400 dark:border-red-500' : 'border-[#E2E6F2] dark:border-[#292A2A]'}
+          ${value ? 'text-[#1A1D2E] dark:text-[#FFFFFF]' : 'text-[#8F95A8] dark:text-[#C2C8E0]'}`}>
+        <span className="truncate flex-1 text-left">{value || placeholder}</span>
+        <div className="flex items-center gap-1 shrink-0 ml-1">
+          {value && (
+            <span className="text-[#B6BCCB] hover:text-[#5B6078] dark:text-[#8E95B5] cursor-pointer"
+              onMouseDown={e => { e.stopPropagation(); onChange('') }}>
+              <FaXmark size={11} />
+            </span>
+          )}
+          <FaChevronDown size={11} className={`text-[#8F95A8] dark:text-[#C2C8E0] transition-transform ${open ? 'rotate-180' : ''}`} />
+        </div>
+      </button>
+      {error && <p className="text-xs text-red-500 mt-1">{error}</p>}
+      {open && (
+        <div className="absolute top-full left-0 mt-1 z-60 w-full rounded-2xl shadow-xl border overflow-hidden
+          bg-white border-[#E2E6F2] dark:bg-[#222323] dark:border-[#292A2A]">
+          {options.map((o, i) => (
+            <button key={o} type="button" onClick={() => { onChange(o); setOpen(false) }}
+              className={`w-full text-left px-4 py-3 text-sm transition-colors cursor-pointer
+                ${i < options.length - 1 ? 'border-b border-[#F1F3F9] dark:border-[#292A2A]' : ''}
+                ${value === o
+                  ? 'bg-[#EEF1FB] dark:bg-[#292A2A] text-[#3F57B3] dark:text-[#7F95E6] font-semibold'
+                  : 'text-[#1A1D2E] dark:text-[#FFFFFF] hover:bg-[#F8F9FC] dark:hover:bg-[#292A2A]'
+                }`}>
+              {o}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
+/* ── LoyihaDropdownForm — error support bilan ── */
+function LoyihaDropdownForm({ value, onChange, error }) {
+  const { open, setOpen, ref } = useDropdown()
+  return (
+    <div ref={ref} className="relative">
+      <button type="button" onClick={() => setOpen(o => !o)}
+        className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm border transition-colors cursor-pointer
+          bg-white dark:bg-[#191A1A]
+          ${error ? 'border-red-400 dark:border-red-500' : 'border-[#E2E6F2] dark:border-[#292A2A]'}
+          ${value ? 'text-[#1A1D2E] dark:text-[#FFFFFF]' : 'text-[#8F95A8] dark:text-[#C2C8E0]'}`}>
+        <span className="truncate flex-1 text-left">{value || 'Loyiha tanlang'}</span>
+        <div className="flex items-center gap-1 shrink-0 ml-1">
+          {value && (
+            <span className="text-[#B6BCCB] hover:text-[#5B6078] dark:text-[#8E95B5] cursor-pointer"
+              onMouseDown={e => { e.stopPropagation(); onChange('') }}>
+              <FaXmark size={11} />
+            </span>
+          )}
+          <FaChevronDown size={11} className={`text-[#8F95A8] dark:text-[#C2C8E0] transition-transform ${open ? 'rotate-180' : ''}`} />
+        </div>
+      </button>
+      {error && <p className="text-xs text-red-500 mt-1">{error}</p>}
+      {open && (
+        <div className="absolute top-full left-0 mt-1 z-60 w-full rounded-2xl shadow-xl border overflow-hidden
+          bg-white border-[#E2E6F2] dark:bg-[#222323] dark:border-[#292A2A]">
+          {LOYIHALAR.map((l, i) => (
+            <button key={l.name} type="button" onClick={() => { onChange(l.name); setOpen(false) }}
+              className={`w-full text-left px-4 py-3 transition-colors cursor-pointer
+                ${i < LOYIHALAR.length - 1 ? 'border-b border-[#F1F3F9] dark:border-[#292A2A]' : ''}
+                ${value === l.name ? 'bg-[#EEF1FB] dark:bg-[#292A2A]' : 'hover:bg-[#F8F9FC] dark:hover:bg-[#292A2A]'}`}>
+              <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0">
+                  <p className={`text-sm font-semibold truncate ${value === l.name ? 'text-[#3F57B3] dark:text-[#7F95E6]' : 'text-[#1A1D2E] dark:text-[#FFFFFF]'}`}>{l.name}</p>
+                  <p className="text-xs text-[#8F95A8] dark:text-[#C2C8E0] truncate mt-0.5">{l.desc}</p>
+                </div>
+                <span className="text-xs text-[#8F95A8] dark:text-[#C2C8E0] shrink-0 mt-0.5">{l.date}</span>
+              </div>
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
 function FilterModal({ onClose, onApply, initial }) {
   const [f, setF] = useState({ ...EMPTY_FILTER, ...initial })
   const set = (k, v) => setF(prev => ({ ...prev, [k]: v }))
@@ -188,20 +442,22 @@ function FilterModal({ onClose, onApply, initial }) {
       <div className="relative w-full max-w-[600px] rounded-2xl shadow-2xl bg-white dark:bg-[#222323]">
 
         {/* Header */}
-        <div className="px-6 pt-6  dark:border-[#292A2A]">
-          <div className="flex items-center gap-3">
-            <button onClick={onClose} className="text-[#5B6078] dark:text-[#C2C8E0] hover:opacity-70 cursor-pointer shrink-0">
-              <FaArrowLeft size={16} />
-            </button>
-            <div className='flex'>
-              <h2 className="text-lg font-bold text-[#1A1D2E] dark:text-[#FFFFFF]">Filtrlash</h2>
-             
+        <div className="px-6 pt-5 pb-4 border-b border-[#E2E6F2] dark:border-[#292A2A]">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <button onClick={onClose} className="text-[#5B6078] dark:text-[#C2C8E0] hover:opacity-70 cursor-pointer shrink-0">
+                <FaArrowLeft size={16} />
+              </button>
+              <div>
+                <h2 className="text-lg font-bold text-[#1A1D2E] dark:text-[#FFFFFF]">Filtrlash</h2>
+                <p className="text-xs text-[#8F95A8] dark:text-[#C2C8E0] mt-0.5">Kerakli filtirlarni tanlang, natijalar shunga qarab saralanadi</p>
+              </div>
             </div>
-           
+            <button onClick={onClose} className="w-7 h-7 flex items-center justify-center rounded-full cursor-pointer transition-colors
+              text-[#8F95A8] hover:bg-[#F1F3F9] dark:text-[#C2C8E0] dark:hover:bg-[#292A2A]">
+              <FaXmark size={14} />
+            </button>
           </div>
-            <p className="text-xs text-[#5B6078] dark:text-[#C2C8E0] mt-0.5">
-                Kerakli filtirlarni tanlang, natijalar shunga qarab saralanadi
-              </p>
         </div>
 
         {/* Body */}
@@ -292,6 +548,7 @@ export default function PaymentsPage() {
   const [payments, setPayments]     = useState(PAYMENTS_DATA)
   const [search, setSearch]         = useState('')
   const [showFilter, setShowFilter] = useState(false)
+  const [showSorov, setShowSorov]   = useState(false)
   const [filters, setFilters]       = useState(EMPTY_FILTER)
   const [selecting, setSelecting]   = useState(false)
   const [selected, setSelected]     = useState(new Set())
@@ -303,7 +560,7 @@ export default function PaymentsPage() {
     registerAction({
       label: "So'rov",
       icon: <img src="/imgs/moneysendflow.svg" alt="" className="w-4 h-4 brightness-0 invert" />,
-      onClick: () => alert("Yangi so'rov qo'shish"),
+      onClick: () => setShowSorov(true),
     })
     return () => clearAction()
   }, [registerAction, clearAction])
@@ -471,6 +728,16 @@ export default function PaymentsPage() {
           onClose={() => setShowFilter(false)}
           onApply={(f) => { setFilters(f); setShowFilter(false) }}
           initial={filters}
+        />
+      )}
+
+      {showSorov && (
+        <SorovModal
+          onClose={() => setShowSorov(false)}
+          onSubmit={(data) => {
+            setShowSorov(false)
+            showToast("Yuborildi", "So'rov muvaffaqiyatli yuborildi")
+          }}
         />
       )}
     </div>
