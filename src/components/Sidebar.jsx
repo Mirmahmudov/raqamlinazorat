@@ -92,74 +92,73 @@ const menuByRole = {
   ],
 }
 
-const avatarColor = {
-  admin: 'bg-[#526ED3]',
-  menager: 'bg-[#526ED3]',
-  xodim: 'bg-[#526ED3]',
-}
-
 export default function Sidebar() {
   const { user } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
 
-  const [collapsed, setCollapsed] = useState(false)
+  const [collapsed, setCollapsed]   = useState(false)
   const [openGroups, setOpenGroups] = useState({ 0: true })
 
-  const menu = menuByRole[user?.role] || []
-  const avatarBg = avatarColor[user?.role] || 'bg-[#526ED3]'
-
-  const toggleGroup = (i) => setOpenGroups(prev => ({ ...prev, [i]: !prev[i] }))
+  const menu          = menuByRole[user?.role] || []
+  // Accordion: faqat 1 ta ochiq
+  const toggleGroup   = (i) => setOpenGroups(prev => ({ [i]: !prev[i] }))
   const isGroupActive = (group) => group.children?.some(c => location.pathname === c.path)
   const handleDashboard = () => navigate(`/${user?.role}/dashboard`)
 
-  // Light: text-sub #5B6078, hover bg-elevation-2-alt #E9ECF5
-  // Dark:  text-sub #8E95B5, hover bg-elevation-1-alt #222323
-  const itemBase = [
-    'w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-sm font-medium transition-colors cursor-pointer',
-    'text-[#5A5F76] hover:bg-[#E9ECF5] hover:text-[#1A1D2E]',
-    'dark:text-[#C2C8E0] dark:hover:bg-[#292A2A] dark:hover:text-[#FFFFFF]',
+  /* collapsed ikonka style — active/inactive */
+  const iconBtn = (active) => [
+    'w-9 h-9 flex items-center justify-center rounded-xl transition-colors cursor-pointer border',
+    active
+      ? 'bg-[#E2E6F2] text-[#1A1D2E] border-[#EEF1F7] dark:bg-[#303131] dark:text-white dark:border-[#474848]'
+      : 'text-[#5B6078] border-transparent hover:bg-[#E2E6F2] hover:border-[#EEF1F7] dark:text-[#C2C8E0] dark:hover:bg-[#303131] dark:hover:border-[#474848]',
   ].join(' ')
-
-  // active: #E9ECF5, text-strong #1A1D2E
-  const itemActive = 'bg-[#E9ECF5] !text-[#1A1D2E] dark:bg-[#292A2A] dark:!text-[#FFFFFF]'
 
   return (
     <aside
       className={[
-        'hidden md:flex flex-col h-screen sticky top-0 shrink-0 border-r overflow-hidden transition-[width] duration-300',
-        // Light: bg #F1F3F9, border #E9ECF5
-        // Dark:  bg #222323, border #292A2A
-        'bg-[#F1F3F9] border-[#E9ECF5] dark:bg-[#222323] dark:border-[#292A2A]',
-        collapsed ? 'w-[52px] cursor-pointer' : 'w-[220px]',
+        'hidden md:flex flex-col h-screen sticky top-0 shrink-0 overflow-hidden transition-[width] duration-300',
+        'bg-[#F1F3F9] dark:bg-[#1C1D1D]',
+        collapsed ? 'w-[64px] cursor-pointer' : 'w-[280px]',
       ].join(' ')}
-      onClick={() => collapsed && setCollapsed(false)}
+      onClick={() => { if (collapsed) setCollapsed(false) }}
     >
 
       {/* ── Logo ── */}
       <div
-        className="flex items-center justify-center h-14 border-b border-[#E9ECF5] dark:border-[#292A2A] shrink-0 px-3"
-        onClick={e => !collapsed && e.stopPropagation()}
+        className={[
+          'flex items-center shrink-0 mb-4',
+          collapsed ? 'justify-center h-20 px-3' : 'h-20 px-6',
+        ].join(' ')}
       >
         {collapsed ? (
-          <button onClick={handleDashboard} className="cursor-pointer hover:opacity-80 transition-opacity">
-            <img src="/imgs/Logo.png" alt="logo" className="w-7 h-7 object-contain" />
+          /* Yopilgan: logo shakli o'zgarmaydi — rounded-lg kvadrat */
+          <button
+            onClick={handleDashboard}
+            className="w-8 h-8 rounded-lg bg-[#526ED3] flex items-center justify-center cursor-pointer hover:opacity-80 transition-opacity shrink-0"
+          >
+            <img src="/imgs/Logo.png" alt="logo" className="w-5 h-5 object-contain" />
           </button>
         ) : (
           <>
-            <button onClick={handleDashboard} className="flex items-center gap-2 flex-1 min-w-0 cursor-pointer hover:opacity-80 transition-opacity">
+            <button
+              onClick={handleDashboard}
+              className="flex items-center gap-2 flex-1 min-w-0 cursor-pointer hover:opacity-80 transition-opacity"
+            >
               <div className="w-8 h-8 rounded-lg bg-[#526ED3] flex items-center justify-center shrink-0">
                 <img src="/imgs/Logo.png" alt="logo" className="w-5 h-5 object-contain" />
               </div>
-              <span className="font-semibold text-sm truncate text-[#1A1D2E] dark:text-[#FFFFFF]">
+              <span
+                className="truncate text-[#1A1D2E] dark:text-white"
+                style={{ fontWeight: 500, fontSize: 15 }}
+              >
                 Raqamli Nazorat
               </span>
             </button>
             <button
               onClick={() => setCollapsed(true)}
               className="ml-1 flex items-center justify-center w-7 h-7 rounded-md transition-colors cursor-pointer shrink-0
-                text-[#5A5F76] hover:bg-[#E9ECF5] hover:text-[#1A1D2E]
-                dark:text-[#C2C8E0] dark:hover:bg-[#292A2A] dark:hover:text-[#FFFFFF]"
+                text-[#5B6078] hover:text-[#1A1D2E] dark:text-[#C2C8E0] dark:hover:text-white"
             >
               <IconSidebarLeft size={18} />
             </button>
@@ -169,49 +168,74 @@ export default function Sidebar() {
 
       {/* ── Nav ── */}
       <nav
-        className="flex-1 overflow-y-auto py-3 px-2 space-y-0.5"
-        onClick={e => !collapsed && e.stopPropagation()}
+        className={[
+          'flex-1 overflow-y-auto flex flex-col gap-2',
+          collapsed ? 'px-[10px]' : 'px-2 py-3',
+        ].join(' ')}
       >
         {menu.map((group, i) => {
           const active = isGroupActive(group)
-          const open = openGroups[i]
-          const Icon = group.icon
-          return (
-            <div key={i}>
-              <button
-                onClick={() => !collapsed && toggleGroup(i)}
-                title={collapsed ? group.label : undefined}
-                className={`${itemBase} ${active ? itemActive : ''}`}
-              >
-                <Icon size={18} className="shrink-0" />
-                {!collapsed && (
-                  <>
-                    <span className="flex-1 text-left truncate">{group.label}</span>
-                    {open
-                      ? <MdExpandLess size={15} className="shrink-0 opacity-40" />
-                      : <MdExpandMore size={15} className="shrink-0 opacity-40" />
-                    }
-                  </>
-                )}
-              </button>
+          const open   = openGroups[i]
+          const Icon   = group.icon
 
-              {!collapsed && open && (
-                <div className="ml-[30px] mt-0.5 mb-1 flex flex-col gap-0.5">
-                  {group.children.map(child => (
-                    <NavLink
-                      key={child.path}
-                      to={child.path}
-                      className={({ isActive }) =>
-                        `block px-3 py-1.5 rounded-lg text-sm transition-colors cursor-pointer ${
-                          isActive
-                            ? 'bg-[#E9ECF5] text-[#1A1D2E] font-medium dark:bg-[#292A2A] dark:text-[#FFFFFF]'
-                            : 'text-[#5A5F76] hover:bg-[#E9ECF5] hover:text-[#1A1D2E] dark:text-[#C2C8E0] dark:hover:bg-[#292A2A] dark:hover:text-[#FFFFFF]'
-                        }`
-                      }
-                    >
-                      {child.label}
-                    </NavLink>
-                  ))}
+          return (
+            <div key={i} className="flex flex-col gap-1.5">
+              {/* Group header */}
+              {collapsed ? (
+                /* Yopilgan: faqat ikonka, kvadrat */
+                <button
+                  onClick={() => setCollapsed(false)}
+                  title={group.label}
+                  className={iconBtn(active)}
+                >
+                  <Icon size={18} />
+                </button>
+              ) : (
+                <button
+                  onClick={() => toggleGroup(i)}
+                  className={[
+                    'w-full flex items-center gap-2.5 px-4 py-3 rounded-lg transition-colors cursor-pointer',
+                    'text-[13px] font-normal',
+                    active
+                      ? 'bg-[#E2E6F2] text-[#1A1D2E] border border-[#EEF1F7] dark:bg-[#303131] dark:text-white dark:border-[#474848]'
+                      : 'text-[#5B6078] border border-transparent hover:bg-[#E2E6F2] hover:text-[#1A1D2E] hover:border-[#EEF1F7] dark:text-[#C2C8E0] dark:hover:bg-[#303131] dark:hover:text-white dark:hover:border-[#474848]',
+                  ].join(' ')}
+                >
+                  <Icon size={18} className="shrink-0" />
+                  <span className="flex-1 text-left truncate">{group.label}</span>
+                  {open
+                    ? <MdExpandLess size={15} className="shrink-0 opacity-50" />
+                    : <MdExpandMore size={15} className="shrink-0 opacity-50" />
+                  }
+                </button>
+              )}
+
+              {/* Children — smooth accordion */}
+              {!collapsed && (
+                <div
+                  className="ml-3 flex flex-col gap-1 overflow-hidden transition-all duration-200 ease-in-out"
+                  style={{
+                    maxHeight: open ? `${group.children.length * 56}px` : '0px',
+                    opacity: open ? 1 : 0,
+                  }}
+                >
+                  {group.children.map(child => {
+                    const childActive = location.pathname === child.path
+                    return (
+                      <NavLink
+                        key={child.path}
+                        to={child.path}
+                        className={() => [
+                          'block px-4 py-3 rounded-lg text-[13px] font-normal transition-colors cursor-pointer border',
+                          childActive
+                            ? 'bg-[#E9ECF5] text-[#5B6078] border-[#E2E6F2] dark:bg-[#292A2A] dark:text-[#C2C8E0] dark:border-[#292A2A]'
+                            : 'text-[#5B6078] border-transparent hover:bg-[#E9ECF5] hover:border-[#E2E6F2] dark:text-[#C2C8E0] dark:hover:bg-[#292A2A] dark:hover:border-[#292A2A]',
+                        ].join(' ')}
+                      >
+                        {child.label}
+                      </NavLink>
+                    )
+                  })}
                 </div>
               )}
             </div>
@@ -221,40 +245,65 @@ export default function Sidebar() {
 
       {/* ── Bottom ── */}
       <div
-        className="border-t px-2 py-2 space-y-0.5 shrink-0 border-[#E9ECF5] dark:border-[#292A2A]"
-        onClick={e => !collapsed && e.stopPropagation()}
+        className={[
+          'flex flex-col gap-1 shrink-0',
+          collapsed ? 'px-[10px] py-3 items-center' : 'px-2 py-3',
+        ].join(' ')}
       >
-        <NavLink
-          to={`/${user?.role}/settings`}
-          title={collapsed ? 'Sozlamalar' : undefined}
-          className={({ isActive }) => `${itemBase} ${isActive ? itemActive : ''}`}
-        >
-          <MdSettings size={18} className="shrink-0" />
-          {!collapsed && <span>Sozlamalar</span>}
-        </NavLink>
+        {collapsed ? (
+          /* Yopilgan: Sozlamalar ikonka */
+          <button
+            onClick={() => navigate(`/${user?.role}/settings`)}
+            title="Sozlamalar"
+            className={iconBtn(location.pathname.includes('settings'))}
+          >
+            <MdSettings size={18} />
+          </button>
+        ) : (
+          <NavLink
+            to={`/${user?.role}/settings`}
+            className={({ isActive }) => [
+              'flex items-center gap-2.5 px-4 py-3 rounded-lg text-[13px] font-medium transition-colors cursor-pointer border',
+              isActive
+                ? 'bg-[#E2E6F2] text-[#1A1D2E] border-[#EEF1F7] dark:bg-[#303131] dark:text-white dark:border-[#474848]'
+                : 'text-[#5B6078] border-transparent hover:bg-[#E2E6F2] hover:border-[#EEF1F7] dark:text-[#C2C8E0] dark:hover:bg-[#303131] dark:border-transparent',
+            ].join(' ')}
+          >
+            <MdSettings size={18} className="shrink-0" />
+            <span>Sozlamalar</span>
+          </NavLink>
+        )}
+
+        {/* Separator */}
+        <div className="border-t border-[#E2E6F2] dark:border-[#474848] mx-1 min-w-10" />
 
         {/* Account */}
-        <div
-          onClick={handleDashboard}
-          title={collapsed ? `${user?.name} (${user?.role})` : undefined}
-          className="flex items-center gap-2.5 px-2 py-2 rounded-lg transition-colors cursor-pointer mt-1
-            hover:bg-[#E9ECF5] dark:hover:bg-[#292A2A]"
-        >
-          <div className={`w-7 h-7 rounded-full shrink-0 flex items-center justify-center text-white text-xs font-bold ${avatarBg}`}>
+        {collapsed ? (
+          <button
+            onClick={handleDashboard}
+            title={`${user?.name} (${user?.role})`}
+            className="w-9 h-9 rounded-xl bg-[#3A3B3B] flex items-center justify-center text-white text-xs font-medium cursor-pointer hover:opacity-80 transition-opacity shrink-0"
+          >
             {user?.name?.[0]}
-          </div>
-          {!collapsed && (
+          </button>
+        ) : (
+          <div
+            onClick={handleDashboard}
+            className="flex items-center gap-2.5 px-4 py-3 rounded-lg transition-colors cursor-pointer
+              hover:bg-[#E2E6F2] dark:hover:bg-[#303131]"
+          >
+            <div className="w-7 h-7 rounded-lg shrink-0 flex items-center justify-center text-white text-xs font-medium bg-[#3A3B3B] dark:bg-[#3A3B3B]">
+              {user?.name?.[0]}
+            </div>
             <div className="min-w-0">
-              <p className="text-sm font-medium truncate leading-tight text-[#1A1D2E] dark:text-[#FFFFFF]">{user?.name}</p>
+              <p className="text-[13px] font-medium truncate leading-tight text-[#1A1D2E] dark:text-white">
+                {user?.name}
+              </p>
               <p className="text-xs truncate text-[#526ED3] dark:text-[#7F95E6]">{user?.role}</p>
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </aside>
   )
 }
-
-
-
-
