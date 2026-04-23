@@ -128,7 +128,7 @@ export default function Sidebar() {
       <div
         className={[
           'flex items-center shrink-0 mb-4',
-          collapsed ? 'justify-center h-20 px-3' : 'h-20 px-6',
+          collapsed ? 'justify-center h-20 px-3' : 'h-20 px-3',
         ].join(' ')}
       >
         {collapsed ? (
@@ -149,8 +149,8 @@ export default function Sidebar() {
                 <img src="/imgs/Logo.png" alt="logo" className="w-5 h-5 object-contain" />
               </div>
               <span
-                className="truncate text-[#1A1D2E] dark:text-white"
-                style={{ fontWeight: 500, fontSize: 15 }}
+                className="truncate text-[#5B6078] dark:text-white"
+                style={{ fontWeight: 400, fontSize: 15 }}
               >
                 Raqamli Nazorat
               </span>
@@ -170,7 +170,7 @@ export default function Sidebar() {
       <nav
         className={[
           'flex-1 overflow-y-auto flex flex-col gap-2',
-          collapsed ? 'px-[10px]' : 'px-2 py-3',
+          collapsed ? 'px-[10px]' : 'px-3 py-3',
         ].join(' ')}
       >
         {menu.map((group, i) => {
@@ -195,7 +195,7 @@ export default function Sidebar() {
                   onClick={() => toggleGroup(i)}
                   className={[
                     'w-full flex items-center gap-2.5 px-4 py-3 rounded-lg transition-colors cursor-pointer',
-                    'text-[13px] font-normal',
+                    'text-[13px] font-[500]',
                     active
                       ? 'bg-[#E2E6F2] text-[#1A1D2E] border border-[#EEF1F7] dark:bg-[#303131] dark:text-white dark:border-[#474848]'
                       : 'text-[#5B6078] border border-transparent hover:bg-[#E2E6F2] hover:text-[#1A1D2E] hover:border-[#EEF1F7] dark:text-[#C2C8E0] dark:hover:bg-[#303131] dark:hover:text-white dark:hover:border-[#474848]',
@@ -226,7 +226,7 @@ export default function Sidebar() {
                         key={child.path}
                         to={child.path}
                         className={() => [
-                          'block px-4 py-3 rounded-lg text-[13px] font-normal transition-colors cursor-pointer border',
+                          'block px-4 py-3 rounded-lg text-[13px] font-[500] transition-colors cursor-pointer border',
                           childActive
                             ? 'bg-[#E9ECF5] text-[#5B6078] border-[#E2E6F2] dark:bg-[#292A2A] dark:text-[#C2C8E0] dark:border-[#292A2A]'
                             : 'text-[#5B6078] border-transparent hover:bg-[#E9ECF5] hover:border-[#E2E6F2] dark:text-[#C2C8E0] dark:hover:bg-[#292A2A] dark:hover:border-[#292A2A]',
@@ -247,7 +247,7 @@ export default function Sidebar() {
       <div
         className={[
           'flex flex-col gap-1 shrink-0',
-          collapsed ? 'px-[10px] py-3 items-center' : 'px-2 py-3',
+          collapsed ? 'px-[10px] py-3 items-center' : 'px-3 py-3',
         ].join(' ')}
       >
         {collapsed ? (

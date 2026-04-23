@@ -32,10 +32,9 @@ function fmt(n) {
   return n.toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
 }
 
-/* ── Custom Dropdown ── */
-function Dropdown({ label, options, value, onChange }) {
+/* ── Custom Filter Dropdown ── */
+function FilterSelect({ options, value, onChange, label }) {
   const [open, setOpen] = useState(false)
-  const [dropUp, setDropUp] = useState(false)
   const ref = useRef(null)
 
   useEffect(() => {
@@ -44,34 +43,53 @@ function Dropdown({ label, options, value, onChange }) {
     return () => document.removeEventListener('mousedown', h)
   }, [])
 
-  const handleOpen = () => {
-    if (!open && ref.current) {
-      const rect = ref.current.getBoundingClientRect()
-      const spaceBelow = window.innerHeight - rect.bottom
-      setDropUp(spaceBelow < 200)
-    }
-    setOpen(o => !o)
-  }
+  const display = value || label || options[0]
 
   return (
     <div className="relative" ref={ref}>
-      <button type="button" onClick={handleOpen}
-        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm border transition-colors cursor-pointer w-full
-          bg-white border-[#E2E6F2] text-[#1A1D2E]
-          dark:bg-[#191A1A] dark:border-[#292A2A] dark:text-[#FFFFFF]">
-        <span className="flex-1 text-left truncate">{value || label}</span>
-        <MdExpandMore size={15} className={`text-[#8F95A8] dark:text-[#C2C8E0] shrink-0 transition-transform ${open ? 'rotate-180' : ''}`} />
+      {/* Trigger */}
+      <button
+        type="button"
+        onClick={() => setOpen(o => !o)}
+        className="flex items-center gap-2 cursor-pointer transition-colors
+          bg-white border border-[#E2E6F2] text-[#1A1D2E]
+          dark:bg-[#222323] dark:border-[#292A2A] dark:text-[#FFFFFF]"
+        style={{ fontSize: 13, fontWeight: 500, padding: '6px 12px', borderRadius: 12, minWidth: 140 }}
+      >
+        <span className="flex-1 text-left truncate">{display}</span>
+        <MdExpandMore
+          size={16}
+          className={`shrink-0 text-[#8F95A8] transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
+        />
       </button>
+
+      {/* Dropdown list */}
       {open && (
-        <div className={`absolute left-0 z-50 w-full min-w-[140px] rounded-xl shadow-lg border overflow-hidden
-          bg-white border-[#E2E6F2] dark:bg-[#222323] dark:border-[#292A2A]
-          ${dropUp ? 'bottom-full mb-1' : 'top-full mt-1'}`}>
-          {options.map((opt, i) => (
-            <button key={opt} type="button" onClick={() => { onChange(opt); setOpen(false) }}
-              className={`w-full text-left px-3 py-2 text-xs transition-colors cursor-pointer
-                ${i < options.length - 1 ? 'border-b border-[#E2E6F2] dark:border-[#292A2A]' : ''}
-                hover:bg-[#F1F3F9] dark:hover:bg-[#292A2A]
-                ${value === opt ? 'text-[#3F57B3] font-medium dark:text-[#7F95E6]' : 'text-[#1A1D2E] dark:text-[#C2C8E0]'}`}>
+        <div
+          className="absolute top-full left-0 mt-1 z-50 rounded-2xl shadow-xl overflow-hidden
+            bg-white dark:bg-[#222323]"
+          style={{
+            border: '1px solid #EEF1F7',
+            padding: '6px 8px',
+            width: 250,
+            animation: 'dropdownIn 0.18s cubic-bezier(0.16,1,0.3,1)',
+          }}
+        >
+          {options.map((opt) => (
+            <button
+              key={opt}
+              type="button"
+              onClick={() => { onChange(opt); setOpen(false) }}
+              className="w-full text-left px-3 py-2.5 rounded-xl cursor-pointer transition-colors"
+              style={{
+                fontSize: 13,
+                fontWeight: 500,
+                color: '#1A1D2E',
+                background: value === opt ? '#F1F3F9' : 'transparent',
+              }}
+              onMouseEnter={e => { if (value !== opt) e.currentTarget.style.background = '#F8F9FC' }}
+              onMouseLeave={e => { if (value !== opt) e.currentTarget.style.background = 'transparent' }}
+            >
               {opt}
             </button>
           ))}
@@ -80,6 +98,8 @@ function Dropdown({ label, options, value, onChange }) {
     </div>
   )
 }
+/* ── Dropdown alias (UserDetail ichida ishlatiladi) ── */
+const Dropdown = FilterSelect
 
 /* ── Add User Modal ── */
 const EMPTY_FORM = { name: '', password: '', salary: '', viloyat: '', tuman: '', passportSeria: '', passportRaqam: '', lavozim: '', rol: '', avatar: null }
@@ -488,7 +508,7 @@ export default function UsersPage() {
         <div className="fixed top-5 right-5 z-50 flex items-start gap-3 px-4 py-3.5 rounded-2xl shadow-lg w-[320px]
           bg-white border border-[#E2E6F2] dark:bg-[#222323] dark:border-[#292A2A]">
           <div className="w-8 h-8 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center shrink-0 mt-0.5">
-            <MdCheck size={16} className="text-green-600 dark:text-green-400" />
+            <img src="/imgs/Union.svg" alt="" className="w-4 h-4" />
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-sm font-bold text-[#1A1D2E] dark:text-[#FFFFFF]">{toast.title}</p>
@@ -502,21 +522,30 @@ export default function UsersPage() {
 
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-[#1A1D2E] dark:text-[#FFFFFF]">Foydalanuvchilar</h1>
+        <h1
+          className="text-[#1A1D2E] dark:text-[#FFFFFF]"
+          style={{ fontSize: 24, fontWeight: 800 }}
+        >
+          Foydalanuvchilar
+        </h1>
         {selecting ? (
-          <button onClick={cancelSelecting} className="flex items-center gap-2 px-4 py-1.5 rounded-lg text-sm font-medium transition-colors cursor-pointer
-            bg-[#F8F9FC] border border-[#E2E6F2] text-[#1A1D2E] hover:bg-[#EEF1F7]
-            dark:bg-[#222323] dark:border-[#292A2A] dark:text-[#FFFFFF] dark:hover:bg-[#292A2A]">
+          <button
+            onClick={cancelSelecting}
+            className="flex items-center gap-2 px-4 py-1.5 rounded-lg text-sm font-medium transition-colors cursor-pointer
+              bg-[#DADFF0] text-[#1A1D2E] hover:bg-[#c8ceea]
+              dark:bg-[#292A2A] dark:text-[#FFFFFF] dark:hover:bg-[#303131]"
+          >
             <FaXmark size={14} />
             Bekor qilish
           </button>
         ) : (
-          <button onClick={startSelecting} className="flex items-center gap-2 px-4 py-1.5 rounded-lg text-sm font-medium transition-colors cursor-pointer
-            bg-[#F8F9FC] border border-[#E2E6F2] text-[#1A1D2E] hover:bg-[#EEF1F7]
-            dark:bg-[#222323] dark:border-[#292A2A] dark:text-[#FFFFFF] dark:hover:bg-[#292A2A]">
-            <svg width="15" height="15" viewBox="0 0 15 15" fill="none" className="text-[#5B6078] dark:text-[#C2C8E0]">
-              <path d="M2 4h11M2 7.5h11M2 11h11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-            </svg>
+          <button
+            onClick={startSelecting}
+            className="flex items-center gap-2 px-4 py-1.5 rounded-lg text-sm font-medium transition-colors cursor-pointer
+              bg-[#DADFF0] text-[#1A1D2E] hover:bg-[#c8ceea]
+              dark:bg-[#292A2A] dark:text-[#FFFFFF] dark:hover:bg-[#303131]"
+          >
+            <img src="/imgs/checkIcon.svg" alt="" className="w-4 h-4" />
             Tanlash
           </button>
         )}
@@ -524,67 +553,92 @@ export default function UsersPage() {
 
       {/* Filters */}
       <div className="flex flex-wrap gap-2">
-        <div className="relative w-[220px]">
-          <svg className="absolute left-3 top-1/2 -translate-y-1/2 text-[#B6BCCB] dark:text-[#8E95B5]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        {/* Search */}
+        <div className="relative">
+          <svg className="absolute left-3 top-1/2 -translate-y-1/2 text-[#8F95A8] dark:text-[#8E95B5]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
           </svg>
-          <input type="text" placeholder="Ism Sharifi bo'yicha izlash" value={search} onChange={e => setSearch(e.target.value)}
-            className="w-full pl-8 pr-3 py-2 rounded-lg text-sm outline-none transition-colors
-              bg-white border border-[#E2E6F2] text-[#1A1D2E] placeholder-[#B6BCCB] focus:border-[#526ED3]
-              dark:bg-[#222323] dark:border-[#292A2A] dark:text-[#FFFFFF] dark:placeholder-[#8E95B5]" />
+          <input
+            type="text"
+            placeholder="Ism Sharifi bo'yicha izlash"
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            className="pl-8 pr-3 outline-none transition-colors
+              bg-white border border-[#E2E6F2] text-[#1A1D2E] placeholder-[#8F95A8]
+              dark:bg-[#222323] dark:border-[#292A2A] dark:text-[#FFFFFF] dark:placeholder-[#8E95B5]"
+            style={{ fontSize: 13, fontWeight: 500, padding: '6px 12px 6px 32px', borderRadius: 12 }}
+          />
         </div>
-        <select value={position} onChange={e => setPosition(e.target.value)} className="px-3 py-2 rounded-lg text-sm outline-none cursor-pointer transition-colors bg-white border border-[#E2E6F2] text-[#1A1D2E] dark:bg-[#222323] dark:border-[#292A2A] dark:text-[#FFFFFF]">
-          {ALL_POSITIONS.map(p => <option key={p}>{p}</option>)}
-        </select>
-        <select value={role} onChange={e => setRole(e.target.value)} className="px-3 py-2 rounded-lg text-sm outline-none cursor-pointer transition-colors bg-white border border-[#E2E6F2] text-[#1A1D2E] dark:bg-[#222323] dark:border-[#292A2A] dark:text-[#FFFFFF]">
-          {ALL_ROLES.map(r => <option key={r}>{r}</option>)}
-        </select>
-        <select value={sort} onChange={e => setSort(e.target.value)} className="px-3 py-2 rounded-lg text-sm outline-none cursor-pointer transition-colors bg-white border border-[#E2E6F2] text-[#1A1D2E] dark:bg-[#222323] dark:border-[#292A2A] dark:text-[#FFFFFF]">
-          {SORTS.map(s => <option key={s}>{s}</option>)}
-        </select>
+        <FilterSelect options={ALL_POSITIONS} value={position} onChange={setPosition} />
+        <FilterSelect options={ALL_ROLES}     value={role}     onChange={setRole}     />
+        <FilterSelect options={SORTS}         value={sort}     onChange={setSort}     />
       </div>
 
       {/* Table */}
-      <div className="rounded-xl overflow-hidden border border-[#E2E6F2] dark:border-[#292A2A] bg-[#F8F9FC] dark:bg-[#222323]">
-        <table className="w-full text-sm">
+      <div className="overflow-hidden">
+        <table className="w-full" style={{ fontSize: 13 }}>
           <thead>
-            <tr className="border-b border-[#E2E6F2] dark:border-[#292A2A]">
-              {selecting && <th className="w-10 px-4 py-3 text-left"><input type="checkbox" checked={allSelected} onChange={toggleAll} className="cursor-pointer accent-[#3F57B3]" /></th>}
-              <th className="px-4 py-3 text-left font-medium text-[#5B6078] dark:text-[#C2C8E0] w-10">{selecting ? 'ID' : '№'}</th>
-              <th className="px-4 py-3 text-left font-medium text-[#5B6078] dark:text-[#C2C8E0]">Ism Sharifi</th>
-              <th className="px-4 py-3 text-left font-medium text-[#5B6078] dark:text-[#C2C8E0]">
+            <tr style={{ borderBottom: '1px solid #EEF1F7' }}>
+              <th className="px-4 py-3 text-left w-14" style={{ fontWeight: 500, color: '#5B6078' }}>
+                {selecting ? (
+                  <span className="flex items-center gap-2">
+                    <input type="checkbox" checked={allSelected} onChange={toggleAll} className="cursor-pointer accent-[#3F57B3]" />
+                    <span>ID</span>
+                  </span>
+                ) : '№'}
+              </th>
+              <th className="px-4 py-3 text-left" style={{ fontWeight: 500, color: '#5B6078' }}>Ism Sharifi</th>
+              <th className="px-4 py-3 text-left" style={{ fontWeight: 500, color: '#5B6078' }}>
                 <span className="flex items-center gap-1.5">
-                  {filtered.length > 0 && <span className="w-2 h-2 rounded-full bg-green-500 inline-block" />}
+                  <span className="w-2 h-2 rounded-full bg-green-500 inline-block shrink-0" />
                   Lavozim
                 </span>
               </th>
-              <th className="px-4 py-3 text-left font-medium text-[#5B6078] dark:text-[#C2C8E0]">
-                <span className="flex items-center gap-1.5">
-                  {filtered.length > 0 && <span className="w-2 h-2 rounded-full bg-red-500 inline-block" />}
+              <th className="px-4 py-3 text-right" style={{ fontWeight: 500, color: '#5B6078' }}>
+                <span className="flex items-center justify-end gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-red-500 inline-block shrink-0" />
                   Rol
                 </span>
               </th>
-              <th className="px-4 py-3 text-right font-medium text-[#5B6078] dark:text-[#C2C8E0]">Oylik maosh{filtered.length > 0 && ' (UZS)'}</th>
-              <th className="px-4 py-3 text-right font-medium text-[#5B6078] dark:text-[#C2C8E0]">Balans{filtered.length > 0 && ' (UZS)'}</th>
-              <th className="px-4 py-3 text-center font-medium text-[#5B6078] dark:text-[#C2C8E0]">Active</th>
+              <th className="px-4 py-3 text-right" style={{ fontWeight: 500, color: '#5B6078' }}>Oylik maosh (UZS)</th>
+              <th className="px-4 py-3 text-right" style={{ fontWeight: 500, color: '#5B6078' }}>Balans (UZS)</th>
+              <th className="px-4 py-3 text-center" style={{ fontWeight: 500, color: '#5B6078' }}>Active</th>
             </tr>
           </thead>
           <tbody>
             {filtered.map((u, idx) => (
-              <tr key={u.id} onClick={() => handleRowClick(u)}
-                className={`border-b border-[#EEF1F7] dark:border-[#292A2A] transition-colors last:border-0 cursor-pointer
-                  ${selected.has(u.id) ? 'bg-[#E9EEFF] dark:bg-[#292A2A]' : 'hover:bg-[#EEF1F7] dark:hover:bg-[#292A2A]'}`}>
-                {selecting && (
-                  <td className="px-4 py-3" onClick={e => e.stopPropagation()}>
-                    <input type="checkbox" checked={selected.has(u.id)} onChange={() => toggleOne(u.id)} className="cursor-pointer accent-[#3F57B3]" />
-                  </td>
-                )}
-                <td className="px-4 py-3 text-[#5B6078] dark:text-[#C2C8E0]">{selecting ? u.id : idx + 1}</td>
-                <td className="px-4 py-3 font-medium text-[#1A1D2E] dark:text-[#FFFFFF]">{u.name}</td>
-                <td className="px-4 py-3 text-[#5B6078] dark:text-[#C2C8E0]">{u.position}</td>
-                <td className="px-4 py-3 text-[#5B6078] dark:text-[#C2C8E0]">{u.role}</td>
-                <td className="px-4 py-3 text-right font-semibold text-[#1A1D2E] dark:text-[#FFFFFF]">{fmt(u.salary)}</td>
-                <td className="px-4 py-3 text-right text-[#1A1D2E] dark:text-[#FFFFFF]">{fmt(u.balance)}</td>
+              <tr
+                key={u.id}
+                onClick={() => handleRowClick(u)}
+                className="transition-colors cursor-pointer"
+                style={{ borderBottom: '1px solid #EEF1F7' }}
+              >
+                <td
+                  className="px-4 py-3 w-14"
+                  onClick={e => e.stopPropagation()}
+                >
+                  {selecting ? (
+                    <span
+                      className="flex items-center gap-2 transition-all duration-150"
+                      style={selected.has(u.id) ? { paddingLeft: 10 } : {}}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={selected.has(u.id)}
+                        onChange={() => toggleOne(u.id)}
+                        className="cursor-pointer accent-[#3F57B3] shrink-0"
+                      />
+                      <span style={{ color: '#8F95A8', fontWeight: 500 }}>{idx + 1}</span>
+                    </span>
+                  ) : (
+                    <span style={{ color: '#8F95A8', fontWeight: 500 }}>{idx + 1}</span>
+                  )}
+                </td>
+                <td className="px-4 py-3 font-medium" style={{ color: '#1A1D2E' }}>{u.name}</td>
+                <td className="px-4 py-3" style={{ color: '#1A1D2E', fontWeight: 500 }}>{u.position}</td>
+                <td className="px-4 py-3 text-right" style={{ color: '#1A1D2E', fontWeight: 500 }}>{u.role}</td>
+                <td className="px-4 py-3 text-right" style={{ color: '#1A1D2E', fontWeight: 800 }}>{fmt(u.salary)}</td>
+                <td className="px-4 py-3 text-right" style={{ color: '#1A1D2E', fontWeight: 500 }}>{fmt(u.balance)}</td>
                 <td className="px-4 py-3 text-center">
                   {u.active
                     ? <span className="inline-flex items-center justify-center w-6 h-6 rounded bg-green-500"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
