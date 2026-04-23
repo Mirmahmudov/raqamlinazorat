@@ -4,28 +4,28 @@ import { MdCheck } from 'react-icons/md'
 import { usePageAction } from '../../context/PageActionContext'
 
 const PAYMENTS_DATA = [
-  { id: 1,  name: 'Doston Dostonov Dostonovich', type: 'Kompaniya xarajatlari', toifa: 'Sayohat uchun',      loyiha: 'Ishlab chiqarish', amount: 10000000, created: '01.01.2026', approved: '01.01.2026', completed: '01.01.2026', active: true  },
-  { id: 2,  name: 'Asadullo Muxtarov',           type: 'Kompaniya xarajatlari', toifa: "Yo'l kira uchun",   loyiha: 'Qurilish',         amount: 5500000,  created: '15.05.2025', approved: '10.01.2025', completed: '05.01.2025', active: true  },
-  { id: 3,  name: 'Abror Zakirov',               type: 'Boshqa xarajatlar',     toifa: 'Ovqatlanish uchun', loyiha: 'Ishlab chiqarish', amount: 7250000,  created: '22.08.2024', approved: '18.02.2024', completed: '12.02.2024', active: true  },
-  { id: 4,  name: 'Dina Sharifova',              type: 'Boshqa xarajatlar',     toifa: 'Mukofotlar',        loyiha: 'Rivojlantirish',   amount: 10500000, created: '15.09.2024', approved: '25.07.2024', completed: '20.07.2024', active: true  },
-  { id: 5,  name: 'Mansur Karimov',              type: 'Boshqa xarajatlar',     toifa: "Yo'l kira uchun",   loyiha: 'Ilgari surish',    amount: 5750000,  created: '30.10.2024', approved: '10.09.2024', completed: '05.09.2024', active: true  },
-  { id: 6,  name: 'Laylo Azizova',               type: 'Boshqa xarajatlar',     toifa: "Yo'l kira uchun",   loyiha: 'Tashkiliy',        amount: 8300000,  created: '01.11.2024', approved: '12.08.2024', completed: '08.08.2024', active: true  },
-  { id: 7,  name: 'Rustam Salimov',              type: 'Boshqa xarajatlar',     toifa: "Yo'l kira uchun",   loyiha: 'Tarqatish',        amount: 9100000,  created: '17.12.2024', approved: '22.10.2024', completed: '18.10.2024', active: true  },
-  { id: 8,  name: 'Nilufar Tursunova',           type: 'Boshqa xarajatlar',     toifa: "Yo'l kira uchun",   loyiha: 'Boshqarish',       amount: 11200000, created: '12.01.2025', approved: '15.11.2024', completed: '10.11.2024', active: true  },
-  { id: 9,  name: 'Otabek Qodirov',              type: 'Boshqa xarajatlar',     toifa: "Yo'l kira uchun",   loyiha: 'Tahlil',           amount: 6800000,  created: '05.02.2025', approved: '28.12.2024', completed: '23.12.2024', active: true  },
-  { id: 10, name: 'Shohjanon Sultonov',          type: 'Boshqa xarajatlar',     toifa: "Yo'l kira uchun",   loyiha: 'Savdolar',         amount: 12400000, created: '28.02.2025', approved: '02.01.2025', completed: '28.12.2024', active: true  },
-  { id: 11, name: 'Malika Xolmatova',            type: 'Moliyaviy',             toifa: "Yo'l kira uchun",   loyiha: 'Hujjatlar',        amount: 4600000,  created: '20.03.2025', approved: '10.02.2025', completed: '05.02.2025', active: true  },
+  { id: 1, name: 'Doston Dostonov Dostonovich', type: 'Kompaniya xarajatlari', toifa: 'Sayohat uchun', loyiha: 'Ishlab chiqarish', amount: 10000000, created: '01.01.2026', approved: '01.01.2026', completed: '01.01.2026', active: true },
+  { id: 2, name: 'Asadullo Muxtarov', type: 'Kompaniya xarajatlari', toifa: "Yo'l kira uchun", loyiha: 'Qurilish', amount: 5500000, created: '15.05.2025', approved: '10.01.2025', completed: '05.01.2025', active: true },
+  { id: 3, name: 'Abror Zakirov', type: 'Boshqa xarajatlar', toifa: 'Ovqatlanish uchun', loyiha: 'Ishlab chiqarish', amount: 7250000, created: '22.08.2024', approved: '18.02.2024', completed: '12.02.2024', active: true },
+  { id: 4, name: 'Dina Sharifova', type: 'Boshqa xarajatlar', toifa: 'Mukofotlar', loyiha: 'Rivojlantirish', amount: 10500000, created: '15.09.2024', approved: '25.07.2024', completed: '20.07.2024', active: true },
+  { id: 5, name: 'Mansur Karimov', type: 'Boshqa xarajatlar', toifa: "Yo'l kira uchun", loyiha: 'Ilgari surish', amount: 5750000, created: '30.10.2024', approved: '10.09.2024', completed: '05.09.2024', active: true },
+  { id: 6, name: 'Laylo Azizova', type: 'Boshqa xarajatlar', toifa: "Yo'l kira uchun", loyiha: 'Tashkiliy', amount: 8300000, created: '01.11.2024', approved: '12.08.2024', completed: '08.08.2024', active: true },
+  { id: 7, name: 'Rustam Salimov', type: 'Boshqa xarajatlar', toifa: "Yo'l kira uchun", loyiha: 'Tarqatish', amount: 9100000, created: '17.12.2024', approved: '22.10.2024', completed: '18.10.2024', active: true },
+  { id: 8, name: 'Nilufar Tursunova', type: 'Boshqa xarajatlar', toifa: "Yo'l kira uchun", loyiha: 'Boshqarish', amount: 11200000, created: '12.01.2025', approved: '15.11.2024', completed: '10.11.2024', active: true },
+  { id: 9, name: 'Otabek Qodirov', type: 'Boshqa xarajatlar', toifa: "Yo'l kira uchun", loyiha: 'Tahlil', amount: 6800000, created: '05.02.2025', approved: '28.12.2024', completed: '23.12.2024', active: true },
+  { id: 10, name: 'Shohjanon Sultonov', type: 'Boshqa xarajatlar', toifa: "Yo'l kira uchun", loyiha: 'Savdolar', amount: 12400000, created: '28.02.2025', approved: '02.01.2025', completed: '28.12.2024', active: true },
+  { id: 11, name: 'Malika Xolmatova', type: 'Moliyaviy', toifa: "Yo'l kira uchun", loyiha: 'Hujjatlar', amount: 4600000, created: '20.03.2025', approved: '10.02.2025', completed: '05.02.2025', active: true },
 ]
 
 const XARAJAT_TURLARI = ['Kompaniya xarajatlari', "Mablag' chiqarish", 'Boshqa xarajatlar', 'Moliyaviy']
-const TOIFALAR        = ['Sayohat uchun', "Yo'l kira uchun", 'Ovqatlanish uchun', 'Mukofotlar']
+const TOIFALAR = ['Sayohat uchun', "Yo'l kira uchun", 'Ovqatlanish uchun', 'Mukofotlar']
 const LOYIHALAR = [
-  { name: 'Marketing Platform',               desc: 'Marketing platformasi reklama',       date: '15.04.2026' },
-  { name: 'E-commerce Site',                  desc: 'E-commerce sayti mahsulotla',         date: '20.05.2026' },
-  { name: 'Analytics Dashboard',              desc: "Analytics dashboardi ma'lumo",        date: '30.06.2026' },
-  { name: 'Social Media Manager',             desc: 'Ijtimoiy tarmoqlarni boshqarish',     date: '15.07.2026' },
-  { name: 'Email Marketing Tool',             desc: 'Email marketing vositalari mijo',     date: '10.09.2026' },
-  { name: 'Customer Relationship Management', desc: 'Mijozlar bilan aloqalarni boshqa',    date: '25.10.2026' },
+  { name: 'Marketing Platform', desc: 'Marketing platformasi reklama', date: '15.04.2026' },
+  { name: 'E-commerce Site', desc: 'E-commerce sayti mahsulotla', date: '20.05.2026' },
+  { name: 'Analytics Dashboard', desc: "Analytics dashboardi ma'lumo", date: '30.06.2026' },
+  { name: 'Social Media Manager', desc: 'Ijtimoiy tarmoqlarni boshqarish', date: '15.07.2026' },
+  { name: 'Email Marketing Tool', desc: 'Email marketing vositalari mijo', date: '10.09.2026' },
+  { name: 'Customer Relationship Management', desc: 'Mijozlar bilan aloqalarni boshqa', date: '25.10.2026' },
 ]
 
 const EMPTY_FILTER = {
@@ -168,10 +168,10 @@ function DateTimeRangeRow({ label, dateFromD, dateFromT, dateToD, dateToT, onDat
     <div>
       <label className={labelCls}>{label}</label>
       <div className="grid grid-cols-4 gap-2">
-        <DateBox type="date" value={dateFromD} onChange={onDateFromD} placeholder="dan"   icon={<FaCalendarDays size={12} />} />
-        <DateBox type="time" value={dateFromT} onChange={onTimeFromD}                     icon={<FaClock size={12} />} />
-        <DateBox type="date" value={dateToD}   onChange={onDateToD}   placeholder="gacha" icon={<FaCalendarDays size={12} />} />
-        <DateBox type="time" value={dateToT}   onChange={onTimeToD}                       icon={<FaClock size={12} />} />
+        <DateBox type="date" value={dateFromD} onChange={onDateFromD} placeholder="dan" icon={<FaCalendarDays size={12} />} />
+        <DateBox type="time" value={dateFromT} onChange={onTimeFromD} icon={<FaClock size={12} />} />
+        <DateBox type="date" value={dateToD} onChange={onDateToD} placeholder="gacha" icon={<FaCalendarDays size={12} />} />
+        <DateBox type="time" value={dateToT} onChange={onTimeToD} icon={<FaClock size={12} />} />
       </div>
     </div>
   )
@@ -198,10 +198,10 @@ function SorovModal({ onClose, onSubmit }) {
 
   const validate = () => {
     const e = {}
-    if (!form.loyiha)    e.loyiha    = 'Loyiha tanlanmagan'
-    if (!form.type)      e.type      = 'Xarajat turi tanlanmagan'
-    if (!form.toifa)     e.toifa     = 'Toifa tanlanmagan'
-    if (!form.amount)    e.amount    = 'Miqdor kiritilmagan'
+    if (!form.loyiha) e.loyiha = 'Loyiha tanlanmagan'
+    if (!form.type) e.type = 'Xarajat turi tanlanmagan'
+    if (!form.toifa) e.toifa = 'Toifa tanlanmagan'
+    if (!form.amount) e.amount = 'Miqdor kiritilmagan'
     if (!form.tolovTuri) e.tolovTuri = "To'lov turi tanlanmagan"
     if (showKarta && form.karta.replace(/\s/g, '').length < 16) e.karta = 'Karta raqami to\'liq emas'
     return e
@@ -491,31 +491,31 @@ function FilterModal({ onClose, onApply, initial }) {
 
           {/* Xarajat turi + Toifa */}
           <div className="grid grid-cols-2 gap-4">
-            <SelectField label="Xarajat turi" value={f.type}  onChange={v => set('type', v)}  options={XARAJAT_TURLARI} placeholder="Xarajat turini tanlang" />
-            <SelectField label="Toifa"        value={f.toifa} onChange={v => set('toifa', v)} options={TOIFALAR}        placeholder="Toifani tanlang" />
+            <SelectField label="Xarajat turi" value={f.type} onChange={v => set('type', v)} options={XARAJAT_TURLARI} placeholder="Xarajat turini tanlang" />
+            <SelectField label="Toifa" value={f.toifa} onChange={v => set('toifa', v)} options={TOIFALAR} placeholder="Toifani tanlang" />
           </div>
 
           {/* Vaqt oraliqlar */}
           <DateTimeRangeRow
             label="Yaratilgan vaqt oralig'i"
-            dateFromD={f.dateFromD}      dateFromT={f.dateFromT}
-            dateToD={f.dateToD}          dateToT={f.dateToT}
-            onDateFromD={v => set('dateFromD', v)}   onTimeFromD={v => set('dateFromT', v)}
-            onDateToD={v => set('dateToD', v)}       onTimeToD={v => set('dateToT', v)}
+            dateFromD={f.dateFromD} dateFromT={f.dateFromT}
+            dateToD={f.dateToD} dateToT={f.dateToT}
+            onDateFromD={v => set('dateFromD', v)} onTimeFromD={v => set('dateFromT', v)}
+            onDateToD={v => set('dateToD', v)} onTimeToD={v => set('dateToT', v)}
           />
           <DateTimeRangeRow
             label="To'langan vaqt oralig'i"
-            dateFromD={f.approvedFromD}  dateFromT={f.approvedFromT}
-            dateToD={f.approvedToD}      dateToT={f.approvedToT}
-            onDateFromD={v => set('approvedFromD', v)}  onTimeFromD={v => set('approvedFromT', v)}
-            onDateToD={v => set('approvedToD', v)}      onTimeToD={v => set('approvedToT', v)}
+            dateFromD={f.approvedFromD} dateFromT={f.approvedFromT}
+            dateToD={f.approvedToD} dateToT={f.approvedToT}
+            onDateFromD={v => set('approvedFromD', v)} onTimeFromD={v => set('approvedFromT', v)}
+            onDateToD={v => set('approvedToD', v)} onTimeToD={v => set('approvedToT', v)}
           />
           <DateTimeRangeRow
             label="Tasdiqlangan vaqt oralig'i"
             dateFromD={f.completedFromD} dateFromT={f.completedFromT}
-            dateToD={f.completedToD}     dateToT={f.completedToT}
+            dateToD={f.completedToD} dateToT={f.completedToT}
             onDateFromD={v => set('completedFromD', v)} onTimeFromD={v => set('completedFromT', v)}
-            onDateToD={v => set('completedToD', v)}     onTimeToD={v => set('completedToT', v)}
+            onDateToD={v => set('completedToD', v)} onTimeToD={v => set('completedToT', v)}
           />
         </div>
 
@@ -531,7 +531,7 @@ function FilterModal({ onClose, onApply, initial }) {
             className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-colors cursor-pointer
               bg-[#3F57B3] text-white hover:bg-[#526ED3]">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-              <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+              <circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" />
             </svg>
             Qidirish
           </button>
@@ -545,14 +545,14 @@ function FilterModal({ onClose, onApply, initial }) {
 export default function PaymentsPage() {
   const { registerAction, clearAction } = usePageAction()
 
-  const [payments, setPayments]     = useState(PAYMENTS_DATA)
-  const [search, setSearch]         = useState('')
+  const [payments, setPayments] = useState(PAYMENTS_DATA)
+  const [search, setSearch] = useState('')
   const [showFilter, setShowFilter] = useState(false)
-  const [showSorov, setShowSorov]   = useState(false)
-  const [filters, setFilters]       = useState(EMPTY_FILTER)
-  const [selecting, setSelecting]   = useState(false)
-  const [selected, setSelected]     = useState(new Set())
-  const [toast, setToast]           = useState(null)
+  const [showSorov, setShowSorov] = useState(false)
+  const [filters, setFilters] = useState(EMPTY_FILTER)
+  const [selecting, setSelecting] = useState(false)
+  const [selected, setSelected] = useState(new Set())
+  const [toast, setToast] = useState(null)
 
   const hasFilter = Object.values(filters).some(v => v)
 
@@ -568,16 +568,16 @@ export default function PaymentsPage() {
   const filtered = payments.filter(p => {
     const q = search.toLowerCase()
     if (q && !p.name.toLowerCase().includes(q)) return false
-    if (filters.type   && p.type   !== filters.type)   return false
-    if (filters.toifa  && p.toifa  !== filters.toifa)  return false
+    if (filters.type && p.type !== filters.type) return false
+    if (filters.toifa && p.toifa !== filters.toifa) return false
     if (filters.loyiha && p.loyiha !== filters.loyiha) return false
     return true
   })
 
   const allSelected = filtered.length > 0 && filtered.every(p => selected.has(p.id))
-  const toggleAll   = () => {
+  const toggleAll = () => {
     if (allSelected) setSelected(prev => { const s = new Set(prev); filtered.forEach(p => s.delete(p.id)); return s })
-    else             setSelected(prev => { const s = new Set(prev); filtered.forEach(p => s.add(p.id));    return s })
+    else setSelected(prev => { const s = new Set(prev); filtered.forEach(p => s.add(p.id)); return s })
   }
   const toggleOne = (id) => setSelected(prev => { const s = new Set(prev); s.has(id) ? s.delete(id) : s.add(id); return s })
 
@@ -614,18 +614,18 @@ export default function PaymentsPage() {
         <h1 className="text-2xl font-bold text-[#1A1D2E] dark:text-[#FFFFFF]">Xarajat so'rovlari</h1>
         {selecting ? (
           <button onClick={() => { setSelecting(false); setSelected(new Set()) }}
-            className="flex items-center gap-2 px-4 py-1.5 rounded-lg text-[13px] font-extrabold transition-colors cursor-pointer
+            className="flex items-center gap-2 px-4 py-1.5 rounded-xl text-[13px] font-extrabold transition-colors cursor-pointer
               bg-[#DADFF0] text-[#1A1D2E]
-              dark:bg-[#2A2D3E] dark:text-[#FFFFFF]">
+              dark:bg-[#3A3B3B] dark:text-white">
             <FaXmark size={13} />
             Bekor qilish
           </button>
         ) : (
           <button onClick={() => setSelecting(true)}
-            className="flex items-center gap-2 px-4 py-1.5 rounded-lg text-[13px] font-extrabold transition-colors cursor-pointer
+            className="flex items-center gap-2 px-4 py-1.5 rounded-xl text-[13px] font-extrabold transition-colors cursor-pointer
               bg-[#DADFF0] text-[#1A1D2E]
-              dark:bg-[#2A2D3E] dark:text-[#FFFFFF]">
-            <img src="/imgs/checkIcon.svg" alt="" className="w-4 h-4" />
+              dark:bg-[#3A3B3B] dark:text-white">
+            <img src="/imgs/checkIcon.svg" alt="" className="w-4 h-4 dark:brightness-0 dark:invert" />
             Tanlash
           </button>
         )}
@@ -635,17 +635,17 @@ export default function PaymentsPage() {
       <div className="flex items-center gap-2">
         <div className="relative">
           <svg className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#8F95A8] dark:text-[#C2C8E0]" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+            <circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" />
           </svg>
           <input type="text" placeholder="Ism Sharifi bo'yicha izlash" value={search} onChange={e => setSearch(e.target.value)}
-            className="pl-9 pr-4 py-2 rounded-lg text-[15px] font-medium outline-none transition-colors w-[240px]
+            className="pl-9 pr-4 py-[4px] rounded-xl text-[13px] font-medium outline-none transition-colors w-[240px]
               bg-[#F1F3F9] border border-[#E2E6F2] text-[#8F95A8] placeholder-[#8F95A8] focus:border-[#526ED3]
-              dark:bg-[#222323] dark:border-[#292A2A] dark:text-[#C2C8E0] dark:placeholder-[#C2C8E0]" />
+              dark:bg-[#222323] dark:border-[#474848] dark:text-[#C2C8E0] dark:placeholder-[#C2C8E0]" />
         </div>
         <button onClick={() => setShowFilter(true)}
-          className="relative flex items-center gap-2 px-4 py-2 rounded-lg text-[15px] font-extrabold border transition-colors cursor-pointer
+          className="relative flex items-center gap-2 px-3 py-[4px] rounded-xl text-[13px] font-extrabold border transition-colors cursor-pointer
             bg-[#F1F3F9] border-[#E2E6F2] text-[#5B6078]
-          dark:bg-[#222323] dark:border-[#292A2A] dark:text-[#C2C8E0]">
+            dark:bg-[#222323] dark:border-[#474848] dark:text-[#C2C8E0]">
           <FaFilter size={13} />
           Filtrlash
           {hasFilter && <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-[#3F57B3]" />}
@@ -658,16 +658,17 @@ export default function PaymentsPage() {
           <thead>
             <tr className="border-b border-[#E2E6F2] dark:border-[#292A2A]">
               {selecting && <th className="w-10 px-4 py-3 text-left"><input type="checkbox" checked={allSelected} onChange={toggleAll} className="cursor-pointer accent-[#3F57B3]" /></th>}
-              <th className="px-4 py-3 text-left font-medium text-[#5B6078] dark:text-[#C2C8E0] w-10">№</th>
-              <th className="px-4 py-3 text-left font-medium text-[#5B6078] dark:text-[#C2C8E0]">Ism Sharifi</th>
-              <th className="px-4 py-3 text-left font-medium text-[#5B6078] dark:text-[#C2C8E0]">Xarajat turi</th>
-              <th className="px-4 py-3 text-left font-medium text-[#5B6078] dark:text-[#C2C8E0]">Toifa</th>
-              <th className="px-4 py-3 text-right font-medium text-[#5B6078] dark:text-[#C2C8E0]">Loyiha</th>
-              <th className="px-4 py-3 text-right font-medium text-[#5B6078] dark:text-[#C2C8E0]">Summa (UZS)</th>
-              <th className="px-4 py-3 text-right font-medium text-[#5B6078] dark:text-[#C2C8E0]">Yaratilgan vaqt</th>
-              <th className="px-4 py-3 text-right font-medium text-[#5B6078] dark:text-[#C2C8E0]">To'langan vaqt</th>
-              <th className="px-4 py-3 text-right font-medium text-[#5B6078] dark:text-[#C2C8E0]">Tasdiqlangan vaqt</th>
-              <th className="px-4 py-3 text-center font-medium text-[#5B6078] dark:text-[#C2C8E0] sticky right-0 backdrop-blur-sm bg-white/80 dark:bg-black/20 shadow-[-4px_0_8px_-2px_rgba(0,0,0,0.06)]">Xolat</th>
+              <th className="px-4 py-3 text-left font-medium text-[#1B1F3B]/65 dark:text-[#C2C8E0] w-10">№</th>
+              <th className="px-4 py-3 text-left font-medium text-[#1B1F3B]/65 dark:text-[#C2C8E0]">Ism Sharifi</th>
+              <th className="px-4 py-3 text-left font-medium text-[#1B1F3B]/65 dark:text-[#C2C8E0]">Xarajat turi</th>
+              <th className="px-4 py-3 text-left font-medium text-[#1B1F3B]/65 dark:text-[#C2C8E0]">Toifa</th>
+              <th className="px-4 py-3 text-right font-medium text-[#1B1F3B]/65 dark:text-[#C2C8E0]">Loyiha</th>
+              <th className="px-4 py-3 text-right font-medium text-[#1B1F3B]/65 dark:text-[#C2C8E0]">Summa (UZS)</th>
+              <th className="px-4 py-3 text-right font-medium text-[#1B1F3B]/65 dark:text-[#C2C8E0]">Yaratilgan vaqt</th>
+              <th className="px-4 py-3 text-right font-medium text-[#1B1F3B]/65 dark:text-[#C2C8E0]">To'langan vaqt</th>
+              <th className="px-4 py-3 text-right font-medium text-[#1B1F3B]/65 dark:text-[#C2C8E0]">Tasdiqlangan vaqt</th>
+              <th className="px-4 py-3 text-center font-medium text-[#5B6078] sticky right-0 bg-[#F8F9FC] border-[#E2E6F2] 
+            dark:bg-[#191A1A] dark:border-[#474848] dark:text-[#C2C8E0]">Xolat</th>
             </tr>
           </thead>
           <tbody>
@@ -683,21 +684,22 @@ export default function PaymentsPage() {
                     </div>
                   </td>
                 )}
-                <td className="px-4 py-3 text-[#5B6078] dark:text-[#C2C8E0]">
+                <td className="px-4 py-3 text-[#1A1D2E] dark:text-[#FFFFFF]">
                   <span className={`inline-block transition-transform duration-200 ${selected.has(p.id) ? 'translate-x-2' : ''}`}>{idx + 1}</span>
                 </td>
                 <td className="px-4 py-3 font-medium text-[#1A1D2E] dark:text-[#FFFFFF]">{p.name}</td>
-                <td className="px-4 py-3 text-[#5B6078] dark:text-[#C2C8E0]">{p.type}</td>
-                <td className="px-4 py-3 text-[#5B6078] dark:text-[#C2C8E0]">{p.toifa}</td>
-                <td className="px-4 py-3 text-right text-[#5B6078] dark:text-[#C2C8E0]">{p.loyiha}</td>
+                <td className="px-4 py-3 text-[#1A1D2E] dark:text-[#FFFFFF]">{p.type}</td>
+                <td className="px-4 py-3 text-[#1A1D2E] dark:text-[#FFFFFF]">{p.toifa}</td>
+                <td className="px-4 py-3 text-right text-[#1A1D2E] dark:text-[#FFFFFF]">{p.loyiha}</td>
                 <td className="px-4 py-3 text-right font-semibold text-[#1A1D2E] dark:text-[#FFFFFF]">{fmt(p.amount)}</td>
-                <td className="px-4 py-3 text-right text-[#5B6078] dark:text-[#C2C8E0]">{p.created}</td>
-                <td className="px-4 py-3 text-right text-[#5B6078] dark:text-[#C2C8E0]">{p.approved}</td>
-                <td className="px-4 py-3 text-right text-[#5B6078] dark:text-[#C2C8E0]">{p.completed}</td>
-                <td className="px-4 py-3 text-center sticky right-0 backdrop-blur-sm bg-white/80 dark:bg-black/20 shadow-[-4px_0_8px_-2px_rgba(0,0,0,0.06)]">
+                <td className="px-4 py-3 text-right text-[#1A1D2E] dark:text-[#FFFFFF]">{p.created}</td>
+                <td className="px-4 py-3 text-right text-[#1A1D2E] dark:text-[#FFFFFF]">{p.approved}</td>
+                <td className="px-4 py-3 text-right text-[#1A1D2E] dark:text-[#FFFFFF]">{p.completed}</td>
+                <td className="px-4 py-3 text-center sticky right-0 bg-[#F8F9FC] border-[#E2E6F2] 
+            dark:bg-[#191A1A] dark:border-[#474848]  ">
                   {p.active
-                    ? <span className="inline-flex items-center justify-center w-6 h-6 rounded bg-green-500"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
-                    : <span className="inline-flex items-center justify-center w-6 h-6 rounded bg-[#E02D2D]"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 3l6 6M9 3l-6 6" stroke="white" strokeWidth="1.5" strokeLinecap="round"/></svg></span>
+                    ? <span className="inline-flex items-center justify-center w-6 h-6 rounded bg-green-500"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg></span>
+                    : <span className="inline-flex items-center justify-center w-6 h-6 rounded bg-[#E02D2D]"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 3l6 6M9 3l-6 6" stroke="white" strokeWidth="1.5" strokeLinecap="round" /></svg></span>
                   }
                 </td>
               </tr>

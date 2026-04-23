@@ -328,16 +328,18 @@ export default function SalaryPage() {
         <h1 className="text-2xl font-bold text-[#1A1D2E] dark:text-[#FFFFFF]">Ish haqi</h1>
         {selecting ? (
           <button onClick={() => { setSelecting(false); setSelected(new Set()) }}
-            className="flex items-center gap-2 px-4 py-1.5 rounded-lg text-[13px] font-extrabold transition-colors cursor-pointer
-              bg-[#DADFF0] text-[#1A1D2E] dark:bg-[#2A2D3E] dark:text-[#FFFFFF]">
+            className="flex items-center gap-2 px-4 py-1.5 rounded-xl text-[13px] font-extrabold transition-colors cursor-pointer
+              bg-[#DADFF0] text-[#1A1D2E]
+              dark:bg-[#3A3B3B] dark:text-white">
             <FaXmark size={13}/>
             Bekor qilish
           </button>
         ) : (
           <button onClick={() => setSelecting(true)}
-            className="flex items-center gap-2 px-4 py-1.5 rounded-lg text-[13px] font-extrabold transition-colors cursor-pointer
-              bg-[#DADFF0] text-[#1A1D2E] dark:bg-[#2A2D3E] dark:text-[#FFFFFF]">
-            <img src="/imgs/checkIcon.svg" alt="" className="w-4 h-4"/>
+            className="flex items-center gap-2 px-4 py-1.5 rounded-xl text-[13px] font-extrabold transition-colors cursor-pointer
+              bg-[#DADFF0] text-[#1A1D2E]
+              dark:bg-[#3A3B3B] dark:text-white">
+            <img src="/imgs/checkIcon.svg" alt="" className="w-4 h-4 dark:brightness-0 dark:invert"/>
             Tanlash
           </button>
         )}
@@ -350,14 +352,14 @@ export default function SalaryPage() {
             <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
           </svg>
           <input type="text" placeholder="Ism Sharifi bo'yicha izlash" value={search} onChange={e => setSearch(e.target.value)}
-            className="pl-9 pr-4 py-2 rounded-lg text-[15px] font-medium outline-none transition-colors w-[240px]
+            className="pl-9 pr-4 py-[4px] rounded-xl text-[13px] font-medium outline-none transition-colors w-[240px]
               bg-[#F1F3F9] border border-[#E2E6F2] text-[#8F95A8] placeholder-[#8F95A8] focus:border-[#526ED3]
-              dark:bg-[#222323] dark:border-[#292A2A] dark:text-[#C2C8E0] dark:placeholder-[#C2C8E0]"/>
+              dark:bg-[#222323] dark:border-[#474848] dark:text-[#C2C8E0] dark:placeholder-[#C2C8E0]"/>
         </div>
         <button onClick={() => setShowFilter(true)}
-          className="relative flex items-center gap-2 px-4 py-2 rounded-lg text-[15px] font-extrabold border transition-colors cursor-pointer
+          className="relative flex items-center gap-2 px-3 py-[4px] rounded-xl text-[13px] font-extrabold border transition-colors cursor-pointer
             bg-[#F1F3F9] border-[#E2E6F2] text-[#5B6078]
-            dark:bg-[#222323] dark:border-[#292A2A] dark:text-[#C2C8E0]">
+            dark:bg-[#222323] dark:border-[#474848] dark:text-[#C2C8E0]">
           <FaFilter size={13}/>
           Filtrlash
           {hasFilter && <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-[#3F57B3]"/>}
@@ -374,15 +376,15 @@ export default function SalaryPage() {
                   <input type="checkbox" checked={allSelected} onChange={toggleAll} className="cursor-pointer accent-[#3F57B3]"/>
                 </th>
               )}
-              <th className="px-4 py-3 text-left font-medium text-[#5B6078] dark:text-[#C2C8E0] w-10">№</th>
-              <th className="px-4 py-3 text-left font-medium text-[#5B6078] dark:text-[#C2C8E0]">Ism sharifi</th>
-              <th className="px-4 py-3 text-left font-medium text-[#5B6078] dark:text-[#C2C8E0]">Oy</th>
-              <th className="px-4 py-3 text-right font-medium text-[#5B6078] dark:text-[#C2C8E0]">Oylik maosh (UZS)</th>
-              <th className="px-4 py-3 text-right font-medium text-[#5B6078] dark:text-[#C2C8E0]">KPI bonus (UZS)</th>
-              <th className="px-4 py-3 text-right font-medium text-[#5B6078] dark:text-[#C2C8E0]">Jarima miqdori (UZS)</th>
-              <th className="px-4 py-3 text-right font-medium text-[#5B6078] dark:text-[#C2C8E0]">Jami miqdori (UZS)</th>
-              <th className="px-4 py-3 text-left font-medium text-[#5B6078] dark:text-[#C2C8E0]">Yaratilgan vaqt</th>
-              <th className="px-4 py-3 text-center font-medium text-[#5B6078] dark:text-[#C2C8E0] sticky right-0 backdrop-blur-sm bg-white/80 dark:bg-black/20 shadow-[-4px_0_8px_-2px_rgba(0,0,0,0.06)]">Tasdiqlanish</th>
+              <th className="px-4 py-3 text-left font-medium text-[#1B1F3B]/65 dark:text-[#C2C8E0] w-10">№</th>
+              <th className="px-4 py-3 text-left font-medium text-[#1B1F3B]/65 dark:text-[#C2C8E0]">Ism sharifi</th>
+              <th className="px-4 py-3 text-left font-medium text-[#1B1F3B]/65 dark:text-[#C2C8E0]">Oy</th>
+              <th className="px-4 py-3 text-right font-medium text-[#1B1F3B]/65 dark:text-[#C2C8E0]">Oylik maosh (UZS)</th>
+              <th className="px-4 py-3 text-right font-medium text-[#1B1F3B]/65 dark:text-[#C2C8E0]">KPI bonus (UZS)</th>
+              <th className="px-4 py-3 text-right font-medium text-[#1B1F3B]/65 dark:text-[#C2C8E0]">Jarima miqdori (UZS)</th>
+              <th className="px-4 py-3 text-right font-medium text-[#1B1F3B]/65 dark:text-[#C2C8E0]">Jami miqdori (UZS)</th>
+              <th className="px-4 py-3 text-left font-medium text-[#1B1F3B]/65 dark:text-[#C2C8E0]">Yaratilgan vaqt</th>
+              <th className="px-4 py-3 text-center font-medium text-[#1B1F3B]/65 dark:text-[#C2C8E0] sticky right-0 backdrop-blur-sm bg-white/80 dark:bg-black/20 shadow-[-4px_0_8px_-2px_rgba(0,0,0,0.06)]">Tasdiqlanish</th>
             </tr>
           </thead>
           <tbody>
@@ -398,16 +400,16 @@ export default function SalaryPage() {
                     </div>
                   </td>
                 )}
-                <td className="px-4 py-3 text-[#5B6078] dark:text-[#C2C8E0]">
+                <td className="px-4 py-3 text-[#1A1D2E] dark:text-[#FFFFFF]">
                   <span className={`inline-block transition-transform duration-200 ${selected.has(u.id) ? 'translate-x-2' : ''}`}>{idx + 1}</span>
                 </td>
                 <td className="px-4 py-3 font-medium text-[#1A1D2E] dark:text-[#FFFFFF]">{u.name}</td>
-                <td className="px-4 py-3 text-[#5B6078] dark:text-[#C2C8E0]">{u.month}</td>
+                <td className="px-4 py-3 text-[#1A1D2E] dark:text-[#FFFFFF]">{u.month}</td>
                 <td className="px-4 py-3 text-right font-semibold text-[#1A1D2E] dark:text-[#FFFFFF]">{fmt(u.salary)}</td>
                 <td className="px-4 py-3 text-right text-[#1A1D2E] dark:text-[#FFFFFF]">{fmt(u.kpi)}</td>
                 <td className="px-4 py-3 text-right font-medium text-[#E02D2D] dark:text-[#FA5252]">-{fmt(u.fine)}</td>
                 <td className="px-4 py-3 text-right font-semibold text-[#1A1D2E] dark:text-[#FFFFFF]">{fmt(u.total)}</td>
-                <td className="px-4 py-3 text-[#5B6078] dark:text-[#C2C8E0]">{u.created}</td>
+                <td className="px-4 py-3 text-[#1A1D2E] dark:text-[#FFFFFF]">{u.created}</td>
                 <td className="px-4 py-3 text-center sticky right-0 backdrop-blur-sm bg-white/80 dark:bg-black/20 shadow-[-4px_0_8px_-2px_rgba(0,0,0,0.06)]"
                   onClick={e => e.stopPropagation()}>
                   <input type="checkbox" checked={u.approved} onChange={() => toggleApprove(u.id)}
