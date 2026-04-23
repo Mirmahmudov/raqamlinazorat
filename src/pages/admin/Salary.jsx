@@ -392,7 +392,7 @@ export default function SalaryPage() {
               <tr key={u.id}
                 onClick={() => handleRowClick(u)}
                 className={`border-b border-[#EEF1F7] dark:border-[#292A2A] transition-colors last:border-0 cursor-pointer
-                  ${selected.has(u.id) ? 'bg-[#E9EEFF]/60 dark:bg-[#2A2D3E]/60' : 'hover:bg-black/3 dark:hover:bg-white/3'}`}>
+                  ${'hover:bg-black/3 dark:hover:bg-white/3'}`}>
                 {selecting && (
                   <td className="px-4 py-3" onClick={e => e.stopPropagation()}>
                     <div className={`transition-transform duration-200 ${selected.has(u.id) ? 'translate-x-2' : ''}`}>
