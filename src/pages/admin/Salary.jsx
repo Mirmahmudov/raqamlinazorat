@@ -70,13 +70,13 @@ function MonthDropdown({ value, onChange }) {
 function DateBox({ type, value, onChange, icon, placeholder }) {
   const ref = useRef(null)
   return (
-    <div className="flex items-center gap-2 px-3 py-2.5 rounded-xl border border-[#E2E6F2] dark:border-[#292A2A]
-      bg-transparent focus-within:border-[#526ED3] transition-colors cursor-text">
-      {placeholder && <span className="text-xs text-[#5B6078] dark:text-[#C2C8E0] shrink-0 select-none">{placeholder}:</span>}
-      <input ref={ref} type={type} value={value} onChange={e=>onChange(e.target.value)}
-        className="flex-1 min-w-0 text-xs outline-none bg-transparent text-[#1A1D2E] dark:text-[#FFFFFF] cursor-pointer [&::-webkit-calendar-picker-indicator]:hidden"/>
-      <button type="button" onClick={()=>ref.current?.showPicker?.()}
-        className="shrink-0 cursor-pointer text-[#8F95A8] dark:text-[#C2C8E0] hover:text-[#526ED3] transition-colors">
+    <div className="flex items-center gap-2 px-3 py-3 rounded-2xl border border-[#E2E6F2] dark:border-[#2A2B2B]
+      bg-white dark:bg-[#111111] focus-within:border-[#526ED3] transition-colors cursor-text">
+      {placeholder && <span className="text-xs text-[#8F95A8] dark:text-[#5B6078] shrink-0 select-none">{placeholder}:</span>}
+      <input ref={ref} type={type} value={value} onChange={e => onChange(e.target.value)}
+        className="flex-1 min-w-0 text-xs outline-none bg-transparent text-[#1A1D2E] dark:text-[#FFFFFF] cursor-pointer [&::-webkit-calendar-picker-indicator]:hidden" />
+      <button type="button" onClick={() => ref.current?.showPicker?.()}
+        className="shrink-0 cursor-pointer text-[#8F95A8] dark:text-[#5B6078] hover:text-[#526ED3] transition-colors">
         {icon}
       </button>
     </div>
@@ -96,72 +96,114 @@ function Toggle({ checked, onChange }) {
 /* ── SalaryFilterModal ── */
 function SalaryFilterModal({ onClose, onApply, initial }) {
   const [f, setF] = useState({ ...EMPTY_FILTER, ...initial })
-  const set = (k,v) => setF(p=>({...p,[k]:v}))
+  const set = (k, v) => setF(p => ({ ...p, [k]: v }))
+
+  const inputCls =
+    'w-full px-4 py-3 rounded-2xl text-sm outline-none border transition-colors ' +
+    'bg-white border-[#E2E6F2] text-[#1A1D2E] placeholder-[#8F95A8] focus:border-[#526ED3] ' +
+    'dark:bg-[#1C1D1D] dark:border-[#2A2B2B] dark:text-[#FFFFFF] dark:placeholder-[#5B6078]'
+
+  const fineCls =
+    'w-full px-4 py-3 rounded-2xl text-sm outline-none border transition-colors ' +
+    'bg-white border-[#E2E6F2] text-[#E02D2D] placeholder-[#E02D2D]/50 focus:border-[#526ED3] ' +
+    'dark:bg-[#1C1D1D] dark:border-[#2A2B2B] dark:text-[#FA5252] dark:placeholder-[#FA5252]/50'
+
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto py-8 px-4">
-      <div className="fixed inset-0 bg-black/60" onClick={onClose}/>
-      <div className="relative w-full max-w-[560px] rounded-2xl shadow-2xl bg-white dark:bg-[#222323]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
+      <div className="fixed inset-0 bg-black/60" onClick={onClose} />
+      <div className="relative w-full max-w-[620px] rounded-3xl shadow-2xl bg-white dark:bg-[#111111]">
+
         {/* Header */}
-        <div className="px-6 pt-5 pb-4 border-b border-[#E2E6F2] dark:border-[#292A2A] flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <button onClick={onClose} className="text-[#5B6078] dark:text-[#C2C8E0] hover:opacity-70 cursor-pointer shrink-0"><FaArrowLeft size={16}/></button>
-            <div>
-              <h2 className="text-lg font-bold text-[#1A1D2E] dark:text-[#FFFFFF]">Filtrlash</h2>
-              <p className="text-xs text-[#8F95A8] dark:text-[#C2C8E0] mt-0.5">Kerakli filtirlarni tanlang, natijalar shunga qarab saralanadi</p>
-            </div>
+        <div className="px-7 pt-7 pb-3">
+          <div className="flex items-center gap-3 mb-1.5">
+            <button onClick={onClose}
+              className="text-[#1A1D2E] dark:text-[#FFFFFF] hover:opacity-60 cursor-pointer shrink-0 transition-opacity">
+              <FaArrowLeft size={17} />
+            </button>
+            <h2 className="text-[22px] font-extrabold text-[#1A1D2E] dark:text-[#FFFFFF]">Filtrlash</h2>
           </div>
-          <button onClick={onClose} className="w-7 h-7 flex items-center justify-center rounded-full cursor-pointer transition-colors text-[#8F95A8] hover:bg-[#F1F3F9] dark:text-[#C2C8E0] dark:hover:bg-[#292A2A]"><FaXmark size={14}/></button>
+          <p className="text-sm text-[#8F95A8] ml-8">
+            Kerakli filtrlarni tanlang, natijalar shunga qarab saralanadi
+          </p>
         </div>
-        {/* Body */}
-        <div className="px-6 py-5 flex flex-col gap-4">
-          {/* Oy */}
-          <div>
-            <label className={labelCls}>Oy</label>
-            <MonthDropdown value={f.month} onChange={v=>set('month',v)}/>
-          </div>
-          {/* Yaratilgan vaqt */}
-          <div>
-            <label className={labelCls}>Yaratilgan vaqt oralig'i</label>
-            <div className="grid grid-cols-4 gap-2">
-              <DateBox type="date" value={f.dateFromD} onChange={v=>set('dateFromD',v)} placeholder="dan"   icon={<FaCalendarDays size={12}/>}/>
-              <DateBox type="time" value={f.dateFromT} onChange={v=>set('dateFromT',v)}                     icon={<FaClock size={12}/>}/>
-              <DateBox type="date" value={f.dateToD}   onChange={v=>set('dateToD',v)}   placeholder="gacha" icon={<FaCalendarDays size={12}/>}/>
-              <DateBox type="time" value={f.dateToT}   onChange={v=>set('dateToT',v)}                       icon={<FaClock size={12}/>}/>
-            </div>
-          </div>
-          {/* Jami miqdor */}
-          <div>
-            <label className={labelCls}>Jami miqdori (UZS)</label>
-            <div className="flex gap-2">
-              <input className={iCls} placeholder="dan: 0"   value={f.sumFrom} onChange={e=>set('sumFrom',fmtMoney(e.target.value))}/>
-              <input className={iCls} placeholder="gacha: 0" value={f.sumTo}   onChange={e=>set('sumTo',  fmtMoney(e.target.value))}/>
-            </div>
-          </div>
-          {/* Jarima miqdor */}
-          <div>
-            <div className="flex items-center justify-between mb-1.5">
-              <label className="text-xs font-medium text-[#5B6078] dark:text-[#C2C8E0]">Jarima miqdori</label>
-              <Toggle checked={f.showFine} onChange={v=>set('showFine',v)}/>
-            </div>
-            {f.showFine && (
-              <div className="flex gap-2">
-                <input className={iCls} placeholder="-100 000,00" value={f.fineFrom} onChange={e=>set('fineFrom',fmtMoney(e.target.value))}/>
-                <input className={iCls} placeholder="-1 000 000,00" value={f.fineTo} onChange={e=>set('fineTo',fmtMoney(e.target.value))}/>
-              </div>
-            )}
-          </div>
-        </div>
+
+        
+
         {/* Footer */}
-        <div className="px-6 py-4 border-t border-[#E2E6F2] dark:border-[#292A2A] flex items-center justify-end gap-3">
-          <button onClick={()=>setF(EMPTY_FILTER)} className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium transition-colors cursor-pointer text-[#5B6078] hover:bg-[#F1F3F9] dark:text-[#C2C8E0] dark:hover:bg-[#292A2A]">
-            <FaXmark size={14}/> Tozalash
+        <div className="px-7 py-5 flex items-center justify-end gap-3">
+          <button onClick={() => setF(EMPTY_FILTER)}
+            className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium transition-colors cursor-pointer
+              text-[#5B6078] hover:bg-[#F1F3F9] dark:text-[#8F95A8] dark:hover:bg-[#1C1D1D]">
+            <FaXmark size={13} /> Tozalash
           </button>
-          <button onClick={()=>onApply(f)} className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-colors cursor-pointer bg-[#3F57B3] text-white hover:bg-[#526ED3]">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <button onClick={() => onApply(f)}
+            className="flex items-center gap-2 px-6 py-2.5 rounded-2xl text-sm font-bold transition-colors cursor-pointer
+              bg-[#3F57B3] text-white hover:bg-[#526ED3]">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" />
+            </svg>
             Qidirish
           </button>
         </div>
+
       </div>
+    </div>
+  )
+}
+
+/* ── SalaryDateBox (filter uchun, placeholder yo'q) ── */
+function SalaryDateBox({ value, onChange, icon }) {
+  const ref = useRef(null)
+  return (
+    <div className="flex items-center gap-2 px-3 py-3 rounded-2xl border border-[#E2E6F2] dark:border-[#2A2B2B]
+      bg-white dark:bg-[#1C1D1D] focus-within:border-[#526ED3] transition-colors">
+      <input
+        ref={ref}
+        type="date"
+        value={value}
+        onChange={e => onChange(e.target.value)}
+        className="flex-1 min-w-0 text-xs outline-none bg-transparent text-[#1A1D2E] dark:text-[#FFFFFF] cursor-pointer [&::-webkit-calendar-picker-indicator]:hidden"
+      />
+      <button type="button" onClick={() => ref.current?.showPicker?.()}
+        className="shrink-0 cursor-pointer text-[#8F95A8] dark:text-[#5B6078] hover:text-[#526ED3] transition-colors">
+        {icon}
+      </button>
+    </div>
+  )
+}
+
+/* ── MonthDropdownFull (to'liq kenglik, X bilan tozalash) ── */
+function MonthDropdownFull({ value, onChange }) {
+  const { open, setOpen, ref } = useDropdown()
+  return (
+    <div ref={ref} className="relative">
+      <button type="button" onClick={() => setOpen(o => !o)}
+        className={`w-full flex items-center justify-between px-4 py-3 rounded-2xl text-sm border transition-colors cursor-pointer
+          bg-white border-[#E2E6F2] dark:bg-[#1C1D1D] dark:border-[#2A2B2B]
+          ${value ? 'text-[#1A1D2E] dark:text-[#FFFFFF]' : 'text-[#8F95A8] dark:text-[#5B6078]'}`}>
+        <span className="flex-1 text-left truncate">{value || 'Xarajat turini tanlang'}</span>
+        <div className="flex items-center gap-2 shrink-0 ml-2">
+          {value
+            ? <span onMouseDown={e => { e.stopPropagation(); onChange('') }} className="text-[#B6BCCB] hover:text-[#5B6078] cursor-pointer transition-colors"><FaXmark size={13} /></span>
+            : <FaChevronDown size={12} className={`text-[#8F95A8] transition-transform ${open ? 'rotate-180' : ''}`} />
+          }
+        </div>
+      </button>
+      {open && (
+        <div className="absolute top-full left-0 mt-1 z-[60] w-full rounded-2xl shadow-xl border overflow-y-auto max-h-52
+          bg-white border-[#E2E6F2] dark:bg-[#1C1D1D] dark:border-[#2A2B2B]">
+          {MONTHS.map((m, i) => (
+            <button key={m} type="button" onClick={() => { onChange(m); setOpen(false) }}
+              className={`w-full text-left px-4 py-2.5 text-sm transition-colors cursor-pointer
+                ${i < MONTHS.length - 1 ? 'border-b border-[#F1F3F9] dark:border-[#2A2B2B]' : ''}
+                ${value === m
+                  ? 'bg-[#EEF1FB] text-[#3F57B3] font-semibold dark:bg-[#292A2A] dark:text-[#7F95E6]'
+                  : 'text-[#1A1D2E] dark:text-[#FFFFFF] hover:bg-[#F8F9FC] dark:hover:bg-[#292A2A]'}`}>
+              {m}
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   )
 }
@@ -241,7 +283,7 @@ function UserDetailModal({ user, onClose, onApprove }) {
             </div>
 
             {/* Footer */}
-            <div className="px-6 py-4 border-t border-[#E2E6F2] dark:border-[#292A2A] flex items-center justify-end gap-3">
+            <div className="px-6 py-4 flex items-center justify-end gap-3">
               <button onClick={onClose}
                 className="px-6 py-2.5 rounded-xl text-[15px] font-semibold transition-colors cursor-pointer
                   text-[#1A1D2E] hover:bg-[#F1F3F9] dark:text-[#FFFFFF] dark:hover:bg-[#222323]">

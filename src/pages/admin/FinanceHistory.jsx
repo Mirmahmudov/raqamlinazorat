@@ -149,80 +149,111 @@ function HistoryFilterModal({ onClose, onApply, initial }) {
 
 /* ── HistoryDetailModal ── */
 function HistoryDetailModal({ item, onClose }) {
-  const expRef = useDropdown()
-  const typeRef = useDropdown()
-  const [expense, setExpense] = useState(item.expense)
-  const [type, setType]       = useState(item.type)
+  const fCls =
+    'w-full px-4 py-3 rounded-2xl text-sm border ' +
+    'bg-white border-[#E2E6F2] text-[#1A1D2E] ' +
+    'dark:bg-[#111111] dark:border-[#292A2A] dark:text-[#FFFFFF]'
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto py-8 px-4">
-      <div className="fixed inset-0 bg-black/60" onClick={onClose}/>
-      <div className="relative w-full max-w-[560px] rounded-2xl shadow-2xl bg-white dark:bg-[#222323]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
+      <div className="fixed inset-0 bg-black/60" onClick={onClose} />
+      <div className="relative w-full max-w-[600px] rounded-3xl shadow-2xl bg-white dark:bg-[#111111]">
+
         {/* Header */}
-        <div className="px-6 pt-5 pb-4 border-b border-[#E2E6F2] dark:border-[#292A2A] flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <button onClick={onClose} className="text-[#5B6078] dark:text-[#C2C8E0] hover:opacity-70 cursor-pointer shrink-0"><FaArrowLeft size={16}/></button>
-            <h2 className="text-lg font-bold text-[#1A1D2E] dark:text-[#FFFFFF]">Tarix ma'lumotlari</h2>
-          </div>
-          <button onClick={onClose} className="w-7 h-7 flex items-center justify-center rounded-full cursor-pointer transition-colors text-[#8F95A8] hover:bg-[#F1F3F9] dark:text-[#C2C8E0] dark:hover:bg-[#292A2A]"><FaXmark size={14}/></button>
+        <div className="px-7 pt-7 pb-4 flex items-center gap-3">
+          <button onClick={onClose}
+            className="text-[#1A1D2E] dark:text-[#FFFFFF] hover:opacity-60 cursor-pointer shrink-0 transition-opacity">
+            <FaArrowLeft size={17} />
+          </button>
+          <h2 className="text-[20px] font-extrabold text-[#1A1D2E] dark:text-[#FFFFFF]">Tarix ma'lumotlari</h2>
         </div>
+
         {/* User info */}
-        <div className="px-6 pt-5 pb-2 flex items-center gap-4">
-          <div className="w-14 h-14 rounded-full bg-[#DADFF0] dark:bg-[#292A2A] flex items-center justify-center shrink-0 text-xl font-bold text-[#3F57B3]">
-            {item.name.charAt(0)}
-          </div>
+        <div className="px-7 pb-5 flex items-center gap-4">
+          <img src="/imgs/userImg.png" alt="avatar"
+            className="w-[80px] h-[80px] rounded-[20px] object-cover shrink-0" />
           <div>
-            <p className="text-base font-bold text-[#1A1D2E] dark:text-[#FFFFFF]">{item.name}</p>
-            <div className="flex items-center gap-2 mt-1 flex-wrap">
-              <span className="text-xs px-2 py-0.5 rounded-full bg-[#EEF1FB] text-[#3F57B3] dark:bg-[#292A2A] dark:text-[#7F95E6]">Viloyat: {item.region}</span>
-              <span className="text-xs px-2 py-0.5 rounded-full bg-[#EEF1FB] text-[#3F57B3] dark:bg-[#292A2A] dark:text-[#7F95E6]">Tuman: {item.district}</span>
+            <p className="text-[20px] font-extrabold text-[#1A1D2E] dark:text-[#FFFFFF] leading-tight">{item.name}</p>
+            <div className="flex items-center gap-2 mt-2 flex-wrap">
+              <span className="text-xs px-3 py-1 rounded-lg font-medium
+                bg-[#F1F3F9] text-[#1A1D2E]
+                dark:bg-[#222323] dark:text-[#FFFFFF] dark:border dark:border-[#474848]">
+                Viloyat: <span className="font-bold">{item.region}</span>
+              </span>
+              <span className="text-xs px-3 py-1 rounded-lg font-medium
+                bg-[#F1F3F9] text-[#1A1D2E]
+                dark:bg-[#222323] dark:text-[#FFFFFF] dark:border dark:border-[#474848]">
+                Tuman: <span className="font-bold">{item.district}</span>
+              </span>
             </div>
           </div>
         </div>
+
         {/* Fields */}
-        <div className="px-6 py-4 flex flex-col gap-3">
-          {/* Lavozim + Passport */}
-          <div className="grid grid-cols-2 gap-3">
+        <div className="px-7 pb-5 flex flex-col gap-4">
+
+          {/* Lavozimi + Passport */}
+          <div className="grid grid-cols-2 gap-4">
             <div>
               <label className={labelCls}>Lavozimi</label>
-              <div className={iCls}>{item.position}</div>
+              <div className={fCls}>{item.position}</div>
             </div>
             <div>
               <label className={labelCls}>Passport ma'lumotlari</label>
               <div className="flex gap-2">
-                <div className={iCls + ' w-16 text-center shrink-0'}>{item.passport.split(' ')[0]}</div>
-                <div className={iCls + ' flex-1'}>{item.passport.split(' ')[1]}</div>
+                <div className={fCls + ' !w-[60px] !px-2 shrink-0 text-center'}>{item.passport.split(' ')[0]}</div>
+                <div className={fCls + ' flex-1'}>{item.passport.split(' ')[1]}</div>
               </div>
             </div>
           </div>
+
           {/* Xarajat + Turi */}
-          <div className="grid grid-cols-2 gap-3">
-            <SimpleDropdown label="Xarajat" value={expense} onChange={setExpense} options={XARAJAT_TURLARI} placeholder="Xarajat turini tanlang"/>
-            <SimpleDropdown label="Turi"    value={type}    onChange={setType}    options={TURLAR}          placeholder="Turini tanlang"/>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className={labelCls}>Xarajat</label>
+              <div className={fCls + ' flex items-center justify-between'}>
+                <span>{item.expense}</span>
+                <FaChevronDown size={11} className="text-[#8F95A8] shrink-0" />
+              </div>
+            </div>
+            <div>
+              <label className={labelCls}>Turi</label>
+              <div className={fCls + ' flex items-center justify-between'}>
+                <span>{item.type}</span>
+                <FaChevronDown size={11} className="text-[#8F95A8] shrink-0" />
+              </div>
+            </div>
           </div>
+
           {/* Oylik maosh */}
           <div>
             <label className={labelCls}>Oylik maosh (UZS)</label>
-            <div className={iCls + ' text-right'}>{fmt(item.amount)}</div>
+            <div className={fCls + ' text-right'}>{fmt(item.amount)}</div>
           </div>
+
           {/* Sana + Miqdor */}
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-4">
             <div>
               <label className={labelCls}>Sana</label>
-              <div className={iCls}>{item.date}</div>
+              <div className={fCls}>{item.date}</div>
             </div>
             <div>
               <label className={labelCls}>Miqdor (UZS)</label>
-              <div className={iCls + ' text-right'}>{fmt(item.amount)}</div>
+              <div className={fCls + ' text-right'}>{fmt(item.amount)}</div>
             </div>
           </div>
+
         </div>
+
         {/* Footer */}
-        <div className="px-6 py-4 border-t border-[#E2E6F2] dark:border-[#292A2A] flex items-center justify-end">
-          <button onClick={onClose} className="px-5 py-2.5 rounded-xl text-sm font-semibold transition-colors cursor-pointer text-[#3F57B3] hover:bg-[#EEF1FB] dark:text-[#7F95E6] dark:hover:bg-[#292A2A]">
+        <div className="px-7 py-5 flex items-center justify-end">
+          <button onClick={onClose}
+            className="px-6 py-2.5 rounded-xl text-sm font-bold transition-colors cursor-pointer
+              text-[#3F57B3] hover:bg-[#EEF1FB] dark:text-[#7F95E6] dark:hover:bg-[#1C1D1D]">
             Yopish
           </button>
         </div>
+
       </div>
     </div>
   )
@@ -283,7 +314,7 @@ export default function FinanceHistoryPage() {
               <th className="px-4 py-3 text-right font-medium text-[#1B1F3B]/65 dark:text-[#C2C8E0]">Miqdor (UZS)</th>
               <th className="px-4 py-3 text-right font-medium text-[#1B1F3B]/65 dark:text-[#C2C8E0]">Turi</th>
               <th className="px-4 py-3 text-right font-medium text-[#1B1F3B]/65 dark:text-[#C2C8E0]">Sana</th>
-              <th className="px-4 py-3 text-center font-medium text-[#1B1F3B]/65 dark:text-[#C2C8E0] sticky right-0 backdrop-blur-sm bg-white/80 dark:bg-black/20 shadow-[-4px_0_8px_-2px_rgba(0,0,0,0.06)]">Tasdiqlanish</th>
+              <th className="px-4 py-3 text-center font-medium text-[#1B1F3B]/65 dark:text-[#C2C8E0] sticky right-0 bg-[#F8F9FC] dark:bg-[#191A1A] shadow-[-4px_0_8px_-2px_rgba(0,0,0,0.06)]">Tasdiqlanish</th>
             </tr>
           </thead>
           <tbody>
@@ -297,7 +328,7 @@ export default function FinanceHistoryPage() {
                 <td className="px-4 py-3 text-right font-bold text-[#1A1D2E] dark:text-[#FFFFFF]">{fmt(h.amount)}</td>
                 <td className="px-4 py-3 text-right text-[#1A1D2E] dark:text-[#FFFFFF]">{h.type}</td>
                 <td className="px-4 py-3 text-right text-[#1A1D2E] dark:text-[#FFFFFF]">{h.date}</td>
-                <td className="px-4 py-3 text-center sticky right-0 backdrop-blur-sm bg-white/80 dark:bg-black/20 shadow-[-4px_0_8px_-2px_rgba(0,0,0,0.06)]"
+                <td className="px-4 py-3 text-center sticky right-0 bg-[#F8F9FC] dark:bg-[#191A1A] shadow-[-4px_0_8px_-2px_rgba(0,0,0,0.06)]"
                   onClick={e => e.stopPropagation()}>
                   {h.approved
                     ? <span className="inline-flex items-center justify-center w-6 h-6 rounded bg-green-500"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg></span>

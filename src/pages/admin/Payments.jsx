@@ -446,7 +446,7 @@ function FilterModal({ onClose, onApply, initial }) {
            
              <div className="flex px-2 items-center gap-3 mb-2">
               <button onClick={onClose} className="text-[#5B6078] dark:text-[#C2C8E0] hover:opacity-70 cursor-pointer shrink-0">
-                <FaArrowLeft fontWeight={800} color='#1A1D2E' size={16} />
+                <FaArrowLeft className='dark:text-white text-[#1A1D2E]' fontWeight={800} size={16} />
               </button>
               <h2 className="text-[20px] font-extrabold text-[#1A1D2E] dark:text-[#FFFFFF]">Filtrlash</h2>
 
