@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+﻿import { useState, useEffect, useRef } from 'react'
 import { FaFilter, FaXmark, FaArrowLeft, FaChevronDown, FaEllipsisVertical } from 'react-icons/fa6'
 import { usePageAction } from '../../context/PageActionContext'
 
@@ -586,16 +586,15 @@ function DeleteConfirmModal({ project, onClose, onConfirm }) {
 
 /* ── DetailModal ── */
 function DetailModal({ project, onClose }) {
-  const dateRef = useRef(null)
-  const timeRef = useRef(null)
-
   const fCls = 'w-full px-3 py-2.5 rounded-xl text-sm border bg-white border-[#E2E6F2] text-[#1A1D2E] dark:bg-[#191A1A] dark:border-[#292A2A] dark:text-white'
+  const tagCls = 'inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-xs font-medium bg-[#EEF1FB] text-[#3F57B3] dark:bg-[#292A2A] dark:text-[#7F95E6]'
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
       <div className="fixed inset-0 bg-black/60" onClick={onClose} />
       <div className="relative w-full max-w-[600px] max-h-[90vh] overflow-y-auto rounded-3xl shadow-2xl bg-white dark:bg-[#111111]">
 
+        {/* Header */}
         <div className="px-7 pt-7 pb-4">
           <div className="flex items-center gap-3 mb-1">
             <button onClick={onClose} className="text-[#1A1D2E] dark:text-white hover:opacity-60 cursor-pointer shrink-0 transition-opacity">
@@ -606,7 +605,9 @@ function DetailModal({ project, onClose }) {
           <p className="text-sm text-[#8F95A8] ml-8">Loyiha haqida batafsil ma'lumotlar</p>
         </div>
 
+        {/* Body */}
         <div className="px-7 pb-4 flex flex-col gap-4">
+
           {/* Nomi + Holati */}
           <div className="grid grid-cols-2 gap-4">
             <div>
@@ -625,8 +626,10 @@ function DetailModal({ project, onClose }) {
           {/* Tavsifi */}
           <div>
             <label className={labelCls}>Tavsifi</label>
-            <div className={fCls + ' min-h-[72px] relative'}>
-              {project.description || '—'}
+            <div className="relative">
+              <div className={fCls + ' min-h-[80px] pr-8 whitespace-pre-wrap'}>
+                {project.description || '—'}
+              </div>
               {project.description && (
                 <span className="absolute top-2.5 right-2.5 text-[#B6BCCB]"><FaXmark size={12} /></span>
               )}
@@ -649,34 +652,30 @@ function DetailModal({ project, onClose }) {
           </div>
 
           {/* Xodimlar */}
-          {project.employees?.length > 0 && (
-            <div>
-              <label className={labelCls}>Xodimlar</label>
-              <div className={fCls + ' flex flex-wrap gap-1.5 min-h-[42px]'}>
-                {project.employees.map(e => (
-                  <span key={e.name} className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-xs font-medium
-                    bg-[#EEF1FB] text-[#3F57B3] dark:bg-[#292A2A] dark:text-[#7F95E6]">
-                    {e.name} | {e.role}
-                  </span>
-                ))}
-              </div>
+          <div>
+            <label className={labelCls}>Xodimlar</label>
+            <div className={fCls + ' flex flex-wrap gap-1.5 min-h-[42px]'}>
+              {project.employees?.length > 0
+                ? project.employees.map(e => (
+                    <span key={e.name} className={tagCls}>{e.name} | {e.role}</span>
+                  ))
+                : <span className="text-[#8F95A8] dark:text-[#5B6078] text-sm">—</span>
+              }
             </div>
-          )}
+          </div>
 
           {/* Sinovchilar */}
-          {project.testers?.length > 0 && (
-            <div>
-              <label className={labelCls}>Sinovchilar</label>
-              <div className={fCls + ' flex flex-wrap gap-1.5 min-h-[42px]'}>
-                {project.testers.map(e => (
-                  <span key={e.name} className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-xs font-medium
-                    bg-[#EEF1FB] text-[#3F57B3] dark:bg-[#292A2A] dark:text-[#7F95E6]">
-                    {e.name} | {e.role}
-                  </span>
-                ))}
-              </div>
+          <div>
+            <label className={labelCls}>Sinovchilar</label>
+            <div className={fCls + ' flex flex-wrap gap-1.5 min-h-[42px]'}>
+              {project.testers?.length > 0
+                ? project.testers.map(e => (
+                    <span key={e.name} className={tagCls}>{e.name} | {e.role}</span>
+                  ))
+                : <span className="text-[#8F95A8] dark:text-[#5B6078] text-sm">—</span>
+              }
             </div>
-          )}
+          </div>
 
           {/* Muddati + Vaqti */}
           <div className="grid grid-cols-2 gap-4">
@@ -684,7 +683,7 @@ function DetailModal({ project, onClose }) {
               <label className={labelCls}>Muddati</label>
               <div className="flex items-center gap-2 px-3 py-2.5 rounded-xl border border-[#E2E6F2] dark:border-[#292A2A] bg-white dark:bg-[#191A1A]">
                 <span className="flex-1 text-sm text-[#1A1D2E] dark:text-white">{project.deadline || '—'}</span>
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-[#8F95A8]">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-[#8F95A8] shrink-0">
                   <rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>
                 </svg>
               </div>
@@ -693,20 +692,21 @@ function DetailModal({ project, onClose }) {
               <label className={labelCls}>Vaqti</label>
               <div className="flex items-center gap-2 px-3 py-2.5 rounded-xl border border-[#E2E6F2] dark:border-[#292A2A] bg-white dark:bg-[#191A1A]">
                 <span className="flex-1 text-sm text-[#1A1D2E] dark:text-white">{project.time || '—'}</span>
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-[#8F95A8]">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-[#8F95A8] shrink-0">
                   <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
                 </svg>
               </div>
             </div>
           </div>
+
         </div>
 
         {/* Footer */}
         <div className="px-7 py-5 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <span className="text-sm font-medium text-[#1A1D2E] dark:text-white">Faolmi?</span>
-            <div className={`relative w-10 h-5 rounded-full ${project.active !== false ? 'bg-[#3F57B3]' : 'bg-[#E2E6F2] dark:bg-[#292A2A]'}`}>
-              <span className={`absolute top-0.5 w-4 h-4 rounded-full bg-white shadow transition-transform duration-200 ${project.active !== false ? 'translate-x-5' : 'translate-x-0.5'}`} />
+            <div className={`relative w-10 h-5 rounded-full pointer-events-none ${project.active !== false ? 'bg-[#3F57B3]' : 'bg-[#E2E6F2] dark:bg-[#292A2A]'}`}>
+              <span className={`absolute top-0.5 w-4 h-4 rounded-full bg-white shadow ${project.active !== false ? 'translate-x-5' : 'translate-x-0.5'}`} />
             </div>
           </div>
           <button onClick={onClose}
@@ -715,11 +715,11 @@ function DetailModal({ project, onClose }) {
             <FaXmark size={13} /> Yopish
           </button>
         </div>
+
       </div>
     </div>
   )
 }
-
 /* ── EditProjectModal ── */
 function EditProjectModal({ project, onClose, onSave }) {
   const dateRef = useRef(null)
