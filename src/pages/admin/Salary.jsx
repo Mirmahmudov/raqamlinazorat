@@ -173,56 +173,88 @@ function UserDetailModal({ user, onClose, onApprove }) {
     <>
       <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto py-8 px-4">
         <div className="fixed inset-0 bg-black/60" onClick={onClose}/>
-        <div className="relative w-full max-w-[560px] rounded-2xl shadow-2xl bg-white dark:bg-[#222323]">
-          {/* Header */}
-          <div className="px-6 pt-5 pb-4 border-b border-[#E2E6F2] dark:border-[#292A2A] flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <button onClick={onClose} className="text-[#5B6078] dark:text-[#C2C8E0] hover:opacity-70 cursor-pointer shrink-0"><FaArrowLeft size={16}/></button>
-              <h2 className="text-lg font-bold text-[#1A1D2E] dark:text-[#FFFFFF]">Ish haqi ma'lumotlari</h2>
-            </div>
-            <button onClick={onClose} className="w-7 h-7 flex items-center justify-center rounded-full cursor-pointer transition-colors text-[#8F95A8] hover:bg-[#F1F3F9] dark:text-[#C2C8E0] dark:hover:bg-[#292A2A]"><FaXmark size={14}/></button>
-          </div>
-          {/* User info */}
-          <div className="px-6 pt-5 pb-2 flex items-center gap-4">
-            <div className="w-14 h-14 rounded-full bg-[#DADFF0] dark:bg-[#292A2A] flex items-center justify-center shrink-0 text-xl font-bold text-[#3F57B3]">
-              {user.name.charAt(0)}
-            </div>
-            <div>
-              <p className="text-base font-bold text-[#1A1D2E] dark:text-[#FFFFFF]">{user.name}</p>
-              <div className="flex items-center gap-2 mt-1 flex-wrap">
-                <span className="text-xs px-2 py-0.5 rounded-full bg-[#EEF1FB] text-[#3F57B3] dark:bg-[#292A2A] dark:text-[#7F95E6]">Viloyat: {user.region}</span>
-                <span className="text-xs px-2 py-0.5 rounded-full bg-[#EEF1FB] text-[#3F57B3] dark:bg-[#292A2A] dark:text-[#7F95E6]">Tuman: {user.district}</span>
-              </div>
-            </div>
-          </div>
-          {/* Fields */}
-          <div className="px-6 py-4 grid grid-cols-2 gap-3">
-            <Field label="Lavozimi"          value={user.position}/>
-            <div>
-              <label className={labelCls}>Passport ma'lumotlari</label>
-              <div className="flex gap-2">
-                <div className={iCls + ' w-16 text-center'}>{user.passport.split(' ')[0]}</div>
-                <div className={iCls + ' flex-1'}>{user.passport.split(' ')[1]}</div>
-              </div>
-            </div>
-            <Field label="Oylik maosh"       value={fmt(user.salary)}  right/>
-            <Field label="KPI bonus"         value={fmt(user.kpi)}     right/>
-            <Field label="Yaratilgan vaqti"  value={user.created}/>
-            <Field label="Oy"                value={user.month}/>
-            <Field label="Jarima miqdori (UZS)" value={`-${fmt(user.fine)}`} red/>
-            <Field label="Jami miqdori (UZS)"   value={fmt(user.total)}  right/>
-          </div>
-          {/* Footer */}
-          <div className="px-6 py-4 border-t border-[#E2E6F2] dark:border-[#292A2A] flex items-center justify-end gap-3">
-            <button onClick={onClose} className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium transition-colors cursor-pointer text-[#5B6078] hover:bg-[#F1F3F9] dark:text-[#C2C8E0] dark:hover:bg-[#292A2A]">
-              Yopish
-            </button>
-            {!user.approved && (
-              <button onClick={()=>setShowConfirm(true)} className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-colors cursor-pointer bg-green-500 text-white hover:bg-green-600">
-                <svg width="13" height="13" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                Tasdiqlash
+
+        <div className="relative w-full max-w-[600px] mt-8">
+
+          {/* X button — ekran yuqori o'ng burchagida */}
+          <button onClick={onClose}
+            className="fixed top-4 right-4 z-[60] w-8 h-8 flex items-center justify-center rounded-full cursor-pointer transition-colors
+              bg-white/20 text-white hover:bg-white/30">
+            <FaXmark size={14}/>
+          </button>
+
+          <div className="rounded-2xl shadow-2xl bg-[#FFFFFF] dark:bg-[#111111]">
+
+            {/* Header */}
+            <div className="px-6 pt-5 pb-4 flex items-center gap-3">
+              <button onClick={onClose} className="text-[#1A1D2E] dark:text-[#FFFFFF] hover:opacity-70 cursor-pointer shrink-0">
+                <FaArrowLeft size={16}/>
               </button>
-            )}
+              <h2 className="text-[20px] font-extrabold text-[#1A1D2E] dark:text-[#FFFFFF]">Ish haqi ma'lumotlari</h2>
+            </div>
+
+            {/* User info */}
+            <div className="px-6 pb-4 flex items-center gap-4">
+              <img src="/imgs/userImg.png" alt="avatar"
+                className="w-[85px] h-[85px] rounded-[24px] object-cover shrink-0"/>
+              <div>
+                <p className="text-[20px] font-[800] text-[#1A1D2E] dark:text-[#FFFFFF]">{user.name}</p>
+                <div className="flex items-center gap-2 mt-2 flex-wrap">
+                  <span className="text-xs px-3 py-1 rounded-[8px] font-medium
+                    bg-[#F1F3F9] text-[#1A1D2E]
+                    dark:bg-[#222323] dark:text-[#FFFFFF] dark:border dark:border-[#474848]">
+                    Viloyat: <span className="font-bold">{user.region}</span>
+                  </span>
+                  <span className="text-xs px-3 py-1 rounded-[8px] font-medium
+                    bg-[#F1F3F9] text-[#1A1D2E]
+                    dark:bg-[#222323] dark:text-[#FFFFFF] dark:border dark:border-[#474848]">
+                    Tuman: <span className="font-bold">{user.district}</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Fields */}
+            <div className="px-6 pb-4 grid grid-cols-2 gap-3">
+              <Field label="Lavozimi" value={user.position}/>
+              <div>
+                <label className="block text-[11px] font-[500] text-[#C2C8E0] mb-1.5">Passport ma'lumotlari</label>
+                <div className="flex gap-2">
+                  <div className="w-16 shrink-0 px-3 py-2.5 rounded-xl text-sm text-center border
+                    bg-[#FFFFFF] border-[#E2E6F2] text-[#1A1D2E]
+                    dark:bg-[#111111] dark:border-[#292A2A] dark:text-[#FFFFFF]">
+                    {user.passport.split(' ')[0]}
+                  </div>
+                  <div className="flex-1 px-3 py-2.5 rounded-xl text-sm border
+                    bg-[#FFFFFF] border-[#E2E6F2] text-[#1A1D2E]
+                    dark:bg-[#111111] dark:border-[#292A2A] dark:text-[#FFFFFF]">
+                    {user.passport.split(' ')[1]}
+                  </div>
+                </div>
+              </div>
+              <Field label="Oylik maosh"      value={fmt(user.salary)}/>
+              <Field label="KPI bonus"        value={fmt(user.kpi)}/>
+              <Field label="Yaratilgan vaqti" value={user.created}/>
+              <Field label="Oy"               value={user.month}/>
+              <Field label="Jarima miqdori (UZS)" value={`-${fmt(user.fine)}`} red right/>
+              <Field label="Jami miqdori (UZS)"   value={fmt(user.total)} right/>
+            </div>
+
+            {/* Footer */}
+            <div className="px-6 py-4 border-t border-[#E2E6F2] dark:border-[#292A2A] flex items-center justify-end gap-3">
+              <button onClick={onClose}
+                className="px-6 py-2.5 rounded-xl text-[15px] font-semibold transition-colors cursor-pointer
+                  text-[#1A1D2E] hover:bg-[#F1F3F9] dark:text-[#FFFFFF] dark:hover:bg-[#222323]">
+                Yopish
+              </button>
+              {!user.approved && (
+                <button onClick={() => setShowConfirm(true)}
+                  className="px-6 py-2.5 rounded-xl text-[15px] font-bold transition-colors cursor-pointer
+                    bg-green-500 text-white hover:bg-green-600">
+                  Tasdiqlash
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -240,8 +272,14 @@ function UserDetailModal({ user, onClose, onApprove }) {
 function Field({ label, value, right, red }) {
   return (
     <div>
-      <label className={labelCls}>{label}</label>
-      <div className={`${iCls} ${right?'text-right':''} ${red?'text-[#E02D2D] dark:text-[#FA5252]':''}`}>{value}</div>
+      <label className="block text-[11px] font-[500] text-[#C2C8E0] mb-1.5">{label}</label>
+      <div className={`w-full px-3 py-2.5 rounded-xl text-sm border
+        bg-[#FFFFFF] border-[#E2E6F2] text-[#1A1D2E]
+        dark:bg-[#111111] dark:border-[#292A2A] dark:text-[#FFFFFF]
+        ${right ? 'text-right' : ''}
+        ${red ? '!text-[#E02D2D]' : ''}`}>
+        {value}
+      </div>
     </div>
   )
 }
@@ -286,6 +324,9 @@ export default function SalaryPage() {
   const [showFilter, setShowFilter]   = useState(false)
   const [filters, setFilters]         = useState(EMPTY_FILTER)
   const [detailUser, setDetailUser]   = useState(null)
+  const [toast, setToast]             = useState(null)
+
+  const showToast = (title, msg) => { setToast({ title, msg }); setTimeout(() => setToast(null), 3000) }
 
   const hasFilter = Object.values(filters).some(v => v && v !== false)
 
@@ -309,10 +350,12 @@ export default function SalaryPage() {
     setShowConfirm(false)
     setSelecting(false)
     setSelected(new Set())
+    showToast("Tasdiqlandi", "Ish haqi muvaffaqiyatli tasdiqlandi")
   }
 
   const toggleApprove = (id) => {
     setData(prev => prev.map(u => u.id === id ? { ...u, approved: !u.approved } : u))
+    showToast("Tasdiqlandi", "Ish haqi muvaffaqiyatli tasdiqlandi")
   }
 
   const handleRowClick = (u) => {
@@ -323,6 +366,20 @@ export default function SalaryPage() {
   return (
     <div className="flex flex-col gap-4">
 
+      {/* Toast */}
+      {toast && (
+        <div className="fixed top-5 right-5 z-50 flex items-start gap-3 p-4 rounded-2xl shadow-xl w-[340px]
+          bg-white border border-[#E2E6F2] dark:bg-[#222323] dark:border-[#292A2A]">
+          <img src="/imgs/Union.svg" alt="" className="w-6 h-6 shrink-0 mt-0.5" />
+          <div className="flex-1 min-w-0">
+            <p className="text-[15px] font-bold text-[#1A1D2E] dark:text-[#FFFFFF]">{toast.title}</p>
+            <p className="text-[13px] text-[#8F95A8] dark:text-[#8E95B5] mt-1 leading-snug">{toast.msg}</p>
+          </div>
+          <button onClick={() => setToast(null)} className="text-[#B6BCCB] hover:text-[#5B6078] dark:text-[#8E95B5] cursor-pointer shrink-0">
+            <FaXmark size={14} />
+          </button>
+        </div>
+      )}
       {/* Header */}
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-[#1A1D2E] dark:text-[#FFFFFF]">Ish haqi</h1>
@@ -384,7 +441,7 @@ export default function SalaryPage() {
               <th className="px-4 py-3 text-right font-medium text-[#1B1F3B]/65 dark:text-[#C2C8E0]">Jarima miqdori (UZS)</th>
               <th className="px-4 py-3 text-right font-medium text-[#1B1F3B]/65 dark:text-[#C2C8E0]">Jami miqdori (UZS)</th>
               <th className="px-4 py-3 text-left font-medium text-[#1B1F3B]/65 dark:text-[#C2C8E0]">Yaratilgan vaqt</th>
-              <th className="px-4 py-3 text-center font-medium text-[#1B1F3B]/65 dark:text-[#C2C8E0] sticky right-0 backdrop-blur-sm bg-white/80 dark:bg-black/20 shadow-[-4px_0_8px_-2px_rgba(0,0,0,0.06)]">Tasdiqlanish</th>
+              <th className="px-4 py-3 text-center font-medium text-[#1B1F3B]/65 dark:text-[#C2C8E0] sticky right-0 bg-[#F8F9FC] dark:bg-[#191A1A] shadow-[-4px_0_8px_-2px_rgba(0,0,0,0.06)]">Tasdiqlanish</th>
             </tr>
           </thead>
           <tbody>
@@ -410,7 +467,7 @@ export default function SalaryPage() {
                 <td className="px-4 py-3 text-right font-medium text-[#E02D2D] dark:text-[#FA5252]">-{fmt(u.fine)}</td>
                 <td className="px-4 py-3 text-right font-semibold text-[#1A1D2E] dark:text-[#FFFFFF]">{fmt(u.total)}</td>
                 <td className="px-4 py-3 text-[#1A1D2E] dark:text-[#FFFFFF]">{u.created}</td>
-                <td className="px-4 py-3 text-center sticky right-0 backdrop-blur-sm bg-white/80 dark:bg-black/20 shadow-[-4px_0_8px_-2px_rgba(0,0,0,0.06)]"
+                <td className="px-4 py-3 text-center sticky right-0 bg-[#F8F9FC] dark:bg-[#191A1A] shadow-[-4px_0_8px_-2px_rgba(0,0,0,0.06)]"
                   onClick={e => e.stopPropagation()}>
                   <input type="checkbox" checked={u.approved} onChange={() => toggleApprove(u.id)}
                     className="w-4 h-4 cursor-pointer accent-[#3F57B3]"/>
